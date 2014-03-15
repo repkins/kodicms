@@ -1,8 +1,8 @@
 <script>
 	function elfinderInit(id, type) {
 		var elfinder = $('body').elfinder({
-			lang: 'ru',
-			url : '/api-elfinder',
+			lang: 'en',
+			url : SITE_URL + 'api-elfinder',
 			height: 595,
 			resizable: false,
 			getFileCallback : function(file) {

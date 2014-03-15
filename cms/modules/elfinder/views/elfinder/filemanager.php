@@ -1,8 +1,8 @@
 <script>
 	$(function() {
 		var elfinder = $('#elfinder').elfinder({
-			lang: 'ru',
-			url : '/api-elfinder',
+			lang: 'en',
+			url : SITE_URL + 'api-elfinder',
             resizable: false,
 			height: cms.content_height,
 			uiOptions: {
