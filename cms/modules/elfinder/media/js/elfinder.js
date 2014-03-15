@@ -8,15 +8,15 @@ cms.filemanager = {
 			autoSize: false,
 			width: 1000,
 			afterLoad: function() {
-				this.content[0].contentWindow.elfinderInit(object, type)
+				this.content[0].contentWindow.elfinderInit(object, type);
 			}
 		});
 	}
-}
+};
 
 cms.ui.add('filemanager', function() {
 	var input = $('input.input-filemanager:not(.init)')
-		.addClass('init')
+		.addClass('init');
 	
 	$('<button class="btn" type="button"><i class="icon-folder-open"></i></button>')
 		.insertAfter(input)
