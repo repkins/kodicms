@@ -78,7 +78,7 @@ class Controller_Datasources_Section extends Controller_System_Datasource
 			$this->go_back();
 		}
 
-		$this->go( Route::url('datasources', array(
+		$this->go( Route::get('datasources')->uri(array(
 			'directory' => 'datasources',
 			'controller' => 'section',
 			'action' => 'edit',
@@ -96,7 +96,7 @@ class Controller_Datasources_Section extends Controller_System_Datasource
 		$this->template->title = __('Edit ' . $this->section()->name);
 		
 		$this->breadcrumbs
-			->add($this->section()->name, Route::url('datasources', array(
+			->add($this->section()->name, Route::get('datasources')->uri(array(
 				'controller' => 'data',
 				'directory' => 'datasources',
 			)) . URL::query(array('ds_id' => $this->section()->id()), FALSE))
@@ -135,7 +135,7 @@ class Controller_Datasources_Section extends Controller_System_Datasource
 		// save and quit or save and continue editing?
 		if ( $this->request->post('commit') !== NULL )
 		{
-			$this->go( Route::url('datasources', array(
+			$this->go( Route::get('datasources')->uri(array(
 				'directory' => 'datasources',
 				'controller' => 'data'
 			)) .  URL::query(array('ds_id' => $ds->id()), FALSE));

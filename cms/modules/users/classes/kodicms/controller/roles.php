@@ -11,8 +11,8 @@ class KodiCMS_Controller_Roles extends Controller_System_Backend {
 	{
 		parent::before();
 		$this->breadcrumbs
-			->add(__('Users'), Route::url( 'backend', array('controller' => 'users')))
-			->add(__('Roles'), Route::url( 'backend', array('controller' => 'roles')));
+			->add(__('Users'), Route::get( 'backend')->uri(array('controller' => 'users')))
+			->add(__('Roles'), Route::get( 'backend')->uri(array('controller' => 'roles')));
 	}
 
 	public function action_index()
@@ -78,7 +78,7 @@ class KodiCMS_Controller_Roles extends Controller_System_Backend {
 				}
 				
 				Kohana::$log->add(Log::INFO, 'Role :role has been added by :user', array(
-					':role' => HTML::anchor(Route::url('backend', array(
+					':role' => HTML::anchor(Route::get('backend')->uri(array(
 						'controller' => 'roles',
 						'action' => 'edit',
 						'id' => $role->id
@@ -154,7 +154,7 @@ class KodiCMS_Controller_Roles extends Controller_System_Backend {
 				}
 				
 				Kohana::$log->add(Log::INFO, 'Role :role has been updated by :user', array(
-					':role' => HTML::anchor(Route::url('backend', array(
+					':role' => HTML::anchor(Route::get('backend')->uri(array(
 						'controller' => 'roles',
 						'action' => 'edit',
 						'id' => $role->id
@@ -207,7 +207,7 @@ class KodiCMS_Controller_Roles extends Controller_System_Backend {
 		if ( $role->delete() )
 		{
 			Kohana::$log->add(Log::INFO, 'Role :role has been deleted by :user', array(
-				':role' => HTML::anchor(Route::url('backend', array(
+				':role' => HTML::anchor(Route::get('backend')->uri(array(
 					'controller' => 'roles',
 					'action' => 'edit',
 					'id' => $id

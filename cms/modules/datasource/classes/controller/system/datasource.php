@@ -20,7 +20,7 @@ class Controller_System_Datasource extends Controller_System_Backend
 		Assets::css('datasource', ADMIN_RESOURCES . 'css/datasource.css', 'global');
 		
 		$this->breadcrumbs
-			->add(__('Datasources'), Route::url('datasources', array(
+			->add(__('Datasources'), Route::get('datasources')->uri(array(
 				'directory' => 'datasources',
 				'controller' => 'data'
 			)));

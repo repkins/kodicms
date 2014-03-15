@@ -18,7 +18,7 @@ class KodiCMS_Controller_Layout extends Controller_System_Backend {
 		
 		parent::before();
 		$this->breadcrumbs
-			->add(__('Layouts'), Route::url('backend', array('controller' => 'layout')));
+			->add(__('Layouts'), Route::get('backend')->uri(array('controller' => 'layout')));
 	}
 	public function action_index()
 	{
@@ -205,7 +205,4 @@ class KodiCMS_Controller_Layout extends Controller_System_Backend {
 
 		$this->go();
 	}
-
-}
-
-// end LayoutController class
+}// end LayoutController class

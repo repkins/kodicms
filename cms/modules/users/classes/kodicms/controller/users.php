@@ -21,7 +21,7 @@ class KodiCMS_Controller_Users extends Controller_System_Backend {
 
 		parent::before();
 		$this->breadcrumbs
-			->add(__('Users'), Route::url( 'backend', array('controller' => 'users')));
+			->add(__('Users'), Route::get( 'backend')->uri(array('controller' => 'users')));
 	}
 	
 	public function action_index()
@@ -98,7 +98,7 @@ class KodiCMS_Controller_Users extends Controller_System_Backend {
 					->create();
 				
 				Kohana::$log->add(Log::INFO, 'User :new_user has been added by :user', array(
-					':new_user' => HTML::anchor(Route::url('backend', array(
+					':new_user' => HTML::anchor(Route::get('backend')->uri(array(
 						'controller' => 'users',
 						'action' => 'profile',
 						'id' => $user->id
@@ -181,7 +181,7 @@ class KodiCMS_Controller_Users extends Controller_System_Backend {
 
 		$this->template->title = __('Edit user');
 		$this->breadcrumbs
-			->add(__(':user profile', array(':user' => $user->username)), Route::url('backend', array(
+			->add(__(':user profile', array(':user' => $user->username)), Route::get('backend')->uri(array(
 				'controller' => 'users',
 				'action' => 'profile',
 				'id' => $user->id
@@ -236,7 +236,7 @@ class KodiCMS_Controller_Users extends Controller_System_Backend {
 				}
 				
 				Kohana::$log->add(Log::INFO, 'User :new_user has been updated by :user', array(
-					':new_user' => HTML::anchor(Route::url('backend', array(
+					':new_user' => HTML::anchor(Route::get('backend')->uri(array(
 						'controller' => 'users',
 						'action' => 'profile',
 						'id' => $user->id

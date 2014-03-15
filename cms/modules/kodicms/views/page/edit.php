@@ -10,7 +10,7 @@
 </script>
 
 <div id="pageEdit">
-	<?php echo Form::open(Route::url('backend', array('controller' => 'page', 'action' => $action, 'id' => $action == 'add' ? $parent_id : $page->id)), array(
+	<?php echo Form::open(Route::get('backend')->uri(array('controller' => 'page', 'action' => $action, 'id' => $action == 'add' ? $parent_id : $page->id)), array(
 		'id' => 'pageEditForm', 'class' => Bootstrap_Form::HORIZONTAL, 'method' => Request::POST
 	)); ?>
 		<?php echo Form::hidden('token', Security::token()); ?>
@@ -38,7 +38,7 @@
 							<?php if($page->title): ?>
 							<?php if (isset($page->updated_on)): ?>
 							<?php echo UI::label(__('Last updated by :anchor on :date', array(
-								':anchor' => HTML::anchor(Route::url('backend', array(
+								':anchor' => HTML::anchor(Route::get('backend')->uri(array(
 										'controller' => 'users',
 										'action' => 'edit', 
 										'id' => $page->updated_by_id

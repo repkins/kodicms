@@ -2,7 +2,7 @@
 	<div class="widget-header">
 		<?php if ( Acl::check( 'email_template.add')): ?>
 		<?php echo UI::button(__('Add template'), array(
-			'href' => Route::url( 'email_controllers', array('controller' => 'templates', 'action' => 'add')), 'icon' => UI::icon('plus')
+			'href' => Route::get( 'email_controllers' )->uri(array('controller' => 'templates', 'action' => 'add')), 'icon' => UI::icon('plus')
 		)); ?>
 		<?php endif; ?>
 	</div>
@@ -31,14 +31,14 @@
 				<?php foreach ($templates as $tpl): ?>
 				<tr class="item">
 					<td class="name">
-						<?php echo HTML::anchor(Route::url('email_controllers', array(
+						<?php echo HTML::anchor(Route::get('email_controllers')->uri(array(
 							'controller' => 'templates',
 							'action' => 'edit',
 							'id' => $tpl->id
 						)), $tpl->subject); ?>
 					</td>
 					<td class="email_type">
-						<?php echo HTML::anchor(Route::url('email_controllers', array(
+						<?php echo HTML::anchor(Route::get('email_controllers')->uri(array(
 							'controller' => 'types',
 							'action' => 'edit',
 							'id' => $tpl->type->id
@@ -50,7 +50,7 @@
 					<td class="actions">
 						<?php if ( Acl::check( 'email_template.delete')): ?>
 						<?php echo UI::button(NULL, array(
-							'href' => Route::url('email_controllers', array(
+							'href' => Route::get('email_controllers')->uri(array(
 								'controller' => 'templates',
 								'action' => 'delete',
 								'id' => $tpl->id

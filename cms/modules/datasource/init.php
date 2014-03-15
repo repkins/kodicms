@@ -17,7 +17,7 @@ Observer::observe('modules::afer_load', function() {
 			Model_Navigation::get_section('Datasources')
 				->add_page(new Model_Navigation_Page(array(
 					'name' => $section['name'],
-					'url' => Route::url('datasources', array(
+					'url' => Route::get('datasources')->uri(array(
 						'controller' => 'data',
 						'directory' => 'datasources',
 					)) . URL::query(array('ds_id' => $id)),

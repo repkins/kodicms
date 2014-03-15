@@ -8,7 +8,7 @@ foreach ($types as $id => $type)
 {
 	$menu[] = array(
 		'name' => $type,
-		'url' => Route::url('datasources', array(
+		'url' => Route::get('datasources')->uri(array(
 			'controller' => 'section',
 			'directory' => 'datasources',
 			'action' => 'create',
