@@ -29,6 +29,11 @@ cms.init.add('widgets_edit', function() {
 		var $cache_lifetime = $('#cache_lifetime');
 		
 		$cache_lifetime.prop('disabled', !$caching_input.prop('checked'));
+		
+		if($caching_input.prop('checked'))
+			$('#cache_settings_container').show();
+		else
+			$('#cache_settings_container').hide();
 	}
 	
 	$('#caching').on('change', cache_enabled).change();
@@ -79,7 +84,7 @@ cms.init.add('page_edit', function() {
 	$('body').on('click', '.popup-widget-item', function() {
 		var widget_id = $(this).data('id');
 		
-		Api.put( SITE_URL + '/api-widget', {
+		Api.put( SITE_URL + 'api-widget', {
 			widget_id: widget_id,
 			page_id: PAGE_ID
 		}, function(response) {

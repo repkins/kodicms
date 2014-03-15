@@ -17,8 +17,8 @@ class Controller_Plugins extends Controller_System_Backend
 	
 	public function action_index()
 	{
+		Assets::package('backbone');
 		$this->template->content = View::factory('plugins/index');
-		
 		$this->template->title = __('Plugins');
 	}
 	

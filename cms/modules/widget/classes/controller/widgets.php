@@ -7,6 +7,8 @@
  */
 class Controller_Widgets extends Controller_System_Backend {
 
+	public $allowed_actions = array('template');
+
 	public function before()
 	{
 		parent::before();
@@ -14,7 +16,7 @@ class Controller_Widgets extends Controller_System_Backend {
 		Assets::css('widgets', ADMIN_RESOURCES . 'css/widgets.css');
 		
 		$this->breadcrumbs
-			->add(__('Widgets'), Route::get('backend')->uri(array(
+			->add(__('Widgets'), Route::get( 'backend')->uri(array(
 				'controller' => 'widgets'
 			)));
 	}
@@ -53,7 +55,7 @@ class Controller_Widgets extends Controller_System_Backend {
 			->add(__('Widget :name', array(
 				':name' => $widget->name)
 				), 
-				Route::get('backend')->uri(array(
+				Route::get( 'backend')->uri(array(
 					'controller' => 'widgets',
 					'action' => 'edit',
 					'id' => $widget->id
@@ -82,7 +84,7 @@ class Controller_Widgets extends Controller_System_Backend {
 		
 		$blocks = array();
 		
-		$default_blocks = array(-1 => '----', 'PRE' => __('Before page render'), 'POST' => __('After page render'));
+		$default_blocks = array(-1 => '--- none ---', 'PRE' => __('Before page render'), 'POST' => __('After page render'));
 		foreach ($res_blocks as $block)
 		{
 			if(empty($blocks[$block->layout_name])) 
@@ -193,11 +195,18 @@ class Controller_Widgets extends Controller_System_Backend {
 		{
 			$templates[$snippet->name] = $snippet->name;
 		}
+		
+		$roles = array();
+		foreach (Model_Permission::get_all() as $role)
+		{
+			$roles[$role] = $role;
+		}
 
 		$this->template->content = View::factory( 'widgets/edit', array(
 			'widget' => $widget,
 			'templates' => $templates,
-			'content' =>  $widget->fetch_backend_content()
+			'content' =>  $widget->fetch_backend_content(),
+			'roles' => $roles,
 		) );
 	}
 	
@@ -207,13 +216,18 @@ class Controller_Widgets extends Controller_System_Backend {
 		
 		try 
 		{
-			$widget
-				->set_values( $data );
+			if ( ! ACL::check( 'widget.roles' ) AND ! empty($data['roles']))
+			{
+				$data['roles'] = array();
+			}
 			
 			if( ACL::check( 'widgets.cache'))
 			{
 				$widget->set_cache_settings( $data );
 			}
+
+			$widget
+				->set_values( $data );
 			
 			Widget_Manager::update($widget);
 			
@@ -262,6 +276,8 @@ class Controller_Widgets extends Controller_System_Backend {
 			Messages::errors(__( 'Widget not found!' ) );
 			$this->go_back();
 		}
+		
+		Assets::package('ace');
 		
 		$template = $widget->default_template();
 		
