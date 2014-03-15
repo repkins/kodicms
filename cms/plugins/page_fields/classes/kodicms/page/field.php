@@ -48,7 +48,9 @@ class KodiCMS_Page_Field
 	{
 		if(self::$_fields === NULL)
 		{
-			self::$_fields = ORM::factory('Page_Field')
+			//  The line must be replaced
+			// 	self::$_fields = ORM::factory('Page_Field')
+    		self::$_fields[$page->id()] = ORM::factory('Page_Field')
 				->get_by_page_id($page->id())
 				->as_array('key', 'value');
 		}
