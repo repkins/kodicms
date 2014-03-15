@@ -33,7 +33,7 @@
 	</div>
 	
 	<div class="form-actions widget-footer">
-		<?php echo UI::actions(NULL, Route::get('datasources'i)->uri(array(
+		<?php echo UI::actions(NULL, Route::get('datasources')->uri(array(
 			'controller' => 'data',
 			'directory' => 'datasources'
 		))); ?>
