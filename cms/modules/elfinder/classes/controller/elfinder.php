@@ -23,7 +23,10 @@ class Controller_Elfinder extends Controller_System_Template {
 		
 		Assets::css('elfinder.lib', ADMIN_RESOURCES . 'libs/elfinder/css/elfinder.min.css');
 		Assets::js('elfinder.lib', ADMIN_RESOURCES . 'libs/elfinder/js/elfinder.min.js', 'global');
-		Assets::js('elfinder.ru', ADMIN_RESOURCES . 'libs/elfinder/js/i18n/elfinder.ru.js', 'elfinder.lib');
+		
+		// TODO: I18n::lang() returns 'en-us', Elfinder only has 'elfinder.en.js'.
+		// Need to strip the trailing '-us', or cp language files to elfinder.en-us.js.
+		Assets::js('elfinder.ru', ADMIN_RESOURCES . 'libs/elfinder/js/i18n/elfinder.'.I18n::lang().'.js', 'elfinder.lib');
 
 		Assets::js('global', ADMIN_RESOURCES . 'js/backend.js', 'backbone');
 	}
