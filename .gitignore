@@ -14,3 +14,11 @@ cms/media/js/i18n
 /layouts/*
 !/layouts/index.html
 !/snippets/index.html
+
+# Uploaded images
+/public/images/*
+
+# Eclipse project files.
+/.settings
+.buildpath
+.project
