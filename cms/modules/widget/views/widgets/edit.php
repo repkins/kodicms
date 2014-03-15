@@ -45,7 +45,7 @@
 				<?php 
 				$hidden = empty($widget->template) ? 'hidden' : '';
 				echo UI::button(__('Edit snippet'), array(
-						'href' => Route::url('backend', array(
+						'href' => Route::get('backend')->uri(array(
 							'controller' => 'snippet', 
 							'action' => 'edit',
 							'id' => $widget->template
@@ -57,7 +57,7 @@
 
 				<?php if( ACL::check('snippet.add')): ?>
 				<?php echo UI::button(__('Add snippet'), array(
-					'href' => Route::url('backend', array(
+					'href' => Route::get('backend')->uri(array(
 						'controller' => 'snippet', 
 						'action' => 'add'
 					)),
@@ -69,7 +69,7 @@
 				<?php if($widget->default_template()): ?>
 				<?php 
 				echo UI::button(__('Default template'), array(
-						'href' => Route::url('backend', array(
+						'href' => Route::get('backend')->uri(array(
 							'controller' => 'widgets', 
 							'action' => 'template',
 							'id' => $widget->id
@@ -94,7 +94,7 @@
 		?>
 		
 		<div id="cache_lifetime_group" class="control-group">
-			<label id="bootstrap_form_element_label_QuXTwt2D" class="control-label" for="cache_lifetime">Время кеширования</label>
+			<label id="bootstrap_form_element_label_QuXTwt2D" class="control-label" for="cache_lifetime"><?php echo __('Caching Time'); ?></label>
 			<div class="controls">
 				<input type="text" id="cache_lifetime" name="cache_lifetime" value="<?php echo $widget->cache_lifetime; ?>" class="input-medium">
 				
@@ -138,7 +138,7 @@
 	<?php if( ACL::check('widgets.location') ): ?>
 	<div class="widget-content widget-no-border-radius">
 		<?php echo Bootstrap_Element_Button::factory(array(
-			'href' => Route::url('backend', array(
+			'href' => Route::get('backend')->uri(array(
 					'controller' => 'widgets', 
 					'action' => 'location',
 					'id' => $widget->id)), 
