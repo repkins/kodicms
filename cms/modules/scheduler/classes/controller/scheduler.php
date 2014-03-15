@@ -13,7 +13,7 @@ class Controller_Scheduler extends Controller_System_Backend {
 		
 		$this->template->title = __('Scheduler');
 		$this->breadcrumbs
-			->add($this->template->title, Route::get('backend')->uri('controller' => 'scheduler')));
+			->add($this->template->title, Route::get('backend')->uri(array('controller' => 'scheduler')));
 	}
 	
 	public function action_index()
