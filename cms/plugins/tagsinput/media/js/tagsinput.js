@@ -3,10 +3,10 @@ cms.ui.add('tags_input', function() {
 		width: 'auto',
 		delimiter: TAG_SEPARATOR,
 		defaultText: __('Add a tag'),
-		autocomplete_url:'/api-tags',
+		autocomplete_url: SITE_URL + '/api-tags',
 		autocomplete: {
 			source: function( request, response ) {
-				$.getJSON( '/api-tags', {term: request.term}, function(data) {
+				$.getJSON( SITE_URL + '/api-tags', {term: request.term}, function(data) {
 					response(data.response)
 				});
 			}
