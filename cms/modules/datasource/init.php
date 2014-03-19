@@ -44,7 +44,7 @@ Observer::observe('modules::afer_load', function() {
 		$section
 			->add_page(new Model_Navigation_Page(array(
 			'name' => $type,
-			'url' => Route::url('datasources', array(
+			'url' => Route::get('datasources')->uri(array(
 				'controller' => 'section',
 				'directory' => 'datasources',
 				'action' => 'create',

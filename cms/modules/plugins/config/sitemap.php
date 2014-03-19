@@ -6,7 +6,7 @@ return array(
 		'children' => array(
 			array(
 			'name' => __('Plugins'), 
-			'url' => Route::get('backend')->uri(array('controller' => 'plugins')),
+			'url' => Route::get('backend')->uri(array('controller' => 'plugins', 'action' => 'index')),
 			'priority' => 999,
 			'divider' => TRUE,
 			'icon' => 'puzzle-piece',
