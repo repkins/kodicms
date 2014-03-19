@@ -404,7 +404,7 @@ cms.ui.add('btn-confirm', function() {
 	var bw = brand.outerWidth(true);
 
 	$(window).resize(function() {
-		calcNav()
+		calcNav();
 	});
 	
 	function calcNav() {
