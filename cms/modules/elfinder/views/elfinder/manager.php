@@ -1,7 +1,7 @@
 <script>
 	function elfinderInit(id, type) {
 		var elfinder = $('body').elfinder({
-			lang: 'en',
+			lang: '<?php echo explode('-', I18n::lang())[0]; ?>',
 			url : SITE_URL + 'api-elfinder',
 			height: 595,
 			resizable: false,
