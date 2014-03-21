@@ -1,4 +1,4 @@
- <div class="widget widget-nopad outline_inner">
+<div class="widget widget-nopad outline_inner">
 	<div class="widget-header">
 		<?php if( ACL::check( 'snippet.add')): ?>
 		<?php echo UI::button(__('Add snippet'), array(
@@ -47,7 +47,7 @@
 						<?php echo Text::bytes( $snippet->size()); ?>
 					</td>
 					<td class="direction">
-						<?php echo UI::label($snippet->get_relative_path() . EXT); ?>
+						<?php echo UI::label($snippet->get_relative_path()); ?>
 					</td>
 					<td class="actions">
 						<?php if( ACL::check( 'snippet.delete')): ?>

@@ -10,7 +10,7 @@ var cms = {
 	
 	// Error
 	error: function (msg, e) {
-		this.message(msg, 'error');
+		this.message(msg, 'error')
 		$.jGrowl(msg, {theme: 'alert alert-error'});
 	},
 		
@@ -23,16 +23,25 @@ var cms = {
 		name = name.indexOf('.') !== -1 ? '['+name.replace(/\./g, '][') + ']' : name;
 		var gpoups = $('.control-group:not(.error)');
 		
-		return input = $(':input[name*="' + name + '"]', gpoups)
+		input = $(':input[name*="' + name + '"]', gpoups)
 			.after('<span class="help-inline error-message">' + message + '</span>')
 			.parentsUntil( '.control-group' )
 			.parent()
 			.addClass('error');
+	
+		var $tab_pane = input.parentsUntil('tab-pane');
+		if($tab_pane.length) {
+			$tab_id = $tab_pane.attr('id');
+			$tab_pane.parent().parent().find('.nav-tabs li a[href="#'+$tab_id+'"]').addClass('tab-error')
+		}
 	},
 	clear_error: function() {
 		$('.control-group')
 			.removeClass('error')
-			.find('.error-message').remove();
+			.find('.error-message')
+			.remove();
+	
+		$('.nav-tabs li a').removeClass('tab-error')
 	},
 	// Convert slug
 	convert_dict: {
@@ -316,7 +325,48 @@ cms.init = {
 	}
 };
 
-cms.ui.add('btn-confirm', function() {
+cms.ui.add('flags', function() {
+	$('body').on('click', '.flags .label', function(e) {
+		var $src = $(this).parent().data('target');
+		if( ! $src ) $src = $(this).parent().prevAll(':input');
+		
+		var $container = $(this).parent();
+		var $append = $container.data('append') == true;
+		var $array = $container.data('array') == true;
+		var $value = $(this).data('value');
+		
+		if($array) $value = $value.split(',');
+		
+		$('.label', $container).removeClass('label-success');
+		$(this).addClass('label-success')
+
+		if($append) {
+			var $old_value = '';
+			if($src.is(':input')) {
+				$old_value += $src.val();
+				$value = $old_value.length > 0 ? $old_value + ', ' + $value: $value;
+				$src.val($value);
+			}
+			else {
+				$old_value += $src.val();
+				$value = $old_value.length > 0 ? $old_value + ', ' : $value;
+				$src.text($value)
+			}
+		} else {
+			if($src.hasClass('select2-offscreen'))
+			{
+				$src.select2("val", $value);
+			}
+			else if($src.is(':input'))
+			{
+				$src.val($value);
+			}
+			else $src.text($value)
+		}
+		
+		e.preventDefault();
+	});
+}).add('btn-confirm', function() {
 	$('body').on('click', '.btn-confirm', function () {
 		if (confirm(__('Are you sure?')))
 			return true;
@@ -404,7 +454,7 @@ cms.ui.add('btn-confirm', function() {
 	var bw = brand.outerWidth(true);
 
 	$(window).resize(function() {
-		calcNav();
+		calcNav()
 	});
 	
 	function calcNav() {
@@ -474,6 +524,14 @@ cms.ui.add('btn-confirm', function() {
 	$('.datepicker').datetimepicker({
 		timepicker: false,
 		format: 'Y-m-d',
+		lang: LOCALE,
+		dayOfWeekStart:1
+	});
+	
+	$('.timepicker').datetimepicker({
+		timepicker: true,
+		datepicker: false,
+		format: 'H:i:s',
 		lang: LOCALE,
 		dayOfWeekStart:1
 	});
@@ -578,23 +636,29 @@ cms.ui.add('btn-confirm', function() {
 	var method = ACTION == 'add' ? 'put' : 'post';
 	var $form_actions = $('.iframe .form-actions');
 	
-	$('.btn-save', $form_actions).on('click', function() {
+	var $action = CONTROLLER;
+
+	if((typeof API_FORM_ACTION != 'undefined'))
+		$action = API_FORM_ACTION;
+
+	$('.btn-save', $form_actions).on('click', function(e) {
 		var $data = $('form').serializeObject();
-		Api[method](CONTROLLER, $data);
-		return false;
+		Api[method]($action, $data);
+		
+		e.preventDefault();
 	});
 
-	$('.btn-save-close', $form_actions).on('click', function() {
+	$('.btn-save-close', $form_actions).on('click', function(e) {
 		var $data = $('form').serializeObject();
-		Api[method](CONTROLLER, $data, function(response) {
+		Api[method]($action, $data, function(response) {
 			window.top.$.fancybox.close();
 		});
-		return false;
+		e.preventDefault();
 	});
 
-	$('.btn-close', $form_actions).on('click', function() {
+	$('.btn-close', $form_actions).on('click', function(e) {
 		window.top.$.fancybox.close();
-		return false;
+		e.preventDefault();
 	})
 }).add('select2', function() {
 	$('select').not('.no-script').select2();
@@ -614,7 +678,7 @@ cms.ui.add('btn-confirm', function() {
 		},
 		multiple: true,
 		ajax: {
-			url: '/api-tags',
+			url: SITE_URL + '/api-tags',
 			dataType: "json",
 			data: function(term, page) {
 				return {term: term};
@@ -698,11 +762,13 @@ var Api = {
 	},
 
 	request: function(method, uri, data, callback, show_loader) {
+		uri = uri.replace('/' + ADMIN_DIR_NAME,'');
+		
 		if(uri.indexOf('-') == -1) uri = '-' + uri;
 		else if(uri.indexOf('-') > 0 && uri.indexOf('/') == -1)  uri = '/' + uri;
 		
 		if(uri.indexOf('/api') == -1)
-			uri = SITE_URL + 'api' + uri;
+			uri = '/api' + uri;
 		
 		if(show_loader == 'undefined')
 			show_loader = true;
@@ -716,7 +782,7 @@ var Api = {
 
 		$.ajax({
 			type: method,
-			url: uri,
+			url: SITE_URL + uri,
 			data: data,
 			dataType: 'json',
 //			cache: false,

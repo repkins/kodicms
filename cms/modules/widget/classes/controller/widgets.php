@@ -16,7 +16,7 @@ class Controller_Widgets extends Controller_System_Backend {
 		Assets::css('widgets', ADMIN_RESOURCES . 'css/widgets.css');
 		
 		$this->breadcrumbs
-			->add(__('Widgets'), Route::get( 'backend')->uri(array(
+			->add(__('Widgets'), Route::get('backend')->uri(array(
 				'controller' => 'widgets'
 			)));
 	}
@@ -55,7 +55,7 @@ class Controller_Widgets extends Controller_System_Backend {
 			->add(__('Widget :name', array(
 				':name' => $widget->name)
 				), 
-				Route::get( 'backend')->uri(array(
+				Route::get('backend')->uri(array(
 					'controller' => 'widgets',
 					'action' => 'edit',
 					'id' => $widget->id
@@ -184,16 +184,6 @@ class Controller_Widgets extends Controller_System_Backend {
 		if ( Request::current()->method() == Request::POST )
 		{
 			return $this->_edit( $widget );
-		}
-		
-		$templates = array(
-			__('------ none ------')
-		);
-		$snippets = Model_File_Snippet::find_all();
-		
-		foreach ($snippets as $snippet)
-		{
-			$templates[$snippet->name] = $snippet->name;
 		}
 		
 		$roles = array();

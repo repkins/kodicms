@@ -13,6 +13,7 @@ nbproject/*
 cms/media/js/i18n
 /snippets/*
 /layouts/*
+/patches/*
 !/layouts/index.html
 !/snippets/index.html
 
