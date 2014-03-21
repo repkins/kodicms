@@ -678,7 +678,7 @@ cms.ui.add('flags', function() {
 		},
 		multiple: true,
 		ajax: {
-			url: '/api-tags',
+			url: SITE_URL + '/api-tags',
 			dataType: "json",
 			data: function(term, page) {
 				return {term: term};
@@ -782,7 +782,7 @@ var Api = {
 
 		$.ajax({
 			type: method,
-			url: uri,
+			url: SITE_URL + uri,
 			data: data,
 			dataType: 'json',
 //			cache: false,

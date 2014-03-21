@@ -38,7 +38,7 @@ cms.init.add('page_edit', function() {
 	$('body').on('click', '.popup-widget-item', function() {
 		var widget_id = $(this).data('id');
 		
-		Api.put('/api-widget', {
+		Api.put( SITE_URL + 'api-widget', {
 			widget_id: widget_id,
 			page_id: PAGE_ID
 		}, function(response) {
