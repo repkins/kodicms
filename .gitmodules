@@ -1,0 +1,3 @@
+[submodule "cms/plugins/gallery"]
+	path = cms/plugins/gallery
+	url = https://github.com/mercury64/plugin-gallery.git
