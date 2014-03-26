@@ -162,10 +162,11 @@ class Model_Widget_Hybrid_Document extends Model_Widget_Hybrid {
 		
 		$agent = $this->get_agent();
 		$query = $agent->get_query_props( $this->doc_fields );
+		$fields = $agent->get_fields();
 		
-		if(isset($agent->ds_fields[$this->doc_id_field]))
+		if(isset($fields[$this->doc_id_field]))
 		{
-			$id_field = $agent->ds_fields[$this->doc_id_field]->name;
+			$id_field = $fields[$this->doc_id_field]->name;
 		}
 		else
 		{
@@ -188,12 +189,12 @@ class Model_Widget_Hybrid_Document extends Model_Widget_Hybrid {
 			
 			return $result;
 		}
-		
+
 		foreach ($result as $key => $value)
 		{
-			if( ! isset($agent->ds_fields[$key])) continue;
+			if( ! isset($fields[$key])) continue;
 
-			$field = & $agent->ds_fields[$key];
+			$field = & $fields[$key];
 			$related_widget = NULL;
 				
 			$field_class = 'DataSource_Hybrid_Field_' . $field->type;
@@ -203,7 +204,6 @@ class Model_Widget_Hybrid_Document extends Model_Widget_Hybrid {
 			{
 				$result['_' . $field->key] = $result[$key];
 				$result[$field->key] = call_user_func_array($field_class.'::'.$field_class_method, array( $this, $field, $result, $key, $recurse));
-				continue;
 			}
 			
 			unset($result[$key]);

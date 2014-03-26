@@ -4,7 +4,7 @@ abstract class DataSource_Hybrid_Field_Primitive extends DataSource_Hybrid_Field
 	
 	protected $_is_sortable = TRUE;
 
-	public function __construct( array $data )
+	public function __construct( array $data = NULL )
 	{
 		parent::__construct( $data );
 		$this->family = DataSource_Hybrid_Field::FAMILY_PRIMITIVE;
@@ -31,7 +31,7 @@ abstract class DataSource_Hybrid_Field_Primitive extends DataSource_Hybrid_Field
 		$this->onUpdateDocument($doc, $doc);
 	}
 
-	public function document_validation_rules( Validation $validation, DataSource_Hybrid_Document $doc )
+	public function onValidateDocument( Validation $validation, DataSource_Hybrid_Document $doc )
 	{	
 		if( $this->min !== NULL OR $this->max !== NULL )
 		{
@@ -41,7 +41,7 @@ abstract class DataSource_Hybrid_Field_Primitive extends DataSource_Hybrid_Field
 			$validation->rule($this->name, 'range', array(':value', $min, $max));
 		}
 		
-		if( $this->regexp !== NULL )
+		if( !empty($this->_props['regexp']) )
 		{
 			if(  strpos( $this->regexp, '::' ) !== FALSE )
 			{
@@ -63,7 +63,7 @@ abstract class DataSource_Hybrid_Field_Primitive extends DataSource_Hybrid_Field
 			}
 		}
 			
-		return parent::document_validation_rules($validation, $doc);
+		return parent::onValidateDocument($validation, $doc);
 	}
 	
 	public static function fetch_widget_field( $widget, $field, $row, $fid, $recurse )

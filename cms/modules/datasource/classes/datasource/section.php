@@ -4,7 +4,7 @@
  * @package		KodiCMS
  * @category	Datasource
  */
-abstract class Datasource_Section {
+class Datasource_Section {
 	
 	/**
 	 * Фабрика создания раздела данных
@@ -115,7 +115,20 @@ abstract class Datasource_Section {
 	 */
 	protected $_headline = NULL;
 
-
+	/**
+	 * Название класса документа
+	 * 
+	 * @var string 
+	 */
+	protected $_document_class_name = NULL;
+	
+	/**
+	 * Типы виджетов для которых очищать кеш при обновлении данных в документах
+	 * 
+	 * @var array
+	 */
+	protected $_widget_types = array();
+	
 	/**
 	 * 
 	 * @param string $type
@@ -123,8 +136,16 @@ abstract class Datasource_Section {
 	public function __construct( $type ) 
 	{
 		$this->_type = $type;
-		
+
 		$this->_initialize();
+		
+		
+		
+		if( ! class_exists( $this->_document_class_name ))
+		{
+			throw new DataSource_Exception('Document class :class_name not exists', 
+					array(':class_name' => $this->_document_class_name));
+		}
 	}
 	
 	/**
@@ -165,6 +186,16 @@ abstract class Datasource_Section {
 	public function headline()
 	{
 		return $this->_headline;
+	}
+	
+	/**
+	 * Возвращает название таблицы раздела
+	 * 
+	 * @return Datasource_Section_Headline
+	 */
+	public function table()
+	{
+		return $this->_ds_table;
 	}
 
 	/**
@@ -278,42 +309,115 @@ abstract class Datasource_Section {
 	}
 	
 	/**
-	 * Удаление разделов документа
+	 * Создание нового документа
 	 * 
-	 * @see Datasource_Section::remove()
-	 * 
-	 * @return \Datasource_Section
+	 * @param DataSource_Document $doc
+	 * @return DataSource_Document
 	 */
-	public function remove_documents( array $ids = NULL )
+	public function create_document( DataSource_Document $doc ) 
 	{
-		$query = DB::delete($this->_ds_table);
-		
-		if( ! empty($ids) )
+		$doc->create();
+
+		if($doc->loaded())
 		{
-			$query->where('id', 'in', $ids);
+			$this->update_size();
+			$this->add_to_index(array($doc->id));
+
+			$this->clear_cache();
 		}
 		
-		$query->execute();
+		return $doc;
+	}
+	
+	/**
+	 * Обновление документа
+	 * 
+	 * @param DataSource_Document $doc
+	 * @return DataSource_Document
+	 */	
+	public function update_document( DataSource_Document $doc ) 
+	{
+		$old = $this
+			->get_document($doc->id);
+	
+		if( empty($old) OR ! $doc->loaded() )
+		{
+			return FALSE;
+		}
 		
-		unset($query);
+		$doc->update();
+
+		if( $old->published != $doc->published ) 
+		{
+			if( $doc->published === TRUE )
+			{
+				$this->add_to_index(array($old->id));
+			}
+			else
+			{
+				$this->remove_from_index(array($old->id));
+			}
+		} 
+		elseif( $old->published === TRUE )
+		{
+			$this->update_index(array($old->id));
+		}
 		
+		$this->clear_cache();
+
+		return $doc;
+	}
+	
+	/**
+	 * Удаление документов по ID
+	 * 
+	 * @see DataSource_Document::remove()
+	 * 
+	 * @param array $ids
+	 * @return \DataSource_Section
+	 */
+	public function remove_documents( array $ids = NULL  ) 
+	{
+		if( empty($ids) ) return $this;
+		
+		foreach ($ids as $id)
+		{
+			$document = $this->get_empty_document()->load($id);
+			if($document->loaded())
+			{
+				$document->remove();
+			}
+		}
+
+		$this->update_size();
+		$this->remove_from_index($ids);
+		$this->clear_cache();
+
 		return $this;
 	}
 	
 	/**
-	 * Загрузка документа раздела по ID
+	 * Загрузка документа по ID
 	 * 
 	 * @param integer $id
-	 * @return DataSource_Document
+	 * @return \DataSource_Document
 	 */
-	abstract public function get_document( $id );
+	public function get_document($id)
+	{
+		if( empty($id) ) return NULL;
+		
+		return $this->get_empty_document()->load($id);
+	}
 	
 	/**
 	 * Получение пустого объекта документа
 	 * 
 	 * @return \DataSource_Document
 	 */
-	abstract public function get_empty_document();
+	public function get_empty_document() 
+	{
+		return new $this->_document_class_name($this);
+	}
 	
 	/**
 	 * Публикация документов по ID
@@ -410,6 +514,18 @@ abstract class Datasource_Section {
 	}
 	
 	/**
+	 * Очистка кеша виджетов раздела
+	 * 
+	 * @return \Datasource_Section
+	 */
+	public function clear_cache( )
+	{
+		Datasource_Data_Manager::clear_cache( $this->id(), $this->_widget_types);
+		
+		return $this;
+	}
+	
+	/**
 	 * Вызывается при сохранении раздела в БД
 	 * 
 	 * @return array
@@ -460,9 +576,11 @@ abstract class Datasource_Section {
 				':class' => $headline_class
 			));
 		}
-
+		
+		$this->_document_class_name = 'Datasource_' . ucfirst($this->type()) . '_Document';
 		$this->_headline = new $headline_class($this);
 	}
+	
 	
 	
 	/**************************************************************************

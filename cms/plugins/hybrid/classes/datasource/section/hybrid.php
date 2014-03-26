@@ -21,6 +21,12 @@ class DataSource_Section_Hybrid extends Datasource_Section {
 	protected $_type = 'hybrid';
 	
 	/**
+	 * 
+	 * @var array
+	 */
+	protected $_widget_types = array('hybrid_headline', 'hybrid_document');
+	
+	/**
 	 * Индексируемы поля раздела
 	 * 
 	 * @var array 
@@ -116,7 +122,6 @@ class DataSource_Section_Hybrid extends Datasource_Section {
 	/**
 	 * Сохранение раздела
 	 * 
-	 * 
 	 * @param array $values
 	 * @return boolean
 	 */
@@ -148,7 +153,7 @@ class DataSource_Section_Hybrid extends Datasource_Section {
 				$field = DataSource_Hybrid_Field_Factory::get_field($f->id);
 				$old_field = clone($field);
 
-				$field->set(array('in_headline' => $value));
+				$field->set_in_headline($value);
 
 				DataSource_Hybrid_Field_Factory::update_field($old_field, $field);
 			}
@@ -167,105 +172,6 @@ class DataSource_Section_Hybrid extends Datasource_Section {
 		$this->record()->destroy();
 		DataSource_Hybrid_Factory::remove($this->id());
 		return parent::remove();
-	}
-	
-	/**
-	 * Создание нового документа
-	 * 
-	 * @param DataSource_Hybrid_Document $doc
-	 * @return DataSource_Hybrid_Document
-	 */
-	public function create_document( $doc ) 
-	{
-		$doc->id = $this->create_empty_document($doc->header);
-
-		$record = $this->record();
-		$record->initialize_document($doc);
-		$query = $record->get_sql($doc);
-
-		$success = TRUE;
-	
-		foreach($query as $q)
-		{
-			$_query = DB::query(Database::UPDATE, $q)->execute();
-		}
-
-		if($success) 
-		{
-			$this->update_size();
-			$this->add_to_index(array($doc->id));
-		} 
-		else 
-		{
-			$this->remove_documents(array($doc->id));
-			$doc->id = 0;
-		}
-		
-		$this->clear_cache();
-		
-		return $doc;
-	}
-	
-	/**
-	 * Обновление документа
-	 * 
-	 * @param DataSource_Hybrid_Document $doc
-	 * @return boolean
-	 */
-	public function update_document( $doc ) 
-	{
-		$old = $this->get_document($doc->id);
-	
-		if( empty($old) )
-		{
-			return FALSE;
-		}
-
-		$record = $this->record();
-		$record->document_changed($old, $doc);
-		$query = $record->get_sql($doc, TRUE);
-
-		$result = TRUE;
-		foreach($query as $q)
-		{
-			$result = DB::query(NULL, $q)->execute() AND $result;
-		}
-
-		if( $doc->is_changed('published')) 
-		{
-			if( $doc->published === TRUE )
-			{
-				$this->add_to_index(array($old->id));
-			}
-			else
-			{
-				$this->remove_from_index(array($old->id));
-			}
-		} 
-		elseif( $old->published === TRUE )
-		{
-			$this->update_index(array($old->id));
-		}
-		
-		$this->clear_cache();
-
-		return $result;
-	}
-	
-	/**
-	 * Загрузка документа по ID
-	 * 
-	 * @param integer $id
-	 * @return \DataSource_Hybrid_Document
-	 */
-	public function get_document($id)
-	{
-		$document = NULL;
-
-		if( empty($id) ) return NULL;
-		
-		$document = new DataSource_Hybrid_Document($this->record(), $id);
-		return $document->load($id);
 	}
 	
 	/**
@@ -330,54 +236,6 @@ class DataSource_Section_Hybrid extends Datasource_Section {
 	}
 	
 	/**
-	 * Получение пустого объекта документа
-	 * 
-	 * @return \DataSource_Hybrid_Document
-	 */
-	public function get_empty_document() 
-	{
-		return new DataSource_Hybrid_Document($this->record());
-	}
-	
-	/**
-	 * Создание пустого документа и возврат его ID
-	 * 
-	 * @param string $header
-	 * @return null|integer Идентификатор документа
-	 */
-	public function create_empty_document( $header ) 
-	{
-		$data = array(
-			'ds_id' => $this->id(),
-			'header' => $header,
-			'created_on' => date('Y-m-d H:i:s'),
-		);
-		
-		$query = DB::insert('dshybrid')
-			->columns(array_keys($data))
-			->values(array_values($data))
-			->execute();
-
-		$id = $query[0];
-
-		$success = TRUE;
-
-		if( $id )
-		{
-			$query = DB::insert("dshybrid_" . $this->id())
-				->columns(array('id'))
-				->values(array($id))
-				->execute();
-			
-			return $id;
-		}
-		
-		$this->remove_documents( array($id) );
-
-		return NULL;
-	}
-	
-	/**
 	 * Удаление документов по ID
 	 * 
 	 * @see DataSource_Hybrid_Document::remove()
@@ -427,14 +285,6 @@ class DataSource_Section_Hybrid extends Datasource_Section {
 		}
 		
 		return $template;
-	}
-	
-	/**
-	 * Очистка кеша виджетов раздела
-	 */
-	public function clear_cache( )
-	{
-		Datasource_Data_Manager::clear_cache( $this->id(), DataSource_Hybrid_Factory::$widget_types);
 	}
 
 	protected function _serialize()

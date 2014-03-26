@@ -66,7 +66,7 @@ abstract class DataSource_Hybrid_Field {
 	 *
 	 * @var string
 	 */
-	public $name;
+	public $name = NULL;
 	
 	/**
 	 * Ключ поля без преффикса
@@ -130,6 +130,29 @@ abstract class DataSource_Hybrid_Field {
 	{
 		return Config::get('fields')->as_array();
 	}
+	
+	public static function get_empty_fields()
+	{
+		$filed_types = self::types();
+		
+		$fields = array();
+		foreach ($filed_types as $type => $title)
+		{
+			if(is_array($title))
+			{
+				foreach ($title as $type => $title)
+				{
+					$fields[$type] = DataSource_Hybrid_Field::factory($type);
+				}
+			}
+			else
+			{
+				$fields[$type] = DataSource_Hybrid_Field::factory($type);
+			}
+		}
+		
+		return $fields;
+	}
 
 	/**
 	 * Фабрика создания поля. 
@@ -140,7 +163,7 @@ abstract class DataSource_Hybrid_Field {
 	 * @return \DataSource_Hybrid_Field
 	 * @throws Kohana_Exception
 	 */
-	public static function factory($type, array $data)
+	public static function factory($type, array $data = NULL)
 	{
 		$class_name = 'DataSource_Hybrid_Field_' . $type;
 		
@@ -157,9 +180,12 @@ abstract class DataSource_Hybrid_Field {
 	 * 
 	 * @param array $data
 	 */
-	public function __construct( array $data) 
+	public function __construct( array $data = NULL) 
 	{
-		$this->set($data);
+		if( !empty($data) )
+		{
+			$this->set($data);
+		}
 		
 		$this->type = strtolower(substr(get_called_class(), 24));
 		$this->from_ds = (int) $this->from_ds;
@@ -238,7 +264,6 @@ abstract class DataSource_Hybrid_Field {
 	public function set( array $data )
 	{
 		$data['isreq'] = ! empty($data['isreq']) ? TRUE : FALSE;
-		$data['in_headline'] = ! empty($data['in_headline']) ? TRUE : FALSE;		
 
 		foreach ( $data as $key => $value )
 		{
@@ -253,8 +278,13 @@ abstract class DataSource_Hybrid_Field {
 			}
 		}
 
-		$this->validate();
-
+		return $this;
+	}
+	
+	public function set_in_headline($status = FALSE)
+	{
+		$this->in_headline = (bool) $status;
+		
 		return $this;
 	}
 
@@ -321,25 +351,6 @@ abstract class DataSource_Hybrid_Field {
 	public function widget_types()
 	{
 		return $this->_widget_types;
-	}
-
-	/**
-	 * В момент присвоения полям документа значений происходит обход массива
-	 * полей документа и в каждом поле вызов этого метода. Т.е. присвоение значений
-	 * происходит в этом методе.
-	 * 
-	 * @see DataSource_Hybrid_Document::read_values()
-	 * @see DataSource_Hybrid_Document::read_files()
-	 * 
-	 * @param array $data
-	 * @param DataSource_Hybrid_Document $doc
-	 * @return \DataSource_Hybrid_Field
-	 */
-	public function set_document_value(array $data, DataSource_Hybrid_Document $document)
-	{
-		$document->set($this->name, Arr::get($data, $this->name));
-
-		return $this;
 	}
 	
 	/**
@@ -532,34 +543,13 @@ abstract class DataSource_Hybrid_Field {
 	
 	/**
 	 * Поле может быть обязательным
+	 * Используется в шаблоне создания и редактирования поля.
 	 * 
 	 * @return boolean
 	 */
 	public function is_required()
 	{
 		return (bool) $this->_is_required;
-	}
-
-	/**
-	 * Правила валидации значения поля документа.
-	 * При сохранении документа происходит валидация значений его полей. 
-	 * Каждое поле прогоняется в цикле и происходит вызов этого метода.
-	 * 
-	 * @see DataSource_Hybrid_Document::validate()
-	 * 
-	 * @param Validation $validation
-	 * @param DataSource_Hybrid_Document
-	 * @return \Validation
-	 */
-	public function document_validation_rules( Validation $validation, DataSource_Hybrid_Document $doc )
-	{
-		if($this->isreq === TRUE AND $this->is_required())
-		{
-			$validation->rule($this->name, 'not_empty');
-		}
-
-		return $validation
-				->label($this->name, $this->header);
 	}
 
 	/**
@@ -661,7 +651,8 @@ abstract class DataSource_Hybrid_Field {
 	 * EVENTS
 	 **************************************************************************/
 	/**
-	 * Событие вызываемое в момент присвоения значения полю
+	 * Событие вызываемое в момент присвоения значения полю до валидации
+	 * 
 	 * 
 	 * @param mixed $value
 	 * @param DataSource_Hybrid_Document $doc
@@ -669,28 +660,68 @@ abstract class DataSource_Hybrid_Field {
 	 */
 	public function onSetValue( $value, DataSource_Hybrid_Document $doc)
 	{
-		if( ! $doc->loaded() AND $this->default !== NULL )
+		if( ! $doc->loaded() AND ! empty($this->_props['default']) AND empty($value) )
 		{
 			return $this->default;
 		}
 		
 		return $value;
+	}	
+
+	/**
+	 * В момент присвоения полям документа значений происходит обход массива
+	 * полей документа и в каждом поле вызов этого метода. Т.е. присвоение значений
+	 * происходит в этом методе, присвоение происзодит до валидации данных.
+	 * 
+	 * @see DataSource_Hybrid_Document::read_values()
+	 * @see DataSource_Hybrid_Document::read_files()
+	 * 
+	 * @param array $data
+	 * @param DataSource_Hybrid_Document $doc
+	 * @return \DataSource_Hybrid_Field
+	 */
+	public function onReadDocumentValue(array $data, DataSource_Hybrid_Document $document)
+	{
+		$document->set($this->name, Arr::get($data, $this->name));
+
+		return $this;
+	}
+
+	/**
+	 * Правила валидации значения поля документа.
+	 * При сохранении документа происходит валидация значений его полей. 
+	 * Каждое поле прогоняется в цикле и происходит вызов этого метода.
+	 * 
+	 * @see DataSource_Hybrid_Document::validate()
+	 * 
+	 * @param Validation $validation
+	 * @param DataSource_Hybrid_Document
+	 * @return \Validation
+	 */
+	public function onValidateDocument( Validation $validation, DataSource_Hybrid_Document $doc )
+	{
+		if($this->isreq === TRUE AND $this->is_required())
+		{
+			$validation->rule($this->name, 'not_empty');
+		}
+
+		return $validation
+				->label($this->name, $this->header);
 	}
 	
 	/**
 	 * Событие вызываемое в момент создания документа, до сохранения данных в БД
+	 * после валидации
 	 * 
 	 * @see DataSource_Hybrid_Record::initialize_document()
 	 * 
 	 * @param DataSource_Hybrid_Document $doc
 	 */
-	public function onCreateDocument(DataSource_Hybrid_Document $doc) 
-	{
-		$doc->set($this->name, $this->default);
-	}
+	public function onCreateDocument(DataSource_Hybrid_Document $doc) {}
 	
 	/**
 	 * Событие вызываемое в момент обновления документа, до сохранения данных в БД
+	 * после валидации
 	 * 
 	 * @see DataSource_Hybrid_Record::document_changed()
 	 * 
