@@ -7,7 +7,7 @@ var cms = {
 	
 	// Error
 	error: function (msg, e) {
-		this.message(msg, 'error')
+		this.message(msg, 'error');
 		$.jGrowl(msg, {theme: 'alert alert-error'});
 	},
 		
@@ -734,10 +734,10 @@ var Api = {
 		uri = uri.replace('/' + ADMIN_DIR_NAME,'');
 		
 		if(uri.indexOf('-') == -1) uri = '-' + uri;
-		else if(uri.indexOf('-') > 0 && uri.indexOf('/') == -1)  uri = '/' + uri;
+		else if(uri.indexOf('-') > 0 && uri.indexOf('/') == -1)  uri = SITE_URL + '/' + uri;
 		
 		if(uri.indexOf('/api') == -1)
-			uri = '/api' + uri;
+			uri = SITE_URL + '/api' + uri;
 		
 		if(show_loader == 'undefined')
 			show_loader = true;
