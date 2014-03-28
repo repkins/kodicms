@@ -5,6 +5,24 @@ $(function() {
 })
 <?php endif; ?>
 var API_FORM_ACTION = '/datasource/hybrid-document.<?php if($doc->loaded()): ?>update<?php else: ?>create<?php endif; ?>'; 
+
+$(function() {
+	$('body').on('post:api:datasource:hybrid-document.create ', update_documents);
+	$('body').on('put:api:datasource:hybrid-document.create ', update_documents);
+});
+
+function update_documents(e, response) {
+	var target_field = cms.popup_target.data('target');
+	if( target_field && response.id) {
+		var current_val = $('#'+target_field).select2("val");
+		if(_.isArray(current_val))
+			current_val.push(response.id);
+		else
+			current_val = response.id;
+
+		$('#'+target_field).select2("val", current_val)
+	}
+}
 </script>
 
 <div class="outline">
@@ -32,9 +50,41 @@ var API_FORM_ACTION = '/datasource/hybrid-document.<?php if($doc->loaded()): ?>u
 					'doc' => $doc
 				)); ?>
 			</div>	
-		</div>		
+		</div>	
 	</div>
-		
+	<div class="spoiler-toggle-container widget-content-bg">
+		<div class="spoiler-toggle text-center" data-spoiler=".spoiler-meta">
+			<?php echo UI::icon( 'chevron-down spoiler-toggle-icon' ); ?> <span class="muted"><?php echo __('Metadata'); ?></span>
+		</div>
+		<div id="pageEditMetaMore" class="spoiler spoiler-meta">
+			<br />
+
+			<div class="control-group">
+				<label class="control-label"><?php echo __('Meta title'); ?></label>
+				<div class="controls">
+					<?php echo Form::input('meta_title', $doc->meta_title, array(
+						'class' => 'input-block-level'
+					)); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label"><?php echo __('Meta keywords'); ?></label>
+				<div class="controls">
+					<?php echo Form::input('meta_keywords', $doc->meta_keywords, array(
+						'class' => 'input-block-level'
+					)); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label"><?php echo __('Meta description'); ?></label>
+				<div class="controls">
+					<?php echo Form::textarea('meta_description', $doc->meta_description, array(
+						'class' => 'input-block-level'
+					)); ?>
+				</div>
+			</div>
+		</div>
+	</div>
 	<?php if($ds->template() !== NULL): ?>
 	<?php echo View_Front::factory($ds->template(), array(
 		'fields' => $fields,
