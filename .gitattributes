@@ -52,4 +52,6 @@
 *.jpg     -text diff
 *.png     -text diff
 *.phar    -text diff
+*.tff  binary
+*.otf  binary
 
