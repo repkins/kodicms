@@ -52,6 +52,8 @@
 *.jpg     -text diff
 *.png     -text diff
 *.phar    -text diff
+
+# The binary setting is an alias for -text -diff.
 *.tff  binary
 *.otf  binary
 
