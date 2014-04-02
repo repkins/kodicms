@@ -739,11 +739,19 @@ var Api = {
 	request: function(method, uri, data, callback, show_loader) {
 		uri = uri.replace('/' + ADMIN_DIR_NAME,'');
 		
-		if(uri.indexOf('-') == -1) uri = '-' + uri;
-		else if(uri.indexOf('-') > 0 && uri.indexOf('/') == -1)  uri = SITE_URL + '/' + uri;
+		if(uri.indexOf('-') == -1)
+		{
+			uri = '-' + uri;
+		}
+		else if(uri.indexOf('-') > 0 && uri.indexOf('/') == -1)
+		{
+			uri = SITE_URL + '/' + uri;
+		}
 		
 		if(uri.indexOf('/api') == -1)
-			uri = SITE_URL + '/api' + uri;
+		{
+			uri = SITE_URL + 'api' + uri;
+		}
 		
 		if(show_loader == 'undefined')
 			show_loader = true;
@@ -956,8 +964,11 @@ function strtr (str, from, to) {
 }
 
 var __ = function (str, values) {
+
     if (cms.translations[str] !== undefined)
-		var str = cms.translations[str];
+    {
+    	var str = cms.translations[str];
+    }
     return values == undefined ? str : strtr(str, values);
 };
 
