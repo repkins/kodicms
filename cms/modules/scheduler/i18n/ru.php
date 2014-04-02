@@ -35,4 +35,7 @@ return array(
 	
 	//============Permissions============//
 	'View scheduler' => 'Видеть раздел',
+		
+	/* Validation */
+	'Not true format.' => 'Не верный формат.',
 );
