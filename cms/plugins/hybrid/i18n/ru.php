@@ -105,5 +105,8 @@ return array(
 	'Current time' => 'Текущее время',
 	'Current date' => 'Текущая дата',
 	'Current datetime' => 'Текущая дата',
-	'One to one relation' => 'Связь один к одному'
+	'One to one relation' => 'Связь один к одному',
+		
+	/* Validation Messages */
+	'Field with the same key :value exists.' => 'Поле с таким ключом ":value" существует',
 );
