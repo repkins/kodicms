@@ -24,5 +24,9 @@
 				array('class' => 'popup fancybox.iframe btn')
 		); ?>
 		<?php endif; ?>
+		
+		<?php if(isset($field->hint)): ?>
+		<span class="help-block"><?php echo $field->hint; ?></span>
+		<?php endif; ?>
 	</div>
 </div>

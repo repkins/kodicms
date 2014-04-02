@@ -6,11 +6,14 @@
 		) ); ?>
 		
 		<?php if($field->custom_option): ?>
-		&nbsp
 		<?php echo Form::input( $field->name . '_custom', NULL, array(
-			'class' => 'input-auto', 'id' => $field->name . '_custom',
+			'id' => $field->name . '_custom',
 			'maxlength' => 50, 'placeholder' => __('Custom value')
 		) ); ?>
+		<?php endif; ?>
+		
+		<?php if(isset($field->hint)): ?>
+		<span class="help-block"><?php echo $field->hint; ?></span>
 		<?php endif; ?>
 	</div>
 </div>
