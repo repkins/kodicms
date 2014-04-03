@@ -177,7 +177,7 @@ RewriteCond% {REQUEST_FILENAME}!-D
 
 # Rewrite all other URLs to index.php / URL
 RewriteRule. * Index.php / $ 0 [PT] # Set environment
-`` `
+```
 
 # # Bug tracker
 
@@ -188,7 +188,7 @@ https://github.com/butschster/kodicms/issues
 
 
 # # Copyright and license
-`` `
+```
 Copyright 2012 Buchnev Pavel <butschster@gmail.com>.
 
 ---
@@ -208,4 +208,4 @@ along with KodiCMS. If not, see <http://www.gnu.org/licenses/>.
 
 KodiCMS has made an exception to the GNU General Public License for plugins.
 See exception.txt for details and the full text.
-`` `
+```
