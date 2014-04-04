@@ -1,6 +1,6 @@
 # [KodiCMS] (http://www.kodicms.ru/)
 
-# # [Channel on Youtube] (http://www.youtube.com/channel/UCgZ25N9C1F8uoTXZZK55mqQ)
+## [Channel on Youtube] (http://www.youtube.com/channel/UCgZ25N9C1F8uoTXZZK55mqQ)
 
 http://www.kodicms.ru/forum.html
 
@@ -13,7 +13,7 @@ which enables you to not spend a lot of time to develop templates for new
 sections.
 
 
-# # Key features .
+## Key features .
 
 * Is used as the nucleus [Kohana framework] (http://kohanaframework.org/)
 * Admin interface is based on [Twitter Bootstrap 2.3] (http://twitter.github.com/bootstrap/)
@@ -31,7 +31,7 @@ sections.
 * Easy installer
 * API
 
-# # DEMO / demo site
+## DEMO / demo site
 http://demo.kodicms.ru/
 
 > backend
@@ -41,18 +41,18 @@ http://demo.kodicms.ru/
 > Password: demodemo
 
 
-# # Forum / Forum
+## Forum / Forum
 
 http://www.kodicms.ru/forum.html
 
-# # Requirements
+## Requirements
 
 * Apache server with. Htaccess or NGINX
 * PHP 5.3.3 ( or newer )
 * MySQL ( and access to data management )
 
 
-# # Install / Installation
+## Install / Installation
 
 1. Create a clone of the repository or `https://github.com/butschster/kodicms.git`
 [ download zip file ] (https://github.com/butschster/kodicms/zipball/master)
@@ -82,7 +82,7 @@ with the latest version .
 Set your username and password to login .
 
 
-# # Installation via Cli ( Console )
+## Installation via Cli ( Console )
 
 > KodiCMS enables singles to install the console .
 > To install the module is used `Minion`
@@ -96,8 +96,8 @@ Set your username and password to login .
 > The full set can be viewed through the help `php index.php - task = install - help`
 
 
-# # # Sample configuration for Nginx
-`` `nginx
+### Sample configuration for Nginx
+```nginx
 server {
   listen 127.0.0.1:80;
   server_name example.com www.example.com;
@@ -146,10 +146,10 @@ server {
       deny all;
   }
 }
-`` `
+```
 
-# # # Example file . Htaccess for Apache
-`` `apache
+### Example file . Htaccess for Apache
+```apache
 # Set environment
 SetEnv KOHANA_ENV production
 # SetEnv KOHANA_ENV development
@@ -179,7 +179,7 @@ RewriteCond% {REQUEST_FILENAME}!-D
 RewriteRule. * Index.php / $ 0 [PT] # Set environment
 ```
 
-# # Bug tracker
+## Bug tracker
 
 If you have any problems while using CMS, inform them on our
 bug tracker .
@@ -187,7 +187,7 @@ bug tracker .
 https://github.com/butschster/kodicms/issues
 
 
-# # Copyright and license
+## Copyright and license
 ```
 Copyright 2012 Buchnev Pavel <butschster@gmail.com>.
 
