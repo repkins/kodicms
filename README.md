@@ -1,5 +1,7 @@
 # [KodiCMS] (http://www.kodicms.ru/)
 
+This is the English version forked from https://github.com/butschster/kodicms
+
 ## [Channel on Youtube] (http://www.youtube.com/channel/UCgZ25N9C1F8uoTXZZK55mqQ)
 
 http://www.kodicms.ru/forum.html
