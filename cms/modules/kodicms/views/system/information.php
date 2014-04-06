@@ -53,7 +53,7 @@
 			   'action' => 'phpinfo'
           )),
 	   'width'=>'100%',
-	   'heigth'=>'500px',
+	   'height'=>'500px',
 	   'id'=>'phpinfo',
 	   'style'=>'border: 0;'
 	 )); ?>>
