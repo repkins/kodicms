@@ -1,23 +1,26 @@
-// Skip errors when no access to console
-var console = console || {log:function () {}};
-
-// Main object
 var cms = {
 	models: {},
 	views: {},
 	collections: {},
 	routes: {},
+	popup_target: null,
 	
 	// Error
 	error: function (msg, e) {
-		this.message(msg, 'error')
-		$.jGrowl(msg, {theme: 'alert alert-error'});
+		this.message(msg, 'error');
 	},
 		
 	message: function(msg, type) {
 		if(!type) type = 'success';
 		
-		window.top.$.jGrowl(decodeURI(msg), {theme: 'alert alert-' + type});
+		var title = type.charAt(0).toUpperCase() + type.slice(1);
+		window.top.$.pnotify({
+			title: __(title),
+			text: msg,
+			sticker: false,
+			type: type,
+			history: false
+		});
 	},
 	error_field: function(name, message) {
 		name = name.indexOf('.') !== -1 ? '['+name.replace(/\./g, '][') + ']' : name;
@@ -32,7 +35,7 @@ var cms = {
 		var $tab_pane = input.parentsUntil('tab-pane');
 		if($tab_pane.length) {
 			$tab_id = $tab_pane.attr('id');
-			$tab_pane.parent().parent().find('.nav-tabs li a[href="#'+$tab_id+'"]').addClass('tab-error')
+			$tab_pane.parent().parent().find('.nav-tabs li a[href="#'+$tab_id+'"]').addClass('tab-error');
 		}
 	},
 	clear_error: function() {
@@ -41,18 +44,19 @@ var cms = {
 			.find('.error-message')
 			.remove();
 	
-		$('.nav-tabs li a').removeClass('tab-error')
+		$('.nav-tabs li a').removeClass('tab-error');
 	},
 	// Convert slug
 	convert_dict: {
 		'ą':'a', 'ä':'a', 'č':'c', 'ę':'e', 'ė':'e', 'i':'i', 'į':'i', 'š':'s', 'ū':'u', 'ų':'u', 'ü':'u', 'ž':'z', 'ö':'o',
-		// Russian + Ukrainian (Suurce: http://transliteration.ru/iso_for_url/)
 		'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'zh','з':'z','и':'i','й':'j','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'c','ч':'ch','ш':'sh','щ':'shh','ы':'y','э':'e','ю':'yu','я':'ya','ь':'','ъ':'','і':'i','ї':'yi','А':'A','Б':'B','В':'V','Г':'G','Д':'D','Е':'E','Ё':'YO','Ж':'ZH','З':'Z','И':'I','Й':'J','К':'K','Л':'L','М':'M','Н':'N','О':'O','П':'P','Р':'R','С':'S','Т':'T','У':'U','Ф':'F','Х':'H','Ц':'C','Ч':'CH','Ш':'SH','Щ':'SHH','Ы':'Y','Э':'E','Ю':'YU','Я':'YA','І':'I','Ї':'YI','Є':'E','Ь':'','Ъ':'',
-		// Lithuanian
 		'Ą':'A','Č':'C','Ę':'E','Ė':'E','Į':'I','Š':'S','Ū':'U','Ų':'U','Ž':'Z','ą':'a','č':'c','ę':'e','ė':'e','i':'i','į':'i','š':'s','ū':'u','ų':'u','ž':'z'
 	},
 	convertSlug: function (str, separator) {
-		if(!separator) var separator = '-';
+		var default_separator = '-';
+		if(!separator) {
+			separator = default_separator;
+		}
 		return str
 			.toString()
 			.toLowerCase()
@@ -84,8 +88,9 @@ var cms = {
 </div>');
 		},
 		show: function (speed) {
-			if(!speed)
-				speed = 500
+			if(!speed) {
+				speed = 500;
+			}
 			$('._loader_container').fadeTo(speed, 0.4);
 		},
 		hide: function () {
@@ -126,93 +131,67 @@ var cms = {
 				.animate({top:0}, 1000);
 		}
 	},
-	
-	// Filters
 	filters: {
-		// Filters array
 		filters: [],
 		switchedOn: {},
 		editors: {},
-		
-		// Add new filter
 		add: function (name, switchOn_handler, switchOff_handler, exec_handler) {
 			if (switchOn_handler == undefined || switchOff_handler == undefined) {
 				cms.error('System try to add filter without required callbacks.', name, switchOn_handler, switchOff_handler);
 				return;
 			}
-
 			this.filters.push([ name, switchOn_handler, switchOff_handler, exec_handler ]);
 		},
-		
-		// Switch On filter
 		switchOn: function (textarea_id, filter, params) {
-
-			jQuery('#' + textarea_id).css('display', 'block');
-
+			$('#' + textarea_id).css('display', 'block');
 			if (this.filters.length > 0) {
-				// Switch off previouse editor with textarea_id
-				this.switchOff(textarea_id);
-
+				var old_filter = this.get(textarea_id);
+				var new_filter = null;
+				
 				for (var i = 0; i < this.filters.length; i++) {
 					if (this.filters[i][0] == filter) {
-						try {
-							// Call handler that will switch on editor
-							this.editors[textarea_id] = this.filters[i][1](textarea_id, params);
-
-							// Add editor to switchedOn stack
-							this.switchedOn[textarea_id] = this.filters[i];
-							
-							$('#' + textarea_id).trigger('filter:switch:on', this.editors[textarea_id]);
-						}
-						catch (e) {
-							
-						}
-
+						new_filter = this.filters[i];
 						break;
 					}
 				}
+				if(old_filter !== new_filter) {
+					this.switchOff(textarea_id);
+				}
+				try {
+					this.switchedOn[textarea_id] = new_filter;
+					this.editors[textarea_id] = new_filter[1](textarea_id, params);
+					$('#' + textarea_id).trigger('filter:switch:on', this.editors[textarea_id]);
+				}
+				catch (e) {}
 			}
 		},
-		
-		// Switch Off filter
 		switchOff: function (textarea_id) {
 			var filter = this.get(textarea_id);
-			
 			try {
 				if ( filter && typeof(filter[2]) == 'function' ) {
-					// Call handler that will switch off editor and showed up simple textarea
 					filter[2](this.editors[textarea_id], textarea_id);
 				}
-				
 				this.switchedOn[textarea_id] = null;
 				$('#' + textarea_id).trigger('filter:switch:off');
 			}
-			catch (e) {
-				//cms.error('Errors with filter switch off!', e);
-			}
+			catch (e) {}
 		},
-				
 		get: function(textarea_id) {
 			for (var key in this.switchedOn) {
-				// if textarea_id param is set we search only one editor and switch off it
 				if ( key == textarea_id )
 					return this.switchedOn[key];
 			}
-
 			return null;
-		},
-				
+		},	
 		exec: function(textarea_id, command, data) {
 			var filter = this.get(textarea_id);
 			if( filter && typeof(filter[3]) == 'function' )
 				return filter[3](this.editors[textarea_id], command, textarea_id, data);
-			
 			return false;
 		}
 	},
 	filemanager: {
 		open: function(object, type) {
-
 			return $.fancybox.open({
 				href : BASE_URL + '/elfinder/',
 				type: 'iframe'
@@ -220,7 +199,7 @@ var cms = {
 				autoSize: false,
 				width: 1000,
 				afterLoad: function() {
-					this.content[0].contentWindow.elfinderInit(object, type)
+					this.content[0].contentWindow.elfinderInit(object, type);
 				}
 			});
 		}
@@ -267,7 +246,7 @@ cms.navigation = {
 			this.init();
 		}
 	}
-}
+};
 
 cms.ui = {
     callbacks:[],
@@ -295,7 +274,6 @@ cms.ui = {
     }
 };
 
-// Pages init
 cms.init = {
 	callbacks:[],
 	add:function (rout, callback) {
@@ -325,7 +303,50 @@ cms.init = {
 	}
 };
 
-cms.ui.add('btn-confirm', function() {
+cms.ui.add('flags', function() {
+	$('body').on('click', '.flags .label', function(e) {
+		var $src = $(this).parent().data('target');
+		if( ! $src ) $src = $(this).parent().prevAll(':input');
+		
+		var $container = $(this).parent();
+		var $append = $container.data('append') == true;
+		var $array = $container.data('array') == true;
+		var $value = $(this).data('value');
+		
+		if($array) $value = $value.split(',');
+		
+		$('.label', $container).removeClass('label-success');
+		$(this).addClass('label-success');
+
+		if($append) {
+			var $old_value = '';
+			if($src.is(':input')) {
+				$old_value += $src.val();
+				$value = $old_value.length > 0 ? $old_value + ', ' + $value: $value;
+				$src.val($value);
+			}
+			else {
+				$old_value += $src.val();
+				$value = $old_value.length > 0 ? $old_value + ', ' : $value;
+				$src.text($value);
+			}
+		} else {
+			if($src.hasClass('select2-offscreen'))
+			{
+				$src.select2("val", $value);
+			}
+			else if($src.is(':input'))
+			{
+				$src.val($value);
+			}
+			else {
+				$src.text($value);
+			}
+		}
+		
+		e.preventDefault();
+	});
+}).add('btn-confirm', function() {
 	$('body').on('click', '.btn-confirm', function () {
 		if (confirm(__('Are you sure?')))
 			return true;
@@ -372,7 +393,7 @@ cms.ui.add('btn-confirm', function() {
 		});
 		$('.tabbable .nav li a').on('click', function() {
 			window.location.hash = $(this).attr('href');
-		})
+		});
 
 		if(window.location.hash.length > 0 && $('.tabbable .nav li a[href='+window.location.hash+']').length > 0) {
 			$('.tabbable .nav li a[href='+window.location.hash+']').parent().addClass('active');
@@ -413,7 +434,7 @@ cms.ui.add('btn-confirm', function() {
 	var bw = brand.outerWidth(true);
 
 	$(window).resize(function() {
-		calcNav()
+		calcNav();
 	});
 	
 	function calcNav() {
@@ -486,6 +507,14 @@ cms.ui.add('btn-confirm', function() {
 		lang: LOCALE,
 		dayOfWeekStart:1
 	});
+	
+	$('.timepicker').datetimepicker({
+		timepicker: true,
+		datepicker: false,
+		format: 'H:i:s',
+		lang: LOCALE,
+		dayOfWeekStart:1
+	});
 }).add('slug', function() {
 	// Slug & metadata
     var slugs = {};
@@ -544,7 +573,7 @@ cms.ui.add('btn-confirm', function() {
 			
 			$(file.previewElement).fadeOut(500, function() {
 				self.removeFile(file);
-			})
+			});
 		},
 		error: function(file, message) {
 			cms.message(message, 'error');
@@ -575,7 +604,9 @@ cms.ui.add('btn-confirm', function() {
 		closeEffect	: 'none',
 		beforeLoad: function() {
 			this.href = updateQueryStringParameter(this.href, 'type', 'iframe');
-			this.title = $(this.element).html();
+			this.title = this.element.html();
+			
+			cms.popup_target = this.element;
 		},
 		helpers : {
     		title : {
@@ -587,24 +618,30 @@ cms.ui.add('btn-confirm', function() {
 	var method = ACTION == 'add' ? 'put' : 'post';
 	var $form_actions = $('.iframe .form-actions');
 	
-	$('.btn-save', $form_actions).on('click', function() {
+	var $action = CONTROLLER;
+
+	if((typeof API_FORM_ACTION != 'undefined'))
+		$action = API_FORM_ACTION;
+
+	$('.btn-save', $form_actions).on('click', function(e) {
 		var $data = $('form').serializeObject();
-		Api[method](CONTROLLER, $data);
-		return false;
+		Api[method]($action, $data);
+		
+		e.preventDefault();
 	});
 
-	$('.btn-save-close', $form_actions).on('click', function() {
+	$('.btn-save-close', $form_actions).on('click', function(e) {
 		var $data = $('form').serializeObject();
-		Api[method](CONTROLLER, $data, function(response) {
+		Api[method]($action, $data, function(response) {
 			window.top.$.fancybox.close();
 		});
-		return false;
+		e.preventDefault();
 	});
 
-	$('.btn-close', $form_actions).on('click', function() {
+	$('.btn-close', $form_actions).on('click', function(e) {
 		window.top.$.fancybox.close();
-		return false;
-	})
+		e.preventDefault();
+	});
 }).add('select2', function() {
 	$('select').not('.no-script').select2();
 	$('.tags').select2({
@@ -659,10 +696,10 @@ cms.ui.add('btn-confirm', function() {
 		});
 
 		return false;
-	})
+	});
 }).add('filemanager', function() {
 	var input = $('input.input-filemanager:not(.init)')
-		.addClass('init')
+		.addClass('init');
 	
 	$('<button class="btn" type="button"><i class="icon-folder-open"></i></button>')
 		.insertAfter(input)
@@ -707,11 +744,21 @@ var Api = {
 	},
 
 	request: function(method, uri, data, callback, show_loader) {
-		if(uri.indexOf('-') == -1) uri = '-' + uri;
-		else if(uri.indexOf('-') > 0 && uri.indexOf('/') == -1)  uri = '/' + uri;
+		uri = uri.replace('/' + ADMIN_DIR_NAME,'');
+		
+		if(uri.indexOf('-') == -1)
+		{
+			uri = '-' + uri;
+		}
+		else if(uri.indexOf('-') > 0 && uri.indexOf('/') == -1)
+		{
+			uri = '/' + uri;
+		}
 		
 		if(uri.indexOf('/api') == -1)
-			uri = '/api' + uri;
+		{
+			uri = SITE_URL + 'api' + uri;
+		}
 		
 		if(show_loader == 'undefined')
 			show_loader = true;
@@ -728,7 +775,6 @@ var Api = {
 			url: uri,
 			data: data,
 			dataType: 'json',
-//			cache: false,
 			beforeSend: function(){
 				if(show_loader) cms.loader.show();
 			},
@@ -743,7 +789,7 @@ var Api = {
 					cms.clear_error();
 
 					if(response.message instanceof Object) {
-						parse_messages(response.message)
+						parse_messages(response.message);
 					} else {
 						cms.message(response.message);
 					}
@@ -756,7 +802,7 @@ var Api = {
 				}
 				this._response = response;
 				
-				var $event = method + uri.replace(/\//g, ':');
+				var $event = method + uri.replace(SITE_URL, ":").replace(/\//g, ':');
 				window.top.$('body').trigger($event.toLowerCase(), [this._response.response]);
 
 				if(typeof(callback) == 'function') callback(this._response);
@@ -782,14 +828,11 @@ var Api = {
 	response: function() {
 		return this._response;
 	}
-}
+};
 
 // Run
-jQuery(document).ready(function() {
-    // messages
+$(document).ready(function() {
     cms.messages.init();
-
-    // init
     cms.init.run();
     cms.ui.init();
 	
@@ -798,8 +841,6 @@ jQuery(document).ready(function() {
 });
 
 (function($) {
-
-	// Checkbox status
 	$.fn.check = function () {
 		return this.each(function () {
 			this.checked = true;
@@ -858,11 +899,10 @@ jQuery(document).ready(function() {
             b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
         }
         return b;
-    })(window.location.search.substr(1).split('&'))
+    })(window.location.search.substr(1).split('&'));
 
 })(jQuery);
 
-/*Browser detection patch*/
 jQuery.browser = {};
 jQuery.browser.mozilla = /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit/.test(navigator.userAgent.toLowerCase());
 jQuery.browser.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
@@ -931,11 +971,11 @@ function strtr (str, from, to) {
 }
 
 var __ = function (str, values) {
-    if (cms.translations[str] !== undefined)
-	{
-		var str = cms.translations[str];
-	}
 
+    if (cms.translations[str] !== undefined)
+    {
+    	var str = cms.translations[str];
+    }
     return values == undefined ? str : strtr(str, values);
 };
 

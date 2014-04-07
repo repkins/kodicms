@@ -33,7 +33,9 @@ class Controller_Hybrid_Document extends Controller_System_Datasource
 	}
 
 	public function action_view()
-	{	
+	{
+		Assets::package('backbone');
+	
 		$id = (int) $this->request->query('id');
 		$action = $this->request->action();
 
@@ -60,7 +62,12 @@ class Controller_Hybrid_Document extends Controller_System_Datasource
 		WYSIWYG::load_filters();
 		
 		$post_data = Session::instance()->get_once('post_data');
-		$doc->read_values($post_data)->fetch_values();
+		if( ! empty($post_data))
+		{
+			unset($post_data['id']);
+			$doc->read_values($post_data);
+		}
+		$doc->convert_values();
 
 		$this->breadcrumbs
 			->add($this->section()->name, Route::url('datasources', array(
@@ -68,17 +75,19 @@ class Controller_Hybrid_Document extends Controller_System_Datasource
 				'controller' => 'data'
 			)) . URL::query(array('ds_id' => $this->section()->id()), FALSE));
 		
-		if($action == 'create')
+		if( ! $doc->loaded() )
 		{
-			$this->breadcrumbs->add(__('New document'));
+			$this->template->title = __('New document');
 		}
 		else
 		{
-			$this->breadcrumbs->add($doc->header);
+			$this->template->title = $doc->header;
 		}
 		
-		$this->template->content = View::factory('datasource/data/hybrid/document/edit', array(
-			'record' => $this->section()->get_record(),
+		$this->breadcrumbs->add($this->template->title);
+		
+		$this->template->content = View::factory('datasource/hybrid/document/edit')->set( array(
+			'fields' => $this->section()->record()->fields(),
 			'ds' => $this->section(),
 			'doc' => $doc,
 			'action' => $this->request->action()
@@ -89,16 +98,20 @@ class Controller_Hybrid_Document extends Controller_System_Datasource
 	{
 		Session::instance()->set('post_data', $this->request->post());
 
-		if(($errors = $doc->validate($this->request->post() + $_FILES)) !== TRUE)
+		try
 		{
-			Messages::errors($errors);
+			$doc
+				->read_values($this->request->post())
+				->read_files($_FILES)
+				->validate();
+		} 
+		catch (Validation_Exception $e)
+		{
+			Messages::errors($e->errors('validation'));
 			$this->go_back();
 		}
 
-		$doc->read_values($this->request->post());
-		$doc->read_files($_FILES);
-		
-		if( !empty($doc->id) )
+		if( $doc->loaded() )
 		{
 			$ds->update_document($doc);
 		}
