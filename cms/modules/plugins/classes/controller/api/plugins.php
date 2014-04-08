@@ -58,6 +58,7 @@ class Controller_API_Plugins extends Controller_System_API
 			'id' => $plugin->id(),
 			'title' => $plugin->title(),
 			'description' => $plugin->description(),
+		  'version' => $plugin->version(),
 			'author' => $plugin->author(),
 			'installed' => $plugin->is_installed(),
 			'settings' => $plugin->has_settings_page(),
