@@ -123,8 +123,6 @@ class Controller_Categories extends Controller_System_Backend {
 		
 		$this->set_title($category->name);
 		
-		echo debug::Vars($category->descendants()->find_all()->as_array('id', 'lvl'));
-
 		$this->template->content = View::factory( 'categories/edit', array(
 			'action' => 'edit',
 			'category' => $category,
@@ -140,6 +138,15 @@ class Controller_Categories extends Controller_System_Backend {
 
 		try
 		{
+			$pid = (int) Arr::get($category_data, 'pid');
+			if($pid > 0 AND $category->pid != Arr::get($category_data, 'pid'))
+			{
+				$target = ORM::factory('category', $pid);
+				
+				if($target->loaded())
+					$category->move_to_last_child($target);
+			}
+			
 			$category = $category->values($category_data);
 			$category->update_path();
 			$category->update();

@@ -7,7 +7,7 @@
 			'icon' => UI::icon('plus')
 		)); ?>
 		<?php endif; ?>
-
+		<?php /*
 		<?php if ( Acl::check( 'categories.sort') AND $categories->count() > 0): ?>
 		<?php echo UI::button(__('Reorder'), array(
 			'id' => 'categoriesReorderBtn', 
@@ -15,6 +15,7 @@
 			'icon' => UI::icon('move icon-white')
 		)); ?>
 		<?php endif; ?>
+		 */ ?>
 
 		<span class="clearfix"></span>
 	</div>
