@@ -13,12 +13,22 @@
 				<div id="pageEdit" class="box span12">
 					<div class="widget ">
 						<div class="widget-title">
-
 							<div class="control-group">
 								<?php echo $category->label('name', array('class' => 'control-label title')); ?>
 								<div class="controls">
 									<?php echo $category->field('name', array(
 										'class' => 'input-title span12 slug-generator',
+										'prefix' => 'category'
+									)); ?>
+								</div>
+							</div>
+							
+							<hr />
+							
+							<div class="control-group">
+								<?php echo $category->label('pid', array('class' => 'control-label')); ?>
+								<div class="controls">
+									<?php echo $category->field('pid', array(
 										'prefix' => 'category'
 									)); ?>
 								</div>
