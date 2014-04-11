@@ -5,7 +5,7 @@ return array(
 		'name' => 'System',
 		'children' => array(
 			array(
-				'name' => __('Logs'),
+				'name' => 'Logs',
 				'icon' => 'time',
 				'url' => Route::get('backend')->uri(array('controller' => 'logs')),
 				'permissions' => 'logs.index',

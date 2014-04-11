@@ -32,8 +32,9 @@ return array(
 	'Subscribe to email notifications'
 		=> 'Получать уведомления по почте',
 	'Last login' => 'Последний вход',
-	
+	':user profile' => 'Профиль пользователя :user',
 	'Section :section' => 'Раздел :section',
+	'Edit role' => 'Редактирование роли',
 	
 	//============Profile============//
 	'Profile' => 'Профиль',

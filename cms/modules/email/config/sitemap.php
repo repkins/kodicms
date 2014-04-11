@@ -2,20 +2,20 @@
 
 return array(
 	array(
-		'name' => __('System'),
+		'name' => 'System',
 		'children' => array(
 			array(
-				'name' => __('Email'),
+				'name' => 'Email',
 				'icon' => 'envelope',
 				'children' => array(
 					array(
-						'name' => __('Email templates'),
+						'name' => 'Email templates',
 						'url' => Route::get('email_controllers')->uri(array('controller' => 'templates')),
 						'permissions' => 'email.templates.index',
 						'priority' => 400,
 					),
 					array(
-						'name' => __('Email types'),
+						'name' => 'Email types',
 						'url' => Route::get('email_controllers')->uri(array('controller' => 'types')),
 						'permissions' => 'email.types.index',
 						'priority' => 410,

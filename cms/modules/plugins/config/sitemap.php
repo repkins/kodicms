@@ -5,8 +5,8 @@ return array(
 		'name' => 'System',
 		'children' => array(
 			array(
-			'name' => __('Plugins'), 
-			'url' => Route::get('backend')->uri(array('controller' => 'plugins', 'action' => 'index')),
+			'name' => 'Plugins', 
+			'url' => Route::get('backend')->uri(array('controller' => 'plugins')),
 			'priority' => 999,
 			'divider' => TRUE,
 			'icon' => 'puzzle-piece',

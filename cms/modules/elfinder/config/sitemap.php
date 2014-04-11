@@ -5,7 +5,7 @@ return array(
 		'name' => 'Content',
 		'children' => array(
 			array(
-				'name' => __('File manager'), 
+				'name' => 'File manager', 
 				'url' => Route::get('backend')->uri(array('controller' => 'filemanager')),
 				'priority' => 999,
 				'permissions' => 'filemanager.index',

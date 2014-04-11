@@ -41,11 +41,13 @@ return array(
 	'Next' => 'Далее',
 	'Previous' => 'Назад',
 	'Key' => 'Ключ',
-	
+	'Never' => 'Никогда',
+	'Or' => 'Или',
 	'Failed to validate array' => 'Ошибка',
 	'KodiCMS succefully installed!' => 'KodiCMS успешно установлена',
-	
+	'--- none ---' => '--- не указан ---',
 	'Thank you for using :site' => 'Спасибо, за использование :site',
+	'Powered by :framework v:version :codename' => 'Работает на :framework v:version :codename',
 	
 	/*********************** Layouts *********************************/
 	'Add layout' => 'Добавить шаблон',
@@ -91,6 +93,7 @@ return array(
 	'No' => 'Нет',
 	'Enabled' => 'Включен',
 	'Disabled' => 'Выключен',
+	'Debug' => 'Разработка',
 	'Find similar pages' => 'Похожая страница',
 	'This text will be present at backend and can be used in frontend pages.' 
 		=> 'Этот текст будет использоваться в Backend, а также использоваться во Frontend',
@@ -110,6 +113,7 @@ return array(
 	'Revision templates' => 'Ревизия шаблонов',
 	'After save layouts or snippets create revision copy in logs directory'
 		=> 'После сохранения сниппетов или шаблонов создавать делать ревизию в директории logs',
+	'Only for filter in pages, <i>not</i> in snippets.' => 'Только для фильтров в страницах, не в сниппетах',
 	
 	/*********************** Autorization *******************/
 	'Username' => 'Логин',
@@ -129,9 +133,11 @@ return array(
 	'Password: :password' => 'Пароль: :password',
     
 	'Message sended from' => 'Сообщение отправлено с сайта',
-	'Your new password from :site_name' => 'Ваш новый пароль от сайта :site_name',
-  'Sorry, an error has occured, Requested page not found!' => 'Извините, произошла ошибка. Запрошенной страницы не существует!',
-	'At least :num characters. Must be unique.' => 'По крайней мере :num символов. Должно быть уникальным.',
+	'Your new password from :site_name' 
+		=> 'Ваш новый пароль от сайта :site_name',
+
+    'Sorry, an error has occured, Requested page not found!' 
+		=> 'Извините, произошла ошибка. Запрошенной страницы не существует!',
 	
 	/*********************** Languages *******************/
 	'Russian' => 'Русский',

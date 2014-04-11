@@ -5,7 +5,7 @@ return array(
 		'name' => 'System',
 		'children' => array(
 			array(
-				'name' => __('Users'), 
+				'name' => 'Users', 
 				'url' => Route::get('backend')->uri(array('controller' => 'users')),
 				'permissions' => 'users.index',
 				'priority' => 200,
@@ -13,7 +13,7 @@ return array(
 				'divider' => TRUE,
 			),
 			array(
-				'name' => __('Roles'), 
+				'name' => 'Roles', 
 				'url' => Route::get('backend')->uri(array('controller' => 'roles')),
 				'permissions' => 'roles.index',
 				'priority' => 300,
