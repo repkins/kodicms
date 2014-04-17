@@ -89,7 +89,7 @@ else if(IS_INSTALLED)
 /**
  * Set the default language
  */
-I18n::lang('en-us');
+I18n::lang('en_US');
 
 if (isset($_SERVER['SERVER_PROTOCOL']))
 {
@@ -118,9 +118,9 @@ Kohana::init( array(
 	'errors'			=> TRUE
 ) );
 
-define('CMS_NAME',			'Nerret Technology');
-define('CMS_SITE',			'http://www.nerret-tech.com');
-define('CMS_VERSION',		'NT-9.16.52');
+define('CMS_NAME',			'KodiCMS');
+define('CMS_SITE',			'http://www.kodicms.ru');
+define('CMS_VERSION',		'10.00.00');
 
 define('PUBLICPATH',		DOCROOT . 'public' . DIRECTORY_SEPARATOR);
 define('TMPPATH',			PUBLICPATH . 'temp' . DIRECTORY_SEPARATOR);
