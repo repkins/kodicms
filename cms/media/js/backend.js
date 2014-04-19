@@ -761,7 +761,7 @@ var Api = {
 		
 		if(uri.indexOf('/api') == -1)
 		{
-			uri = SITE_URL + 'api' + uri;
+			uri = 'api' + uri;
 		}
 		
 		if(show_loader == 'undefined')
@@ -776,7 +776,7 @@ var Api = {
 
 		$.ajax({
 			type: method,
-			url: uri,
+			url: SITE_URL + uri,
 			data: data,
 			dataType: 'json',
 			beforeSend: function(){
