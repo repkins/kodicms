@@ -12,7 +12,7 @@ class Controller_Plugins extends Controller_System_Backend
 		parent::before();
 		
 		$this->breadcrumbs
-			->add(__('Plugins'), Route::url('backend', array('controller' => 'plugins')));
+			->add(__('Plugins'), Route::get('backend')->uri(array('controller' => 'plugins')));
 	}
 	
 	public function action_index()
