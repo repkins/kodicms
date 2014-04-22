@@ -117,3 +117,4 @@ cms.init.add('widgets_template', function() {
 		$('#highlight_content').trigger('filter:switch:on');
 	});
 });
+

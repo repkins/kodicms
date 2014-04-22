@@ -76,7 +76,9 @@ class KodiCMS_Controller_Users extends Controller_System_Backend {
 
 		try 
 		{
-			$user = $user->values($data)->create();
+			$user = $user->create_user($data, array(
+				'password', 'username', 'email', 
+			));
 			$user->update_related_ids('roles', explode(',', $permissions));
 
 			$profile['user_id'] = $user->id;
@@ -156,7 +158,7 @@ class KodiCMS_Controller_Users extends Controller_System_Backend {
 
 		$this->template->title = __('Edit user');
 		$this->breadcrumbs
-			->add(__(':user profile', array(':user' => $user->username)), Route::get( 'backend')->uri(array(
+			->add(__(':user profile', array(':user' => $user->username)), Route::get('backend')->uri(array(
 				'controller' => 'users',
 				'action' => 'profile',
 				'id' => $user->id

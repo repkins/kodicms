@@ -70,7 +70,7 @@ class KodiCMS_Controller_API_Page_Field extends Controller_System_Api {
 		
 		ORM::factory('page_field', $field_id)->delete();
 		
-		$this->json['message'] = __('Page field deleted');
+		$this->message('Page field deleted');
 	}
 	
 	/**
@@ -92,5 +92,4 @@ class KodiCMS_Controller_API_Page_Field extends Controller_System_Api {
 			$this->json['message'] = $v->errors('validation');
 		}		
 	}
-	
 }
