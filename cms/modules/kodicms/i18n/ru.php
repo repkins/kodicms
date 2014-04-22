@@ -10,7 +10,7 @@ return array(
 	'Design' => 'Дизайн',
 	'Cancel' => 'Отмена',
 	'Description' => 'Описание',
-	'Direction' => 'Расположение',
+	'Location' => 'Расположение',
 	'Hidden' => 'Скрыта',
 	'Information' => 'Информация',
 	'Actions' => 'Действия',

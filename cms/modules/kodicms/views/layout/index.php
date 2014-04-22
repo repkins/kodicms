@@ -32,7 +32,7 @@
 					<th><?php echo __('Layout name'); ?></th>
 					<th><?php echo __('Modified'); ?></th>
 					<th><?php echo __('Size'); ?></th>
-					<th><?php echo __('Direction'); ?></th>
+					<th><?php echo __('Location'); ?></th>
 					<th><?php echo __('Actions'); ?></th>
 				</tr>
 			</thead>
