@@ -4,7 +4,7 @@
 <div class="widget">
 	<?php echo Form::open(Request::current()->uri()); ?>
 	<div class="widget-content ">
-		<h3>&larr; <?php echo HTML::anchor(Route::url('backend', array(
+		<h3>&larr; <?php echo HTML::anchor(Route::get('backend')->uri(array(
 				'controller' => 'widgets', 
 				'action' => 'edit',
 				'id' => $widget->id)), $widget->name); ?></h3>
