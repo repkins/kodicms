@@ -2,16 +2,13 @@
 	var ROLE_ID = <?php echo (int) $role->id; ?>;
 </script>
 	
-<?php echo Form::open(Route::get( 'backend')->uri(array('controller' => 'roles', 'action' => $action, 'id' => $role->id)), array(
+<?php echo Form::open(Route::get('backend')->uri(array('controller' => 'roles', 'action' => $action, 'id' => $role->id)), array(
 	'class' => Bootstrap_Form::HORIZONTAL
 )); ?>
 
 <?php echo Form::hidden('token', Security::token()); ?>
 <div class="widget">
-	<div class="tabbable tabs-left">
-		<ul class="nav nav-tabs"></ul>
-		<div class="tab-content"></div>
-	</div>
+	<?php echo View::factory('helper/tabbable'); ?>
 	<div class="widget-header">
 		<h3><?php echo __('General information'); ?></h3>
 	</div>

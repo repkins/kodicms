@@ -1,4 +1,4 @@
-<?php echo Form::open(Route::get('backend')->uri(array(
+<?php echo Form::open(Route::url('backend', array(
 	'controller' => 'layout', 
 	'action' => $action, 
 	'id' => $layout->name)), array(
@@ -29,7 +29,8 @@
 			<?php if( $layout->is_writable() OR ! $layout->is_exists()): ?>
 			<?php echo UI::button(__('File manager'), array(
 				'class' => 'btn btn-filemanager', 'data-el' => 'textarea_content',
-				'icon' => UI::icon( 'folder-open')
+				'icon' => UI::icon( 'folder-open'),
+				'hotkeys' => 'ctrl+m'
 			)); ?>
 			<?php endif; ?>
 		</div>

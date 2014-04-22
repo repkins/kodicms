@@ -278,21 +278,20 @@ cms.init = {
 	callbacks:[],
 	add:function (rout, callback) {
 		if (typeof(callback) != 'function')
-			return false;
+			return this;
 
 		if (typeof(rout) == 'object') {
 			for (var i = 0; i < rout.length; i++)
 				cms.init.callbacks.push([rout[i], callback]);
-		}
-		else if (typeof(rout) == 'string')
+		} else if (typeof(rout) == 'string') {
 			cms.init.callbacks.push([rout, callback]);
-		else
-			return false;
+		}
 		
 		cms.init.callbacks.reverse();
+		return this;
 	},
 	run:function () {
-		var body_id = $('body:first').attr('id').toString();
+		var body_id = $('body:first').attr('id');
 
 		for (var i = 0; i < cms.init.callbacks.length; i++) {
 			var rout_to_id = 'body_' + cms.init.callbacks[i][0];
@@ -374,10 +373,8 @@ cms.ui.add('flags', function() {
 					text = '<i class="icon-'+$(this).data('icon')+'"></i> ' + text;
 				}
 				
-				$('<li><a href="#tab' + i + '" data-toggle="tab">' + text + '</a></li>')
+				$('<li class="tab-item"><a href="#tab' + i + '" data-toggle="tab">' + text + '</a></li>')
 					.appendTo($('.tabbable .nav'));
-			
-				
 				
 				if($(this).hasClass('widget-header-onlytab'))
 					$('<div class="tab-pane" id="tab' + i + '">' + $(this).next().html() + '</div>').appendTo($('.tabbable .tab-content'));
@@ -422,8 +419,6 @@ cms.ui.add('flags', function() {
 		cms.content_height = null;
 		cms.calculateContentHeight();
 	});
-}).add('slimmScroll', function() {
-	$('.widget-scroll').slimScroll();
 }).add('navbar', function() {
 	
 	var user_nav = $('#user_nav');
@@ -835,16 +830,14 @@ var Api = {
 };
 
 // Run
-$(document).ready(function() {
+$(function() {
     cms.messages.init();
     cms.init.run();
     cms.ui.init();
 	
 	parse_messages(MESSAGE_ERRORS, 'error');
 	parse_messages(MESSAGE_SUCCESS);
-});
 
-(function($) {
 	$.fn.check = function () {
 		return this.each(function () {
 			this.checked = true;
@@ -893,19 +886,51 @@ $(document).ready(function() {
 		return o;
 	};
 
-    $.QueryString = (function(a) {
-        if (a == "") return {};
-        var b = {};
-        for (var i = 0; i < a.length; ++i)
-        {
-            var p=a[i].split('=');
-            if (p.length != 2) continue;
-            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
-        }
-        return b;
-    })(window.location.search.substr(1).split('&'));
+	$('*[hotkeys]').each(function() {
+		var $self = $(this),
+			$hotkeys = $self.attr('hotkeys'),
+			$callback = function(e){ e.preventDefault(); };
+			
+		if($self.is(':submit') || $self.hasClass('popup')) {
+			$callback = function( e ) {
+				$self.trigger('click');
+				e.preventDefault();
+			} 
+		} else if($self.attr('href')) {
 
-})(jQuery);
+			$callback = function( e ) {
+				if($self.hasClass('btn-confirm')) {
+					if ( ! confirm(__('Are you sure?')))
+						return false;
+				}
+				window.location = $self.attr('href');
+				e.preventDefault();
+			} 
+		} else if($self.hasClass('spoiler-toggle')) {
+			$callback = function( e ) {
+				$self.trigger('click');
+				e.preventDefault();
+			} 
+		} else if($self.hasClass('nav-tabs')) {
+			$callback = function( e ) {
+				var $current_li = $self.find('li.active'),
+					$next_li = $current_li.next();
+				
+				if($next_li.hasClass('nav-section')) {
+					$next_li = $next_li.next();
+				}
+				if($current_li.is(':last-child')) {
+					$next_li = $self.parent().find('li:first-child');
+				}
+				
+				$next_li.find('a').trigger('click');
+				e.preventDefault();
+			} 
+		}
+		
+		$(document).on('keydown', null, $hotkeys, $callback);
+	});
+});
 
 jQuery.browser = {};
 jQuery.browser.mozilla = /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit/.test(navigator.userAgent.toLowerCase());
@@ -1004,11 +1029,4 @@ var __ = function (str, values) {
     return values == undefined ? str : strtr(str, values);
 };
 
-/*! Copyright (c) 2011 Piotr Rochala (http://rocha.la)
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
- * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
- *
- * Version: 1.3.2
- *
- */
-(function(e){jQuery.fn.extend({slimScroll:function(n){var r={width:"auto",height:"250px",size:"7px",color:"#000",position:"right",distance:"1px",start:"top",opacity:.4,alwaysVisible:false,disableFadeOut:false,railVisible:false,railColor:"#333",railOpacity:.2,railDraggable:true,railClass:"slimScrollRail",barClass:"slimScrollBar",wrapperClass:"slimScrollDiv",allowPageScroll:false,wheelStep:20,touchScrollStep:200,borderRadius:"7px",railBorderRadius:"7px"};var i=e.extend(r,n);this.each(function(){function x(t){if(!r){return}var t=t||window.event;var n=0;if(t.wheelDelta){n=-t.wheelDelta/120}if(t.detail){n=t.detail/3}var s=t.target||t.srcTarget||t.srcElement;if(e(s).closest("."+i.wrapperClass).is(m.parent())){T(n,true)}if(t.preventDefault&&!v){t.preventDefault()}if(!v){t.returnValue=false}}function T(e,t,n){v=false;var r=e;var s=m.outerHeight()-E.outerHeight();if(t){r=parseInt(E.css("top"))+e*parseInt(i.wheelStep)/100*E.outerHeight();r=Math.min(Math.max(r,0),s);r=e>0?Math.ceil(r):Math.floor(r);E.css({top:r+"px"})}c=parseInt(E.css("top"))/(m.outerHeight()-E.outerHeight());r=c*(m[0].scrollHeight-m.outerHeight());if(n){r=e;var u=r/m[0].scrollHeight*m.outerHeight();u=Math.min(Math.max(u,0),s);E.css({top:u+"px"})}m.scrollTop(r);m.trigger("slimscrolling",~~r);k();L()}function N(){if(window.addEventListener){this.addEventListener("DOMMouseScroll",x,false);this.addEventListener("mousewheel",x,false)}else{document.attachEvent("onmousewheel",x)}}function C(){l=Math.max(m.outerHeight()/m[0].scrollHeight*m.outerHeight(),d);E.css({height:l+"px"});var e=l==m.outerHeight()?"none":"block";E.css({display:e})}function k(){C();clearTimeout(a);if(c==~~c){v=i.allowPageScroll;if(h!=c){var e=~~c==0?"top":"bottom";m.trigger("slimscroll",e)}}else{v=false}h=c;if(l>=m.outerHeight()){v=true;return}E.stop(true,true).fadeIn("fast");if(i.railVisible){w.stop(true,true).fadeIn("fast")}}function L(){if(!i.alwaysVisible){a=setTimeout(function(){if(!(i.disableFadeOut&&r)&&!s&&!u){E.fadeOut("slow");w.fadeOut("slow")}},1e3)}}var r,s,u,a,f,l,c,h,p="<div></div>",d=30,v=false;var m=e(this);if(m.parent().hasClass(i.wrapperClass)){var g=m.scrollTop();E=m.parent().find("."+i.barClass);w=m.parent().find("."+i.railClass);C();if(e.isPlainObject(n)){if("height"in n&&n.height=="auto"){m.parent().css("height","auto");m.css("height","auto");var y=m.parent().parent().height();m.parent().css("height",y);m.css("height",y)}if("scrollTo"in n){g=parseInt(i.scrollTo)}else if("scrollBy"in n){g+=parseInt(i.scrollBy)}else if("destroy"in n){E.remove();w.remove();m.unwrap();return}T(g,false,true)}return}if(m.data("height")){i.height=m.data("height")}else{i.height=n.height=="auto"?m.parent().height():n.height}var b=e(p).addClass(i.wrapperClass).css({position:"relative",overflow:"hidden",width:i.width,height:i.height});m.css({overflow:"hidden",width:i.width,height:i.height});var w=e(p).addClass(i.railClass).css({width:i.size,height:"100%",position:"absolute",top:0,display:i.alwaysVisible&&i.railVisible?"block":"none","border-radius":i.railBorderRadius,background:i.railColor,opacity:i.railOpacity,zIndex:90});var E=e(p).addClass(i.barClass).css({background:i.color,width:i.size,position:"absolute",top:0,opacity:i.opacity,display:i.alwaysVisible?"block":"none","border-radius":i.borderRadius,BorderRadius:i.borderRadius,MozBorderRadius:i.borderRadius,WebkitBorderRadius:i.borderRadius,zIndex:99});var S=i.position=="right"?{right:i.distance}:{left:i.distance};w.css(S);E.css(S);m.wrap(b);m.parent().append(E);m.parent().append(w);if(i.railDraggable){E.bind("mousedown",function(n){var r=e(document);u=true;t=parseFloat(E.css("top"));pageY=n.pageY;r.bind("mousemove.slimscroll",function(e){currTop=t+e.pageY-pageY;E.css("top",currTop);T(0,E.position().top,false)});r.bind("mouseup.slimscroll",function(e){u=false;L();r.unbind(".slimscroll")});return false}).bind("selectstart.slimscroll",function(e){e.stopPropagation();e.preventDefault();return false})}w.hover(function(){k()},function(){L()});E.hover(function(){s=true},function(){s=false});m.hover(function(){r=true;k();L()},function(){r=false;L()});m.bind("touchstart",function(e,t){if(e.originalEvent.touches.length){f=e.originalEvent.touches[0].pageY}});m.bind("touchmove",function(e){if(!v){e.originalEvent.preventDefault()}if(e.originalEvent.touches.length){var t=(f-e.originalEvent.touches[0].pageY)/i.touchScrollStep;T(t,true);f=e.originalEvent.touches[0].pageY}});C();if(i.start==="bottom"){E.css({top:m.outerHeight()-E.outerHeight()});T(0,true)}else if(i.start!=="top"){T(e(i.start).position().top,null,true);if(!i.alwaysVisible){E.hide()}}N()});return this}});jQuery.fn.extend({slimscroll:jQuery.fn.slimScroll})})(jQuery)
+(function(e){function t(t){if(typeof t.data==="string"){t.data={keys:t.data}}if(!t.data||!t.data.keys||typeof t.data.keys!=="string"){return}var n=t.handler,r=t.data.keys.toLowerCase().split(" "),i=["text","password","number","email","url","range","date","month","week","time","datetime","datetime-local","search","color","tel"];t.handler=function(t){if(this!==t.target&&(/textarea|select/i.test(t.target.nodeName)||e.inArray(t.target.type,i)>-1)){return}var s=e.hotkeys.specialKeys[t.keyCode],o=String.fromCharCode(t.which).toLowerCase(),u="",a={};e.each(["alt","ctrl","meta","shift"],function(e,n){if(t[n+"Key"]&&s!==n){u+=n+"+"}});u=u.replace("alt+ctrl+meta+shift","hyper");if(s){a[u+s]=true}if(o){a[u+o]=true;a[u+e.hotkeys.shiftNums[o]]=true;if(u==="shift+"){a[e.hotkeys.shiftNums[o]]=true}}for(var f=0,l=r.length;f<l;f++){if(a[r[f]]){return n.apply(this,arguments)}}}}e.hotkeys={version:"0.8",specialKeys:{8:"backspace",9:"tab",10:"return",13:"return",16:"shift",17:"ctrl",18:"alt",19:"pause",20:"capslock",27:"esc",32:"space",33:"pageup",34:"pagedown",35:"end",36:"home",37:"left",38:"up",39:"right",40:"down",45:"insert",46:"del",59:";",61:"=",96:"0",97:"1",98:"2",99:"3",100:"4",101:"5",102:"6",103:"7",104:"8",105:"9",106:"*",107:"+",109:"-",110:".",111:"/",112:"f1",113:"f2",114:"f3",115:"f4",116:"f5",117:"f6",118:"f7",119:"f8",120:"f9",121:"f10",122:"f11",123:"f12",144:"numlock",145:"scroll",173:"-",186:";",187:"=",188:",",189:"-",190:".",191:"/",192:"`",219:"[",220:"\\",221:"]",222:"'"},shiftNums:{"`":"~",1:"!",2:"@",3:"#",4:"$",5:"%",6:"^",7:"&",8:"*",9:"(",0:")","-":"_","=":"+",";":": ","'":'"',",":"<",".":">","/":"?","\\":"|"}};e.each(["keydown","keyup","keypress"],function(){e.event.special[this]={add:t}})})(this.jQuery)

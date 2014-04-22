@@ -2,7 +2,9 @@
 	<div class="widget-header">
 		<?php if ( Acl::check( 'email.types.add')): ?>
 		<?php echo UI::button(__('Add email type'), array(
-			'href' => Route::get( 'email_controllers')->uri(array('controller' => 'types', 'action' => 'add')), 'icon' => UI::icon('plus')
+			'href' => Route::get( 'email_controllers')->uri(array('controller' => 'types', 'action' => 'add')), 
+			'icon' => UI::icon('plus'),
+			'hotkeys' => 'ctrl+a'
 		)); ?>
 		<?php endif; ?>
 	</div>

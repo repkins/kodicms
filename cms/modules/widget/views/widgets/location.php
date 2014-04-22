@@ -4,7 +4,7 @@
 <div class="widget">
 	<?php echo Form::open(Request::current()->uri()); ?>
 	<div class="widget-content ">
-		<h3>&larr; <?php echo HTML::anchor(Route::get('backend')->uri(array(
+		<h3>&larr; <?php echo HTML::anchor(Route::url('backend', array(
 				'controller' => 'widgets', 
 				'action' => 'edit',
 				'id' => $widget->id)), $widget->name); ?></h3>
@@ -37,7 +37,9 @@
 	</div>
 	<div class="widget-footer form-actions">
 		<?php echo UI::button( __('Save locations'), array(
-			'icon' => UI::icon( 'ok'), 'class' => 'btn btn-large'
+			'icon' => UI::icon( 'ok'), 
+			'class' => 'btn btn-large',
+			'hotkeys' => 'ctrl+s'
 		)); ?>
 	</div>
 	<?php echo Form::close(); ?>
