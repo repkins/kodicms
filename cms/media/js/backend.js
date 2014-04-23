@@ -862,7 +862,13 @@ var Api = {
 			uri = 'api' + uri;
 		}
 		
-		return SITE_URL + uri;
+		if(uri.indexOf(SITE_URL) == -1)
+		{
+			// Add SITE_URL.
+			uri = SITE_URL + uri;
+		}
+		
+		return uri;
 	},
 	request: function(method, uri, data, callback, show_loader) {
 		url = Api.build_url(uri);
