@@ -65,7 +65,7 @@ class Model_Category extends Model_MPTT
 			),
 			'pid' => array(
 				'type' => 'select',
-				'choises' => array($this, '_get_categories')
+				'choices' => array($this, '_get_categories')
 			)
 		);
 	}
