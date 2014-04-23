@@ -4,7 +4,7 @@
 	<?php if($action == 'add'): ?>
 	$(function() {
 		$('.spoiler-toggle').click();
-	})
+	});
 	<?php endif; ?>
 </script>
 
