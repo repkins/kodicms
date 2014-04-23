@@ -658,7 +658,7 @@ cms.ui.add('flags', function() {
 		},
 		multiple: true,
 		ajax: {
-			url: '/api-tags',
+			url: SITE_URL + 'api-tags',
 			dataType: "json",
 			data: function(term, page) {
 				return {term: term};
