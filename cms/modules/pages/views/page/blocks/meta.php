@@ -1,13 +1,13 @@
-	<div class="control-group">
-		<?php echo $page->label('title', array('class' => 'control-label title')); ?>
-		<div class="controls">
-			<?php echo $page->field('title', array(
-				'class' => 'input-title span12 slug-generator',
-				'prefix' => 'page'
-			)); ?>
-		</div>
+<div class="control-group">
+	<?php echo $page->label('title', array('class' => 'control-label title')); ?>
+	<div class="controls">
+		<?php echo $page->field('title', array(
+			'class' => 'input-title span12 slug-generator',
+			'prefix' => 'page'
+		)); ?>
 	</div>
 </div>
+
 <div class="spoiler-toggle-container widget-content-bg">
 	<div class="spoiler-toggle text-center" data-spoiler=".spoiler-meta" hotkeys="shift+m">
 		<?php echo UI::icon( 'chevron-down spoiler-toggle-icon' ); ?> <span class="muted"><?php echo __('Metadata'); ?></span>
@@ -53,3 +53,4 @@
 
 		<?php Observer::notify( 'view_page_edit_meta', $page ); ?>
 	</div>
+</div>
