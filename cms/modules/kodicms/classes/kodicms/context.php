@@ -1,5 +1,10 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
+/**
+ * @package		KodiCMS
+ * @category	Helper
+ * @author		ButscHSter
+ */
 class KodiCMS_Context {
 	
 	/**
@@ -15,7 +20,7 @@ class KodiCMS_Context {
 	 */
 	public static function & instance(array $params = array())
 	{
-		if(self::$_instance === NULL)
+		if (self::$_instance === NULL)
 		{
 			self::$_instance = new Context($params);
 			return self::$_instance;
@@ -107,7 +112,7 @@ class KodiCMS_Context {
 	 */
 	public function meta(Meta $meta = NULL)
 	{
-		if($meta !== NULL)
+		if ($meta !== NULL)
 		{
 			$this->_meta = $meta;
 		}
@@ -124,26 +129,45 @@ class KodiCMS_Context {
 	{
 		$result = NULL;
 		
-		if(isset($this->_params[$param]))
+		if (strpos($param, '::') !== FALSE)
+		{
+			list($class, $method) = explode('::', $param, 2);
+			$method = new ReflectionMethod($class, $method);
+			$result = $method->invoke();
+		}
+		elseif (strpos($param, '$page->') !== FALSE)
+		{
+			list($class, $method) = explode('->', $param, 2);
+			
+			if (strpos($method, '()') !== FALSE)
+			{
+				$method = substr($method, 0, strpos($method, '()'));
+				$result = $this->get_page()->{$method}();
+			}
+			else
+			{
+				$result = $this->get_page()->{$method};
+			}
+		}
+		elseif (isset($this->_params[$param]))
 		{
 			$result = $this->_params[$param];
 		}
-		elseif ( $this->request()->query($param) !== NULL) 
+		elseif ($this->request()->query($param) !== NULL) 
 		{
 			$result = $this->request()->query($param);
 		}
-		else if($this->request()->post( $param ) !== NULL)
+		elseif ($this->request()->post( $param ) !== NULL)
 		{
 			$result = $this->request()->post( $param );
 		}
-		elseif(
-			$this->behavior_router() instanceof Behavior_Route 
-		AND 
+		elseif ($this->behavior_router() instanceof Behavior_Route 
+		  AND 
 			$this->behavior_router()->param($param) !== NULL)
 		{
 			$result = $this->behavior_router()->param($param);
 		}
-		else if($this->request()->param( $param ) !== NULL)
+		elseif ($this->request()->param( $param ) !== NULL)
 		{
 			$result = $this->request()->param( $param );
 		}
@@ -161,14 +185,14 @@ class KodiCMS_Context {
 	{
 		$this->_params[$param] = & $value;
 
-		if( ! empty($this->_injections[$param]) 
+		if ( ! empty($this->_injections[$param]) 
 				AND is_array($this->_injections[$param])) 
 		{
-			foreach($this->_injections[$param] as $id => $fields)
+			foreach ($this->_injections[$param] as $id => $fields)
 			{
-				if(isset($this->_widgets[$id]))
+				if (isset($this->_widgets[$id]))
 				{
-					foreach($fields as $field => $param_name)
+					foreach ($fields as $field => $param_name)
 					{
 						$this->inject($this->_widgets[$id], 
 								$field, $this->get($param_name));
@@ -189,7 +213,7 @@ class KodiCMS_Context {
 	 */
 	public function response( Response $response = NULL )
 	{
-		if( $response === NULL )
+		if ($response === NULL)
 		{
 			return $this->_response;
 		}
@@ -205,7 +229,7 @@ class KodiCMS_Context {
 	 */
 	public function request( Request $request = NULL )
 	{
-		if( $request === NULL )
+		if ($request === NULL)
 		{
 			return $this->_request;
 		}
@@ -243,7 +267,7 @@ class KodiCMS_Context {
 	 */
 	public function behavior_router( Behavior_Route $router = NULL )
 	{
-		if( $router !== NULL )
+		if ($router !== NULL)
 		{
 			$this->_behavior_router = $router;
 		}
@@ -281,7 +305,7 @@ class KodiCMS_Context {
 	{
 		$result = NULL;
 		
-		if(isset($this->_widgets[$id]))
+		if (isset($this->_widgets[$id]))
 		{
 			$result = & $this->_widgets[$id];
 		}
@@ -297,9 +321,9 @@ class KodiCMS_Context {
 	public function & get_widget_by_block( $block )
 	{
 		$result = NULL;
-		if( !empty($block) AND isset($this->_blocks[$block]))
+		if ( ! empty($block) AND isset($this->_blocks[$block]))
 		{
-			if(count($this->_blocks[$block]) == 1)
+			if (count($this->_blocks[$block]) == 1)
 			{
 				$result = & $this->_blocks[$block][0];
 			}
@@ -341,14 +365,14 @@ class KodiCMS_Context {
 	{
 		$this->_sort_widgets();
 		
-		foreach( $this->_widget_ids as $id ) 
+		foreach ($this->_widget_ids as $id) 
 		{
 			$widget =& $this->_widgets[$id];
-			if( !empty($widget->block) ) 
+			if ( ! empty($widget->block)) 
 			{
 				$this->_blocks[$widget->block][] = & $widget;
 				
-				if($widget instanceof Model_Widget_Decorator)
+				if ($widget instanceof Model_Widget_Decorator)
 				{
 					Observer::observe('on_page_load', array(& $widget, 'on_page_load'));
 					Observer::observe('after_page_load', array(& $widget, 'after_page_load'));
@@ -366,12 +390,12 @@ class KodiCMS_Context {
 	 */
 	public function inject( & $widget, $field, $value) 
 	{
-		if($widget instanceof Model_Widget_Decorator 
+		if ($widget instanceof Model_Widget_Decorator 
 				OR $widget instanceof View)
 		{
-			if( ! empty($field) )
+			if ( ! empty($field))
 			{
-				if(method_exists($widget, "set_{$field}"))
+				if (method_exists($widget, "set_{$field}"))
 				{
 					call_user_func(array( & $widget, "set_{$field}"), $value);
 				}
@@ -394,20 +418,20 @@ class KodiCMS_Context {
 	 */
 	public function inject_param( & $widget, $field, $param_key) 
 	{
-		if($widget instanceof Model_Widget_Decorator 
+		if ($widget instanceof Model_Widget_Decorator 
 				OR $widget instanceof View)
 		{
-			if( strpos( $param_key, '/' ) !== FALSE)
+			if (strpos( $param_key, '/' ) !== FALSE)
 			{
 				list($name, $index) = explode('/', $param_key, 2);
 			}
 
 			$value = $this->get($param_key);
-			if($value !== NULL)
+			if ($value !== NULL)
 			{
 				$this->inject($widget, $field, $value);
 			}
-			else if(isset($name))
+			elseif (isset($name))
 			{
 				$this->_injections[$name][$widget->id][$field] = $param_key;
 			}
@@ -418,16 +442,16 @@ class KodiCMS_Context {
 	
 	protected function _sort_widgets() 
 	{
-		if( $this->_widget_ids !== NULL ) return;
+		if ($this->_widget_ids !== NULL) return;
 
 		$ids = array_keys( $this->_widgets );
 
 		$widgets = array(); 
 		$types = array('PRE' => array(), '*named' => array(), 'POST' => array());
 	
-		foreach($ids as $id)
+		foreach ($ids as $id)
 		{
-			if(isset($types[$this->_widgets[$id]->block]))
+			if (isset($types[$this->_widgets[$id]->block]))
 			{
 				$types[$this->_widgets[$id]->block][] = $id;
 			}
@@ -435,9 +459,9 @@ class KodiCMS_Context {
 				$types['*named'][] = $id;
 		}
 	
-		foreach($types as $type => $ids)
+		foreach ($types as $type => $ids)
 		{
-			foreach($ids as $id )
+			foreach ($ids as $id )
 			{
 				$widgets[$id] = & $this->_widgets[$id];
 			}
@@ -453,9 +477,9 @@ class KodiCMS_Context {
 	 */
 	public function build_crumbs()
 	{
-		foreach($this->_widget_ids as $id)
+		foreach ($this->_widget_ids as $id)
 		{
-			if($this->_widgets[$id] instanceof Model_Widget_Decorator 
+			if ($this->_widgets[$id] instanceof Model_Widget_Decorator 
 					AND $this->_widgets[$id]->crumbs)
 			{
 				$this->_widgets[$id]->change_crumbs($this->_crumbs);

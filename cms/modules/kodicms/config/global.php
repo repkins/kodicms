@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
 return array(
-	'default_locale' => I18n::detect_lang(),
+	'default_locale' => Config::get('site', 'default_locale'),
 	'date_formats' => array(
 		'Y-m-d',
 		'd.m.Y',

@@ -89,7 +89,7 @@ else if(IS_INSTALLED)
 /**
  * Set the default language
  */
-I18n::lang('en_US');
+I18n::lang('en-us');
 
 if (isset($_SERVER['SERVER_PROTOCOL']))
 {
