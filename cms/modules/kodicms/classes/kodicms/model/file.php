@@ -195,7 +195,10 @@ class KodiCMS_Model_File {
 		
 		foreach ($found_files as $file)
 		{
-			if(strpos($file, EXT) === FALSE) continue;
+			if (strpos($file, EXT) === FALSE)
+			{
+			  continue;
+			}
 			$files[] = new $class($file);
 		}
 		
