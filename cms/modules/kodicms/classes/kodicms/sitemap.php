@@ -16,29 +16,57 @@ class KodiCMS_Sitemap
 
 	/**
 	 * 
-	 * @param array $pages
+	 * @param array $array
 	 */
-	public function __construct( array $pages = array())
+	public function __construct( array $array = array())
 	{
-		$this->_array = $pages;
+		$this->_array = $array;
 	}
 	
 	/**
 	 * Поиск страницы по ID
 	 * 
 	 * @param integer $id
-	 * @return \Model_Page_Sitemap
+	 * @return \KodiCMS_Sitemap
 	 */
 	public function find( $id )
 	{
-		$this->_array = $this->_find( $this->_array, $id );
+		$this->_array = $this->_find( $this->_array, 'id', $id );
 		
 		return $this;
 	}
+	
+	/**
+	 * 
+	 * @param string $key
+	 * @param string $value
+	 * @return \KodiCMS_Sitemap
+	 */
+	public function find_by( $key, $value )
+	{
+		$this->_array = $this->_find( $this->_array, $key, $value );
+		
+		return $this;
+	}
+	
+	/**
+	 * Фильтрация массива
+	 * 
+	 * @param string $key
+	 * @param mixed $value
+	 * @return \KodiCMS_Sitemap
+	 */
+	public function filter($key, $value)
+	{
+		$this->_filter($this->_array, $key, $value);
+
+		return $this;
+	}
+
 	/**
 	 * Получение внутренних страниц относительно текущей
 	 * 
-	 * @return \Model_Page_Sitemap
+	 * @return \KodiCMS_Sitemap
 	 */
 	public function children()
 	{
@@ -58,12 +86,13 @@ class KodiCMS_Sitemap
 	 * Исключение из карты сайта страниц по ID
 	 * 
 	 * @param array $ids
-	 * @return \Model_Page_Sitemap
+	 * @param boolean $remove_childs
+	 * @return \KodiCMS_Sitemap
 	 */
-	public function exclude( array $ids )
+	public function exclude( array $ids, $remove_childs = TRUE )
 	{
 		if( !empty($ids) )
-			$this->_exclude( $this->_array, $ids );
+			$this->_exclude( $this->_array, $ids, $remove_childs );
 
 		return $this;
 	}
@@ -71,17 +100,17 @@ class KodiCMS_Sitemap
 	/**
 	 * Вывов спсика страниц в виде массива
 	 * 
-	 * @param boolean $childs Выводить внутренние страницы
+	 * @param boolean $childs Показывать дочерние эелементы 
 	 * @return array
 	 */
 	public function as_array( $childs = TRUE )
 	{
 		if( $childs === FALSE )
 		{
-			foreach($this->_array as & $page)
+			foreach($this->_array as & $row)
 			{
-				if(isset($page['childs']))
-					unset( $page['childs'] );
+				if(isset($row['childs']))
+					unset( $row['childs'] );
 			}
 		}
 			
@@ -91,6 +120,7 @@ class KodiCMS_Sitemap
 	/**
 	 * Сделать список страниц плоским
 	 * 
+	 * @param boolean $childs Показывать дочерние эелементы 
 	 * @return array
 	 */
 	public function flatten( $childs = TRUE )
@@ -105,22 +135,44 @@ class KodiCMS_Sitemap
 	 */
 	public function breadcrumbs()
 	{
-		return array_reverse($this->_breadcrumbs( $this->_array[0] ));
+		if( isset($this->_array[0]) )
+		{
+			return array_reverse($this->_breadcrumbs( $this->_array[0] ));
+		}
+		
+		return array();
 	}
 	
 	/**
 	 * Получить список страниц для выпадающего списка <select>
 	 * 
+	 * @param string $title_key
+	 * @param boolean $level
+	 * @param string $empty_value
 	 * @return array
 	 */
-	public function select_choices()
+	public function select_choices($title_key = 'title', $level = TRUE, $empty_value = FALSE)
 	{
-		$pages = $this->flatten();
+		$array = $this->flatten();
 		
 		$options = array();
-		foreach ($pages as $page)
+		
+		if($empty_value !== FALSe)
 		{
-			$options[$page['id']] = str_repeat('- ', $page['level'] * 2) . $page['title'];
+			$options[] = $empty_value;
+		}
+		
+		foreach ($array as $row)
+		{
+			if($level === TRUE)
+			{
+				$level_string = str_repeat('- ', Arr::get($row, 'level', 0) * 2);
+			}
+			else
+			{
+				$level_string = '';
+			}
+			$options[$row['id']] = $level_string . $row[$title_key];
 		}
 		
 		return $options;
@@ -132,19 +184,19 @@ class KodiCMS_Sitemap
 	 * @param integer $id
 	 * @return array
 	 */
-	protected function _find( $array, $id )
+	protected function _find( $array, $key, $value )
 	{
 		$found = array();
-		foreach($array as $page)
+		foreach($array as $row)
 		{
-			if($page['id'] == $id)
+			if($row[$key] == $value)
 			{
-				return array($page);
+				return array($row);
 			}
 			
-			if( ! empty($page['childs']))
+			if( ! empty($row['childs']))
 			{
-				$found = $this->_find($page['childs'], $id);
+				$found = $this->_find($row['childs'], $key, $value);
 				
 				if(!empty($found)) 
 				{
@@ -158,16 +210,16 @@ class KodiCMS_Sitemap
 	
 	/**
 	 * 
-	 * @param array $page
+	 * @param array $data
 	 * @param array $crumbs
 	 * @return type
 	 */
-	protected function _breadcrumbs( array $page, &$crumbs = array() )
+	protected function _breadcrumbs( array $data, &$crumbs = array() )
 	{
-		$crumbs[] = $page;
+		$crumbs[] = $data;
 			
-		if( !empty($page['parent']) )
-			$this->_breadcrumbs( $page['parent'], $crumbs );
+		if( !empty($data['parent']) )
+			$this->_breadcrumbs( $data['parent'], $crumbs );
 		
 		return $crumbs;
 	}
@@ -176,21 +228,44 @@ class KodiCMS_Sitemap
 	 * 
 	 * @param array $array
 	 * @param array $ids
-	 * @return array
+	 * @param boolean $remove_childs
 	 */
-	protected function _exclude( & $array, array $ids )
+	protected function _exclude( & $array, array $ids, $remove_childs = TRUE )
 	{
-		foreach($array as $i => & $page)
+		foreach($array as $i => & $row)
 		{
-			if( in_array($page['id'], $ids) )
+			if( in_array($row['id'], $ids) )
 			{
 				unset($array[$i]);
+				
+				if($remove_childs !== TRUE AND ! empty($row['childs']))
+				{
+					foreach($row['childs'] as $child)
+					{
+						$array[] = $child;
+					}
+				}
 			}
 			
-			if( !empty($page['childs']))
+			if( ! empty($row['childs']) )
 			{
-				$this->_exclude($page['childs'], $ids);
+				$this->_exclude($row['childs'], $ids, $remove_childs);
 			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param array $array
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	protected function _filter( & $array, $key, $value )
+	{
+		foreach($array as $i => $row)
+		{
+			if(isset($row[$key]) AND $row[$key] == $value)
+				unset($array[$i]);
 		}
 	}
 	
@@ -203,16 +278,16 @@ class KodiCMS_Sitemap
 	 */
 	protected function _flatten( array $array, $childs = TRUE, & $return = array() )
 	{
-		foreach( $array as $page )
+		foreach( $array as $row )
 		{
-			$return[$page['id']] = $page;
+			$return[$row['id']] = $row;
 			
-			if( $childs !== FALSE AND !empty($page['childs']))
+			if( $childs !== FALSE AND !empty($row['childs']))
 			{
-				$this->_flatten( $page['childs'], $childs, $return );
+				$this->_flatten( $row['childs'], $childs, $return );
 			}
 			
-			$return[$page['id']]['childs'] = array();
+			unset($return[$row['id']]['childs']);
 		}
 		
 		return $return;
