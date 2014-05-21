@@ -405,7 +405,10 @@ class Datasource_Section {
 	 */
 	public function get_document($id)
 	{
-		if( empty($id) ) return NULL;
+		if (empty($id))
+		{
+			return NULL;
+		}
 		
 		return $this->get_empty_document()->load($id);
 	}

@@ -32,7 +32,7 @@ class Controller_System_Datasource_Document extends Controller_System_Datasource
 		{
 			$doc = $this->section()->get_document($id);
 			
-			if(!$doc)
+			if( ! $doc)
 			{
 				throw new HTTP_Exception_404('Document ID :id not found', 
 						array(':id' => $id));
