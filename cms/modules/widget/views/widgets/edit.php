@@ -1,4 +1,4 @@
-xxx<div class="widget">
+<div class="widget">
 <?php echo Form::open(Request::current()->uri(), array(
 	'class' => Bootstrap_Form::HORIZONTAL
 )); ?>
@@ -91,6 +91,7 @@ xxx<div class="widget">
 	</div>
 	<?php endif; ?>
 	
+	<?php if ($widget->use_template): ?>
 	<div class="widget-header spoiler-toggle" data-spoiler=".media-spoiler" data-hash="media">
 		<h4><?php echo __('Widget media'); ?></h4>
 	</div>
@@ -108,6 +109,7 @@ xxx<div class="widget">
 			'data' => $widget->media
 		)); ?>
 	</div>
+	<?php endif; ?>
 	
 	<div class="widget-header">
 		<h4><?php echo __('Widget parameters'); ?></h4>
