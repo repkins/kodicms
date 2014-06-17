@@ -153,6 +153,7 @@ abstract class Model_Widget_Decorator {
 	
 	public function __construct()
 	{
+		$this->_ctx = Context::instance();
 		$this->_set_type();
 	}
 
@@ -353,6 +354,7 @@ abstract class Model_Widget_Decorator {
 		return 'Widget::' . $this->type . '::' . $this->id;
 	}
 	
+	
 	/**
 	 * Получение списка тегов кеширования в виде строки
 	 * 
@@ -406,6 +408,53 @@ abstract class Model_Widget_Decorator {
 		}
 		
 		return $this;
+	}
+	
+	/**
+	 * Получения строки типа виджета и ID
+	 * Используется для создания нового типа почтового уведомления
+	 * 
+	 * @return string
+	 */
+	public function get_hash()
+	{
+		return 'widget_' . $this->type . '_' . $this->id;
+	}
+	
+	/**
+	 * Связывание почтового уведомления вместе с виджетом
+	 * 
+	 * @param array $fields
+	 * @return Model_Email_Type
+	 */
+	public function create_email_type(array $fields)
+	{
+		$email_type = ORM::factory('email_type', array('code' => $this->get_hash()));
+		
+		if( ! $email_type->loaded())
+		{
+			$email_type->values(array(
+				'code' => $this->get_hash(),
+				'name' => $this->name
+			))->create();
+		}
+
+		if( !empty($fields))
+		{
+			$email_type->set('data', $fields)->update();
+		}
+		
+		return $email_type;
+	}
+	
+	/**
+	 * Запуск почтового уведомления
+	 * 
+	 * @return boolean
+	 */
+	public function handle_email_type(array $values)
+	{
+		return Email_Type::get($this->get_hash())->send($values);
 	}
 	
 	/**
@@ -497,6 +546,7 @@ abstract class Model_Widget_Decorator {
 	/**
 	 * Передача дополнительных парамтеров в виджет
 	 * @param array $params Дополнительные параметры
+	 * @return \Model_Widget_Decorator
 	 */
 	public function set_params(array $params = array()) 
 	{
@@ -512,19 +562,21 @@ abstract class Model_Widget_Decorator {
 	 */
 	public function set_media($files)
 	{
-		foreach ($files as $i => $link)
+		foreach($files as $i => $link)
 		{
-			if (strpos($link, '.css') === FALSE AND strpos($link, '.js') === FALSE)
+			if( strpos($link, '.css') === FALSE AND strpos($link, '.js') === FALSE)
 			{
 				unset($files[$i]);
 			}
 			
-			if ( ! Valid::url($link))
+			if( ! Valid::url($link) )
 			{
 				$files[$i] = URL::site($link, TRUE);
 			}
 		}
 		
+		
+
 		return array_unique($files);
 	}
 
@@ -631,15 +683,15 @@ abstract class Model_Widget_Decorator {
 	 */
 	public function on_page_load() 
 	{
-		if ( ! empty($this->media) )
+		if( ! empty($this->media) )
 		{
-			foreach ($this->media as $link)
+			foreach($this->media as $link)
 			{
-				if (strpos($link, '.css') !== FALSE)
+				if( strpos($link, '.css') !== FALSE)
 				{
 					Assets::css($link, $link);
 				}
-				elseif (strpos($link, '.js') !== FALSE)
+				else if(strpos($link, '.js') !== FALSE)
 				{
 					Assets::js($link, $link);
 				}

@@ -8,8 +8,10 @@ return array(
 		'page_password' => __('Page password form'),
 	),
 	__('User') => array(
+		'user_profile' => __('Profile'),
 		'user_login' => __('Authentication'),
-		'user_logout' => __('Authentication destroy')
+		'user_logout' => __('Authentication destroy'),
+		'user_forgot' => __('Forgot password')
 	),
 	__('Other') => array(
 		'html' => __('HTML'),

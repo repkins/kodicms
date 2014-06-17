@@ -201,7 +201,13 @@ class DataSource_Hybrid_Field_Factory {
 
 		foreach ($query as $id => $row)
 		{
-			$fields[$id] = self::get_field_from_array($row);
+			$field = self::get_field_from_array($row);
+			if ($field === NULL)
+			{
+				continue;
+			}
+
+			$fields[$id] = $field;
 		}
 		
 		$cached_fields[$ds_id] = $fields;
@@ -220,17 +226,16 @@ class DataSource_Hybrid_Field_Factory {
 	 */
 	public static function get_field_from_array( array $array = NULL ) 
 	{
-		if( empty($array) OR !isset($array['type']) )
+		if (empty($array) OR ! isset($array['type']) )
 		{
 			return NULL;
 		}
 			
 		$class_name = 'DataSource_Hybrid_Field_' . $array['type'];
 
-		if( ! class_exists( $class_name ))
+		if ( ! class_exists( $class_name ))
 		{
-			throw new Kohana_Exception('Class :class_name not exists', array(
-				':class_name' => $class_name));
+			return NULL;
 		}
 		
 		if(isset($array['props']))

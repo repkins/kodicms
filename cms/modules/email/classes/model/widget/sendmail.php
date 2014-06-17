@@ -47,11 +47,6 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 			self::HTML => __('HTML')
 		);
 	}
-	
-	public function get_code()
-	{
-		return 'wiget_sendmail_' . $this->id;
-	}
 
 	public function set_values(array $data)
 	{
@@ -80,16 +75,6 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 
 			$data['field'] = NULL;
 		}
-
-		$email_type = ORM::factory('email_type', array('code' => $this->get_code()));
-		
-		if(!$email_type->loaded())
-		{
-			$email_type->values(array(
-				'code' => $this->get_code(),
-				'name' => $this->name
-			))->create();
-		}
 		
 		$email_type_fields = array();
 		foreach ($data['fields'] as $field)
@@ -97,8 +82,8 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 			$email_type_fields['key'][] = $field['id'];
 			$email_type_fields['value'][] = ! empty($field['name']) ? $field['name'] : Inflector::humanize($field['id']);
 		}
-
-		$email_type->set('data', $email_type_fields)->update();
+		
+		$this->create_email_type($email_type_fields);
 		
 		return parent::set_values($data);
 	}
@@ -139,7 +124,7 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 		{
 			$referrer = Request::current()->referrer();
 	
-			if( !empty($this->_errors))
+			if ( ! empty($this->_errors))
 			{
 				Flash::set('form_errors', $this->_errors);
 				Flash::set('form_values', $this->_values);
@@ -147,7 +132,7 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 				$query = URL::query(array('status' => 'error'), FALSE);
 				$next_url = $referrer;
 			} 
-			else if( $this->send_message() )
+			elseif ($this->handle_email_type($this->_values))
 			{
 				$query = URL::query(array('status' => 'ok'), FALSE);
 				
@@ -165,11 +150,6 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 			
 			HTTP::redirect( preg_replace('/\?.*/', '', $next_url) . $query, 302);
 		}
-	}
-
-	public function send_message()
-	{
-		return Email_Type::get($this->get_code())->send($this->_values);
 	}
 
 	protected function _fetch_fields( ) 

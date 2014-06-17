@@ -24,3 +24,13 @@ cms/media/js/i18n
 /.settings
 .buildpath
 .project
+
+# Third Party Applications
+_forum
+_gallery
+
+# Third Party Plugins
+cms/plugins/wetboew
+cms/plugins/freeride
+
+
