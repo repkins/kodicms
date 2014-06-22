@@ -862,6 +862,18 @@ var Api = {
 			uri = 'api' + uri;
 		}
 		
+		if(uri.indexOf(ADMIN_DIR_NAME) == -1)
+		{
+			if(uri.indexOf('/') == -1)
+			{
+				uri = ADMIN_DIR_NAME + '/' + uri; 
+			}
+			else
+			{
+				uri = ADMIN_DIR_NAME + uri; 
+			}	
+		}
+		
 		if(uri.indexOf(SITE_URL) == -1)
 		{
 			// Add SITE_URL.
