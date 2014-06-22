@@ -5,7 +5,7 @@
  * @category	API
  * @author		ButscHSter
  */
-class KodiCMS_Controller_API_Settings extends Controller_System_Api {
+class KodiCMS_Controller_API_Settings extends Controller_System_API {
 	
 	protected $_check_token = TRUE;
 	
@@ -18,11 +18,16 @@ class KodiCMS_Controller_API_Settings extends Controller_System_Api {
 	{
 		$settings = $this->param('setting', array(), TRUE);
 		
+		$plugin_settings = array('plugin'=>$this->param('plugin', array(), FALSE));
+		
+		// Merge plugin settings with settings.
+		$settings = Arr::merge($settings, $plugin_settings);
+		
 		$filter = Filter::factory($settings)
 			->rule('site.allow_html_title', FALSE, Config::NO);		
 		
 		$validation = Validation::factory(array());
-		Observer::notify( 'validation_settings', $validation, $filter );
+		Observer::notify('validation_settings', $validation, $filter);
 
 		$filter->run();
 		$validation = $validation->copy($filter->data());
