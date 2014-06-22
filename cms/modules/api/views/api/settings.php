@@ -1,7 +1,7 @@
 <script>
 $(function(){
 	$('body').on('click', '#refresh-api-key', function() {
-		Api.post('api.refresh', {key: $('#api-key').text()}, function(response) {
+		Api.request('post', 'api.refresh', {key: $('#api-key').text()}, function(response) {
 			if(response.response)
 				$('#api-key').text(response.response);
 		});
