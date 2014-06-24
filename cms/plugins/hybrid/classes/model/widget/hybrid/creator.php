@@ -100,6 +100,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 	protected function _fetch_fields( ) 
 	{
 		$fields = array(
+			'id',
 			'header', 
 			'published', 
 			'meta_title',
@@ -119,6 +120,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 		{
 			$data[$field] = $this->_get_field_value($field);
 		}
+
 		if(empty($data['meta_title'])) $data['meta_title'] = '';
 		if(empty($data['meta_keywords'])) $data['meta_keywords'] = '';
 		if(empty($data['meta_description'])) $data['meta_description'] = '';
@@ -129,7 +131,26 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 		}
 		
 		$ds = Datasource_Data_Manager::load($this->ds_id);
-		$document = $ds->get_empty_document();
+		
+		$create = TRUE;
+		
+		if(empty($data['id']))
+		{
+			$document = $ds->get_empty_document();
+		}
+		else
+		{
+			$id = (int) $data['id'];
+			$document = $ds->get_document($id);
+			$create = FALSE;
+
+			if( ! $document)
+			{
+				$this->_values = $data;
+				$this->_errors = __('Document ID :id not found', array(':id' => $id));
+				$this->_show_errors();
+			}
+		}
 		
 		try
 		{
@@ -137,8 +158,17 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 				->read_values($data)
 				->validate();
 	
-			$document = $ds->create_document($document);
+			if($create === TRUE)
+			{
+				$ds->create_document($document);
+			}
+			else
+			{
+				$ds->update_document($document);
+			}
 			
+			$this->handle_email_type($data);
+
 			$this->_show_success();
 		} 
 		catch (Validation_Exception $e)
@@ -146,6 +176,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 			$this->_values = $data;
 			$this->_errors = $e->errors('validation');
 			$this->_show_errors();
+
 			return;
 		}
 	}
@@ -181,6 +212,21 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 	
 	protected function _show_success()
 	{
+		if(Request::current()->is_ajax())
+		{
+			$json = array('status' => TRUE);
+	
+			if( ! empty($this->redirect_url)) 
+			{
+				$json['redirect'] = URL::site($this->redirect_url);
+			}
+			
+			Request::current()->headers( 'Content-type', 'application/json' );		
+			$this->_ctx->response()->body(json_encode($json));
+			
+			return;
+		}
+		
 		if( ! empty($this->redirect_url)) 
 		{
 			$url = URL::site($this->redirect_url);
