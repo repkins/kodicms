@@ -1,15 +1,14 @@
 // Auto generated i18n lang file for lang ru-ru
-// cms.addTranslation({
-//	'Finish': 'Установить',
-//	'Next': 'Далее',
-//	'Previous': 'Назад',
-//	'Loading ...': 'Загрузка ...'
-//});
+cms.addTranslation({
+	'Finish': 'Установить',
+	'Next': 'Далее',
+	'Previous': 'Назад',
+	'Loading ...': 'Загрузка ...'
+});
 
 $(function() {
 	$('#wizard').on('change', '#current-lang', function() {
-	    // TODO: May need to add = SITE_URL + ...
-		window.location = 'install/index?lang=' + $(this).val();
+		window.location = '/install/index?lang=' + $(this).val();
 	})
 	
 	var password_generator_status = function() {
@@ -45,6 +44,10 @@ $(function() {
 			if(currentIndex == 0 && newIndex == 1 && failed) {
 				return false;
 			}
+			
+			if(currentIndex == 2 && newIndex > currentIndex) {
+				return check_connect();
+			}
 	
 			return true;
 		},
@@ -53,24 +56,27 @@ $(function() {
 		}
 	});
 	
-	function check_connect(wizard) {
-		var $return = false;
-
+	function check_connect() {
+		cms.clear_error();
 		var $fields = $(':input[name*=db_]').serialize();
-		$.post('check_connect', $fields, function(resp) {
-			if(resp.status) {
-				$(wizard).steps('next');
-				$return = true;
-			} else {
-				cms.clear_error();
-				parse_messages(resp.message, 'error');
-			}
-		}, 'json');
+		var response = $.ajax({
+			type: "POST",
+			url: "check_connect",
+			data: $fields,
+			async: false,
+			dataType: 'json'
+		}).responseJSON;
+	
+		if(response.status === true) return response.status;
 		
-		return $return;
+		if(response.message) {
+			cms.clear_error();
+			parse_messages(response.message, 'error');
+		}
+		
+		return false;
 	}
 	
 	$('.select2-container').remove();
 	cms.ui.init('select2');
 })
-

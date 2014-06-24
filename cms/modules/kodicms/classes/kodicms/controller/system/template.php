@@ -72,10 +72,10 @@ class KodiCMS_Controller_System_Template extends Controller_System_Security
 			$this->breadcrumbs = Breadcrumbs::factory();
 			
 			$routes = Route::all();
-			if( isset($routes['backend']) )
+			if (isset($routes['backend']))
 			{
 				$this->breadcrumbs
-						->add(UI::icon('home'), Route::get( 'backend' )->uri());
+						->add(UI::icon('home'), Route::get('backend')->uri());
 			}
 		}
 	}
@@ -89,11 +89,11 @@ class KodiCMS_Controller_System_Template extends Controller_System_Security
 
 		if ($this->auto_render === TRUE)
 		{
-			if ( $this->request->is_ajax() === TRUE OR $this->json !== NULL)
+			if ($this->request->is_ajax() === TRUE OR $this->json !== NULL)
 			{
-				if ( $this->json !== NULL )
+				if ($this->json !== NULL)
 				{
-					if ( is_array( $this->json ) AND !isset( $this->json['status'] ) )
+					if (is_array($this->json) AND ! isset($this->json['status']))
 					{
 						$this->json['status'] = TRUE;
 					}
@@ -120,12 +120,16 @@ class KodiCMS_Controller_System_Template extends Controller_System_Security
 				$this->template = $this->template->content;
 			}
 			
-			$this->template->set('request', $this->request);
+			if ($this->template instanceof View)
+			{
+				$this->template->set('request', $this->request);
+			}
 			
 			Observer::notify( 'template_before_render', $this->request );
 			$this->response->body( $this->template );
 		}
 	}
+	
 	
 	/**
 	 * 
@@ -146,7 +150,7 @@ class KodiCMS_Controller_System_Template extends Controller_System_Security
 	}
 	
 	/**
-	 *
+	 * 
 	 * @param string $title
 	 * @param boolean $set_breadcrumbs
 	 * @return Controller
@@ -154,12 +158,12 @@ class KodiCMS_Controller_System_Template extends Controller_System_Security
 	public function set_title( $title, $set_breadcrumbs = TRUE )
 	{
 		$this->template->title = $title;
-	
+		
 		if($set_breadcrumbs === TRUE)
 		{
 			$this->breadcrumbs->add($title);
 		}
-	
+		
 		return $this;
 	}
 }

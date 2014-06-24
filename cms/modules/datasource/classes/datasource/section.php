@@ -15,15 +15,26 @@ class Datasource_Section {
 	 */
 	public static function factory($type)
 	{
-		$class = 'Datasource_Section_' . ucfirst($type);
-		
-		if( ! class_exists($class))
+		if( ! self::exists($type) )
 		{
 			throw new DataSource_Exception('Class :class_name not exists', 
 					array(':class_name' => $class));
 		}
 		
 		return new $class($type);
+	}
+	
+	/**
+	 * Проверка класса на существование по типу раздела
+	 * 
+	 * @param string $type
+	 * @return boolean
+	 */
+	public static function exists($type)
+	{
+		$class = 'Datasource_Section_' . ucfirst($type);
+		
+		return class_exists($class);
 	}
 
 	/**
@@ -237,6 +248,8 @@ class Datasource_Section {
 		
 		unset($query, $values);
 		
+		Observer::notify('datasource_after_create', $this->_id);
+		
 		return $this->_id;
 	}
 	
@@ -286,6 +299,8 @@ class Datasource_Section {
 		
 		unset($data, $values);
 		
+		Observer::notify('datasource_after_save', $this->_id);
+		
 		return TRUE;
 	}
 	
@@ -298,13 +313,22 @@ class Datasource_Section {
 	 */
 	public function remove()
 	{
-		$this->remove_documents();
+		$ids = DB::select('id')
+			->from($this->table())
+			->where('ds_id', '=', $this->id())
+			->execute()
+			->as_array(NULL, 'id');
+
+		$this->remove_documents($ids);
 		
 		DB::delete('datasources')
 			->where('id', '=', $this->_id)
 			->execute();
 
+		$id = $this->_id;
 		$this->_id = NULL;
+		
+		Observer::notify('datasource_after_remove', $id);
 		
 		return $this;
 	}
