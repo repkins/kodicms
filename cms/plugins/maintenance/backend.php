@@ -16,4 +16,3 @@ Observer::observe('save_settings', function($post, $plugin) {
 
 	$plugin->save_settings();
 }, $plugin);
-

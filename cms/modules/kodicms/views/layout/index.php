@@ -32,13 +32,13 @@
 					<th><?php echo __('Layout name'); ?></th>
 					<th><?php echo __('Modified'); ?></th>
 					<th><?php echo __('Size'); ?></th>
-					<th><?php echo __('Location'); ?></th>
+					<th><?php echo __('Direction'); ?></th>
 					<th><?php echo __('Actions'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach ($layouts as $layout): ?>
-				<tr>
+				<tr id="layout_<?php echo $layout->name; ?>">
 					<th class="name">
 						<?php echo UI::icon( 'desktop' ); ?>
 
@@ -53,7 +53,7 @@
 						<?php endif; ?>
 						<?php if(count($layout->blocks()) > 0): ?>
 						<span class="muted">
-							<?php echo __('Layout blocks'); ?>: <?php echo implode(', ', $layout->blocks()); ?>
+							<?php echo __('Layout blocks'); ?>: <span class="layout-block-list"><?php echo implode(', ', $layout->blocks()); ?></span>
 						</span>
 						<?php endif; ?>
 					</th>

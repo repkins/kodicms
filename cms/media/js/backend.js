@@ -658,7 +658,7 @@ cms.ui.add('flags', function() {
 		},
 		multiple: true,
 		ajax: {
-			url: SITE_URL + 'api-tags',
+			url: Api.build_url('tags'),
 			dataType: "json",
 			data: function(term, page) {
 				return {term: term};
@@ -846,7 +846,7 @@ var Api = {
 		return this.response();
 	},
 	build_url: function(uri) {
-		// uri = uri.replace('/' + ADMIN_DIR_NAME,'');
+		uri = uri.replace('/' + ADMIN_DIR_NAME,'');
 		
 		if(uri.indexOf('-') == -1)
 		{
@@ -956,8 +956,8 @@ var Api = {
 // Run
 $(function() {
     cms.messages.init();
-    cms.init.run();
     cms.ui.init();
+	cms.init.run();
 	
 	parse_messages(MESSAGE_ERRORS, 'error');
 	parse_messages(MESSAGE_SUCCESS);

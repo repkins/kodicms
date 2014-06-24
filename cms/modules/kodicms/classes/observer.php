@@ -58,7 +58,7 @@ final class Observer {
 		{
 			list($class, $class_args) = $callback;
 
-			if(Kohana::$profiling === TRUE)
+			if (Kohana::$profiling === TRUE)
 			{
 				$benchmark = Profiler::start('Observer notify', $event_name);
 			}
@@ -78,5 +78,4 @@ final class Observer {
 			}
 		}
 	}
-
 }

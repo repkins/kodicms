@@ -1,7 +1,4 @@
 <?php if( ACL::check( 'widgets.index')): ?>
-<script>
-	var LAYOUT_BLOCKS = <?php echo json_encode( $blocks ); ?>;
-</script>
 <div class="widget-header spoiler-toggle" data-spoiler=".spoiler-widgets" data-hash="widgets" hotkeys="shift+w">
 	<h4><?php echo __('Widgets'); ?></h4>
 </div>
@@ -18,14 +15,16 @@
 	<?php else: ?>
 	
 	<?php if( ACL::check( 'widgets.location')): ?>
-	<?php echo HTML::anchor(
-		'/api-widget.list/'.$page->id,
-		'<i class="icon-plus"></i>'.__( 'Add widget to page' ),
-		array(
-			'id' => 'addWidgetToPage',
-			'class' => 'btn btn-success fancybox.ajax popup'
-		)
-	); ?>
+	<a class="btn btn-success fancybox.ajax popup" href="/api-widget.list/<?php echo $page->id; ?>" id="addWidgetToPage"><i class="icon-plus"></i> <?php echo __( 'Add widget to page' ); ?></a>
+	
+	<?php if( ACL::check( 'layout.rebuild')): ?>
+	<?php echo UI::button(__('Rebuild blocks'), array(
+		'icon' => UI::icon( 'refresh' ),
+		'class' => 'btn btn-inverse btn-mini btn-api',
+		'data-url' => 'layout.rebuild',
+		'data-method' => Request::POST
+	)); ?>
+	<?php endif; ?>
 	<br /><br />
 	<?php endif; ?>
 	<table class="table table-hover" id="widget-list">
@@ -37,7 +36,7 @@
 		<tbody>
 		<?php foreach($widgets as $widget): ?>
 		<?php echo View::factory( 'widgets/ajax/row', array(
-			'widget' => $widget
+			'widget' => $widget, 'page' => $page
 		)); ?>
 		<?php endforeach; ?>
 		</tbody>

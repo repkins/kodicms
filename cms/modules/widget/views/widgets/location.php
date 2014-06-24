@@ -1,6 +1,3 @@
-<script>
-	var BLOCKS = <?php echo json_encode($blocks); ?>;
-</script>
 <div class="widget">
 	<?php echo Form::open(Request::current()->uri()); ?>
 	<div class="widget-content ">
@@ -23,7 +20,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php echo recurse_pages($pages, 0, $blocks, $page_widgets, $pages_widgets); ?>
+				<?php echo recurse_pages($pages, 0, $layouts_blocks, $page_widgets, $pages_widgets); ?>
 			</tbody>
 		</table>
 	</div>
@@ -41,34 +38,32 @@
 			'class' => 'btn btn-large',
 			'hotkeys' => 'ctrl+s'
 		)); ?>
+		
+		
+		<?php if( ACL::check( 'layout.rebuild')): ?>
+		<?php echo UI::button(__('Rebuild blocks'), array(
+			'icon' => UI::icon( 'refresh' ),
+			'class' => 'btn btn-inverse btn-mini btn-api',
+			'data-url' => 'layout.rebuild',
+			'data-method' => Request::POST
+		)); ?>
+		<?php endif; ?>
 	</div>
 	<?php echo Form::close(); ?>
 </div>
 <?php 
-function recurse_pages( $pages, $spaces = 0, $blocks = array(), $page_widgets = array(), $pages_widgets = array() ) 
+function recurse_pages( $pages, $spaces = 0, $layouts_blocks = array(), $page_widgets = array(), $pages_widgets = array() ) 
 {
 	$data = '';
 	foreach ($pages as $page)
 	{
-		// Выбираем из всех блоков, для шаблона текущей страницы
-		$current_page_blocks = isset($blocks[$page['layout_file']]) 
-				? $blocks[$page['layout_file']] 
-				: array(-1 => __('--- none ---'));
-		
-		// Исключаем из списка блоки, занятые другими виджетами
-//		if(!empty($pages_widgets[$page['id']]) AND is_array($current_page_blocks))
-//		{
-//			$current_page_blocks = array_diff($current_page_blocks, $pages_widgets[$page['id']]);
-//		}
-
 		// Блок
 		$current_block = Arr::path($page_widgets, $page['id'].'.0');
-		
 		$current_position = Arr::path($page_widgets, $page['id'].'.1');
 		
 		$data .= '<tr data-id="'.$page['id'].'" data-parent-id="'.$page['parent_id'].'">';
 		$data .= '<td>';
-		$data .= Form::select('blocks[' . $page['id'] . '][name]', $current_page_blocks, $current_block, array('class' => 'blocks') );
+		$data .= Form::hidden('blocks['.$page['id'].'][name]', $current_block, array('class' => 'widget-blocks', 'data-layout' => $page['layout_file']));
 		if(!empty($page['childs']))
 		{
 			$data .= "&nbsp;" . Form::button(NULL, UI::icon('level-down'), array(
@@ -97,7 +92,7 @@ function recurse_pages( $pages, $spaces = 0, $blocks = array(), $page_widgets = 
 		
 		if(!empty($page['childs']))
 		{
-			$data .= recurse_pages($page['childs'], $spaces + 5, $blocks, $page_widgets, $pages_widgets);
+			$data .= recurse_pages($page['childs'], $spaces + 5, $layouts_blocks, $page_widgets, $pages_widgets);
 		}
 	}
 	return $data;
