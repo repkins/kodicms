@@ -846,7 +846,8 @@ var Api = {
 		return this.response();
 	},
 	build_url: function(uri) {
-		uri = uri.replace('/' + ADMIN_DIR_NAME,'');
+		// Not needed
+		// uri = uri.replace('/' + ADMIN_DIR_NAME,'');
 		
 		if(uri.indexOf('-') == -1)
 		{
@@ -864,6 +865,7 @@ var Api = {
 		
 		if(uri.indexOf(ADMIN_DIR_NAME) == -1)
 		{
+			// Add the ADMIN DIR NAME
 			if(uri.indexOf('/') == -1)
 			{
 				uri = ADMIN_DIR_NAME + '/' + uri; 
