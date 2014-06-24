@@ -134,7 +134,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 		
 		$create = TRUE;
 		
-		if(empty($data['id']))
+		if (empty($data['id']))
 		{
 			$document = $ds->get_empty_document();
 		}
@@ -158,7 +158,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 				->read_values($data)
 				->validate();
 	
-			if($create === TRUE)
+			if ($create === TRUE)
 			{
 				$ds->create_document($document);
 			}
@@ -212,11 +212,11 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 	
 	protected function _show_success()
 	{
-		if(Request::current()->is_ajax())
+		if (Request::current()->is_ajax())
 		{
 			$json = array('status' => TRUE);
 	
-			if( ! empty($this->redirect_url)) 
+			if ( ! empty($this->redirect_url)) 
 			{
 				$json['redirect'] = URL::site($this->redirect_url);
 			}
@@ -227,7 +227,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 			return;
 		}
 		
-		if( ! empty($this->redirect_url)) 
+		if ( ! empty($this->redirect_url)) 
 		{
 			$url = URL::site($this->redirect_url);
 		}
