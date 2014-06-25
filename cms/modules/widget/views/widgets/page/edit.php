@@ -14,10 +14,21 @@
 	</select>
 	<?php else: ?>
 	
-	<?php if( ACL::check( 'widgets.location')): ?>
-	<a class="btn btn-success fancybox.ajax popup" href="/api-widget.list/<?php echo $page->id; ?>" id="addWidgetToPage"><i class="icon-plus"></i> <?php echo __( 'Add widget to page' ); ?></a>
+	<?php if (ACL::check( 'widgets.location')): ?>
 	
-	<?php if( ACL::check( 'layout.rebuild')): ?>
+	<?php echo HTML::anchor(
+		Route::get('api')->uri(array(
+				'controller' => 'widget',
+				'action' => 'list',
+				'id'=> $page->id)),
+		'<i class="icon-plus"></i>'.__( 'Add widget to page' ),
+		array(
+			'id' => 'addWidgetToPage',
+			'class' => 'btn btn-success fancybox.ajax popup'
+		)
+	); ?>
+		
+	<?php if (ACL::check( 'layout.rebuild')): ?>
 	<?php echo UI::button(__('Rebuild blocks'), array(
 		'icon' => UI::icon( 'refresh' ),
 		'class' => 'btn btn-inverse btn-mini btn-api',
