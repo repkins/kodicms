@@ -866,7 +866,7 @@ var Api = {
 		if(uri.indexOf(ADMIN_DIR_NAME) == -1)
 		{
 			// Add the ADMIN DIR NAME
-			if(uri.indexOf('/') == -1)
+			if(uri.indexOf('/') != 0)
 			{
 				uri = ADMIN_DIR_NAME + '/' + uri; 
 			}
