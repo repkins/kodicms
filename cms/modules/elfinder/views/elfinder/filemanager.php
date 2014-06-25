@@ -2,7 +2,7 @@
 	$(function() {
 		var elfinder = $('#elfinder').elfinder({
 			lang: '<?php echo explode('-', I18n::lang())[0]; ?>',
-			url : SITE_URL + 'api-elfinder',
+			url : 'api-elfinder',
             resizable: false,
 			height: cms.content_height,
 			uiOptions: {
