@@ -61,7 +61,7 @@
 		</div>
 		<div class="widget-content">
 			
-			<table class="table "permissions-list">
+			<table class="table" id="permissions-list">
 				<tbody>
 					<?php foreach($actions as $action => $title): ?>
 					<tr>
