@@ -93,16 +93,12 @@ class API {
 		{
 			$uri = '-' . $uri;
 		}
-		else if (
-			strpos( $uri, '-' ) > 0
-		AND
-			strpos( $uri, '/' ) === FALSE
-		)
+		elseif (strpos($uri, '-') > 0 AND strpos($uri, '/') === FALSE)
 		{
 			$uri = '/' . $uri;
 		}
 
-		return Request::factory('api' . $uri);
+		return Request::factory(ADMIN_DIR_NAME . '/api' . $uri);
 	}
 	
 	/**
