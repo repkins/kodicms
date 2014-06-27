@@ -1,16 +1,15 @@
 cms.init.add(['users_edit', 'users_add'], function () {
-	$(window).on('tabbable', function() {
-		$('input[name="user_permission"]').select2({
+	$('input[name="user_permission"]').select2({
 		placeholder: __("Click to get list of roles"),
 		minimumInputLength: 0,
 		multiple: true,
 		ajax: {
-			url: SITE_URL + 'api/user-roles.get',
+			url:  Api.build_url('user-roles.get'),
 			data: function(query, pageNumber, context) {
 				return {
 					key: query,
 					fields: 'id,name'
-				}
+				};
 			},
 			dataType: 'json',
 			results: function (resp, page) {
@@ -52,8 +51,6 @@ cms.init.add(['users_edit', 'users_add'], function () {
 			});
 		}
 	});
-	});
-	
 });
 
 cms.init.add('users_profile', function () {
