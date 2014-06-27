@@ -1,5 +1,6 @@
 <script>
 	$(function() {
+		console.log(Api.build_url('/backend/hybrid/document/view'));
 		function format(state) {
 			return '<a target="_blank" href="/backend/hybrid/document/view?ds_id=<?php echo $field->from_ds; ?>&id='+state.id+'">' + state.text + '</a>';
 		}
@@ -10,7 +11,7 @@
 			formatSelection: format,
 			escapeMarkup: function(m) { return m; },
 			ajax: {
-				url: SITE_URL + 'api/datasource/hybrid-document.find',
+				url:  Api.build_url('datasource/hybrid-document.find'),
 				data: function(query, pageNumber, context) {
 					return {
 						key: query,
@@ -30,7 +31,7 @@
 				ids = _.map(ids, function(num){ return parseInt(num); });
 
 				if (id !== "") {
-					$.ajax(SITE_URL + 'api/datasource/hybrid-document.find', {
+					$.ajax( ADMIN_DIR_NAME + '/' + SITE_URL + 'api/datasource/hybrid-document.find', {
 						data: {
 							ids: ids,
 							<?php if(!empty($doc->id)): ?>id: <?php echo $doc->id; ?>,<?php endif; ?>

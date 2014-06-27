@@ -103,16 +103,16 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 		
 		$next_url = $this->next_url;
 		
-		if(Request::current()->is_ajax())
+		if (Request::current()->is_ajax())
 		{
 			$json = array('status' => FALSE);
 			
-			if( !empty($this->_errors))
+			if ( ! empty($this->_errors))
 			{
 				$json['errors'] = $this->_errors;
 				$json['values'] = $this->_values;
 			} 
-			else if( $this->send_message() )
+			elseif ($this->handle_email_type($this->_values))
 			{
 				$json = array('status' => TRUE);
 			}
@@ -136,7 +136,7 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 			{
 				$query = URL::query(array('status' => 'ok'), FALSE);
 				
-				if(empty($next_url))
+				if (empty($next_url))
 				{
 					$next_url = $referrer;
 				}

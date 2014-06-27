@@ -1,12 +1,17 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
+class Model_Widget_Hybrid_Creator extends Model_Widget_Decorator {
 
 	const GET = 1;
 	const POST = 2;
 	
 	public $use_template = FALSE;
 	public $use_caching = FALSE;
+	
+	protected $_data = array(
+		'auto_publish' => FALSE,
+		'disable_update' => TRUE
+	);
 	
 	/**
 	 * 
@@ -34,6 +39,8 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 		parent::set_values($data);
 		
 		$this->auto_publish = (bool) Arr::get($data, 'auto_publish');
+		$this->disable_update = (bool) Arr::get($data, 'disable_update');
+		
 		$this->data_source_prefix = URL::title(Arr::get($data, 'data_source_prefix'), '_');
 		
 		if($this->ds_id > 0)
@@ -100,6 +107,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 	protected function _fetch_fields( ) 
 	{
 		$fields = array(
+			'csrf', // Security token
 			'id',
 			'header', 
 			'published', 
@@ -125,17 +133,17 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 		if(empty($data['meta_keywords'])) $data['meta_keywords'] = '';
 		if(empty($data['meta_description'])) $data['meta_description'] = '';
 		
-		if($this->auto_publish === TRUE)
-		{
-			$data['published'] = TRUE;
-		}
-		
 		$ds = Datasource_Data_Manager::load($this->ds_id);
 		
 		$create = TRUE;
 		
-		if (empty($data['id']))
+		if (empty($data['id']) OR $this->disable_update === TRUE)
 		{
+			if($this->auto_publish === TRUE)
+			{
+				$data['published'] = TRUE;
+			}
+		
 			$document = $ds->get_empty_document();
 		}
 		else
@@ -144,11 +152,13 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 			$document = $ds->get_document($id);
 			$create = FALSE;
 
-			if( ! $document)
+			if ( ! $document)
 			{
 				$this->_values = $data;
 				$this->_errors = __('Document ID :id not found', array(':id' => $id));
 				$this->_show_errors();
+
+				return;
 			}
 		}
 		
@@ -191,18 +201,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Hybrid {
 			Widget_Manager::update($this);
 		}
 		
-		try
-		{
-			$content = View::factory( 'widgets/backend/' . $this->backend_template(), array(
-					'widget' => $this
-				))->set($this->backend_data());
-		}
-		catch( Kohana_Exception $e)
-		{
-			$content = NULL;
-		}
-		
-		return $content;
+		return parent::fetch_backend_content();
 	}
 	
 	public function fetch_data()

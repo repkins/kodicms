@@ -64,7 +64,7 @@ class Widget_Manager {
 
 		foreach($res as $id => $widget)
 		{
-			if ( ! self::exists_by_type($widget['type'])) continue;
+			if(!self::exists_by_type($widget['type'])) continue;
 
 			$result[$id] = unserialize($widget['code']);
 			$result[$id]->id = $widget['id'];
@@ -118,7 +118,7 @@ class Widget_Manager {
 		$widgets = array();
 		foreach($res as $id => $widget)
 		{
-			if ( ! self::exists_by_type($widget['type'])) continue;
+			if(!self::exists_by_type($widget['type'])) continue;
 
 			$widgets[$id] = unserialize($widget['code']);
 			$widgets[$id]->id = $widget['id'];
@@ -477,5 +477,29 @@ class Widget_Manager {
 		$class = 'Model_Widget_' . ucfirst($type);
 		
 		return class_exists($class);
+	}
+	
+	/**
+	 * 
+	 * @param array $types
+	 * @param integer $ds_id
+	 * @return array
+	 */
+	public static function get_related( array $types, $ds_id = NULL )
+	{
+		$db_widgets = Widget_Manager::get_widgets( $types );
+
+		$widgets = array();
+		foreach ($db_widgets as $id => $widget)
+		{
+			if ($ds_id !== NULL AND $ds_id != $widget->ds_id)
+			{
+				continue;
+			}
+
+			$widgets[$id] = $widget->name;
+		}
+
+		return $widgets;
 	}
 }

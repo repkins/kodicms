@@ -626,9 +626,20 @@ class KodiCMS_Model_Page extends ORM
 	{
 		$options = array();
 		
-		if( $this->id != 1 )
+		if ($this->id != 1)
 		{
-			$options[0] = __('--- inherit ( :layout ) ---', array(':layout' => $this->layout()));
+			$layout = NULL;
+			if ($this->parent->loaded())
+			{
+				$layout = $this->parent->layout();
+			}
+			
+			if (empty($layout))
+			{
+				$layout = __('--- Not set ---');
+			}
+		
+			$options[0] = __('--- inherit ( :layout ) ---', array(':layout' => $layout));
 		}
 		else
 		{

@@ -1,6 +1,12 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Model_Widget_Hybrid_Document extends Model_Widget_Hybrid {
+class Model_Widget_Hybrid_Document extends Model_Widget_Decorator {
+			
+	/**
+	 *
+	 * @var array
+	 */
+	protected static $_cached_documents = array();
 	
 	/**
 	 *
@@ -25,12 +31,6 @@ class Model_Widget_Hybrid_Document extends Model_Widget_Hybrid {
 	 * @var bool 
 	 */
 	public $crumbs = FALSE;
-		
-	/**
-	 *
-	 * @var array
-	 */
-	public $document = array();
 	
 	/**
 	 *
@@ -162,12 +162,13 @@ class Model_Widget_Hybrid_Document extends Model_Widget_Hybrid {
 			return $result;
 		}
 		
-		if(isset($this->document[$id]))
+		if (isset(Model_Widget_Hybrid_Document::$_cached_documents[$id]))
 		{
-			return $this->document[$id];
+			return Model_Widget_Hybrid_Document::$_cached_documents[$id];
 		}
 		
-		$agent = $this->get_agent();
+		$agent = DataSource_Hybrid_Agent::instance($this->ds_id);
+
 		$query = $agent->get_query_props( $this->doc_fields );
 		$fields = $agent->get_fields();
 		
@@ -216,7 +217,7 @@ class Model_Widget_Hybrid_Document extends Model_Widget_Hybrid {
 			unset($result[$key]);
 		}
 		
-		$this->document[$id] = $result;
+		Model_Widget_Hybrid_Document::$_cached_documents[$id] = $result;
 		
 		return $result;
 	}
@@ -253,22 +254,6 @@ class Model_Widget_Hybrid_Document extends Model_Widget_Hybrid {
 	public function count_total()
 	{
 		return 1;
-	}
-	
-	public function fetch_backend_content()
-	{
-		try
-		{
-			$content = View::factory( 'widgets/backend/' . $this->backend_template(), array(
-					'widget' => $this
-				))->set($this->backend_data());
-		}
-		catch( Kohana_Exception $e)
-		{
-			$content = NULL;
-		}
-		
-		return $content;
 	}
 	
 	public function __sleep()
