@@ -59,7 +59,7 @@ cms.init.add('page_edit', function() {
 					placeholder: __("Select field"),
 					minimumInputLength: 0,
 					ajax: {
-						url: SITE_URL + 'api/page-field.all',
+						url:  Api.build_url('page-field.all'),
 						dataType: 'json',
 						results: function (data, page) {
 							return {results: data.response};
