@@ -1,10 +1,10 @@
 cms.init.add(['users_edit', 'users_add'], function () {
-	$('input[name="user_permission"]').select2({
+	$('input[name="user_roles"]').select2({
 		placeholder: __("Click to get list of roles"),
 		minimumInputLength: 0,
 		multiple: true,
 		ajax: {
-			url:  Api.build_url('user-roles.get'),
+			url: Api.build_url('user-roles.get'),
 			data: function(query, pageNumber, context) {
 				return {
 					key: query,
@@ -32,7 +32,7 @@ cms.init.add(['users_edit', 'users_add'], function () {
 				callback([{'id':1, 'text':'login'}]);
 				return ;
 			}
-			
+
 			Api.get('users.roles', {
 					uid: USER_ID,
 					fields: 'id,name'
@@ -46,7 +46,7 @@ cms.init.add(['users_edit', 'users_add'], function () {
 						});
 					}
 				}
-				
+
 				callback(roles);
 			});
 		}

@@ -1,8 +1,8 @@
 <script>
 	function elfinderInit(id, type) {
 		var elfinder = $('body').elfinder({
-			lang: '<?php echo explode('-', I18n::lang())[0]; ?>',
-			url : 'api-elfinder',
+			lang: '<?php echo I18n::lang_short(); ?>',
+			url : Api.build_url('elfinder'),
 			height: 595,
 			resizable: false,
 			getFileCallback : function(file) {

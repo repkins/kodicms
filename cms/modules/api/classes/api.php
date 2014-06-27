@@ -97,8 +97,17 @@ class API {
 		{
 			$uri = '/' . $uri;
 		}
+		
+		if(IS_BACKEND)
+		{
+			$uri = ADMIN_DIR_NAME . '/api' . $uri;
+		}
+		else
+		{
+			$uri = 'api' . $uri;
+		}
 
-		return Request::factory(ADMIN_DIR_NAME . '/api' . $uri);
+		return Request::factory($uri);
 	}
 	
 	/**

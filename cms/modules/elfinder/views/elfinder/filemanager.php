@@ -1,8 +1,8 @@
 <script>
 	$(function() {
 		var elfinder = $('#elfinder').elfinder({
-			lang: '<?php echo explode('-', I18n::lang())[0]; ?>',
-			url : 'api-elfinder',
+			lang: '<?php echo I18n::lang_short(); ?>',
+			url : Api.build_url('elfinder'),
             resizable: false,
 			height: cms.content_height,
 			uiOptions: {
@@ -35,7 +35,6 @@
 		});
 		
 		$('#elfinder')
-			.resizable({ disabled: true })
 			.addClass('outline_inner')
 			.wrap('<div class="outline"></div>');
 	});
