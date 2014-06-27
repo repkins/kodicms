@@ -60,7 +60,7 @@ class Model_Widget_User_Forgot extends Model_Widget_Decorator {
 			Email_Type::get('user_request_password')->send(array(
 				'username' => $user->username,
 				'email' => $user->email,
-				'reflink' => ltrim( Route::get('reflink')->url(array('code' => $reflink) ), '/'),
+				'reflink' => ltrim( Route::get('reflink')->uri(array('code' => $reflink) ), '/'),
 				'code' => $reflink
 			));
 

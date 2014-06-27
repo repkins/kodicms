@@ -23,12 +23,12 @@
 		)); ?>
 	</div>
 
-	<?php if($widget->use_template): ?>
+	<?php if ($widget->use_template): ?>
 	<?php echo View::factory('helper/snippet_select', array(
 		'header' => __('Widget template'),
 		'template' => $widget->template,
 		'default' => $widget->default_template() ? UI::button(__('Default template'), array(
-			'href' => Route::get('backend')->url(array(
+			'href' => Route::get('backend')->uri(array(
 				'controller' => 'widgets', 
 				'action' => 'template',
 				'id' => $widget->id
@@ -36,10 +36,11 @@
 			'id' => 'defaultTemplateButton',
 			'class' => 'popup fancybox.iframe btn'
 		)) : NULL
-	)); ?>
+	)); 
+	?>
 	<?php endif; ?>
 
-	<?php if($widget->use_caching AND ACL::check('widgets.cache')): ?>
+	<?php if ($widget->use_caching AND ACL::check('widgets.cache')): ?>
 	<div class="widget-content">
 		<?php echo Bootstrap_Form_Element_Control_Group::factory(array(
 			'element' => Bootstrap_Form_Element_Checkbox::factory(array(
