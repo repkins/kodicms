@@ -261,7 +261,7 @@ abstract class Model_Widget_Decorator {
 	 */
 	public function default_template()
 	{
-		if( ($template = Kohana::find_file('views', 'widgets/frontend/' . $this->frontend_template())) === FALSE  )
+		if (($template = Kohana::find_file('views', 'widgets/frontend/' . $this->frontend_template())) === FALSE  )
 		{
 			$template = Kohana::find_file('views', 'widgets/frontend/default');
 		}
@@ -482,7 +482,7 @@ abstract class Model_Widget_Decorator {
 					'widget' => $this
 				))->set($this->backend_data());
 		}
-		catch( Kohana_Exception $e)
+		catch (Kohana_Exception $e)
 		{
 			$content = NULL;
 		}

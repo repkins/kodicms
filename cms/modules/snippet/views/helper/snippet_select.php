@@ -30,7 +30,7 @@ function update_snippets_list(e, response) {
 
 <?php
 
-if(empty($templates))
+if (empty($templates))
 {
 	$templates = array(
 		__('--- Not set ---')
@@ -43,14 +43,14 @@ if(empty($templates))
 	}
 }
 
-if(empty($template)) $template = NULL;
-if(empty($default)) $default = NULL;
-if(empty($select_name)) $select_name = 'template';
+if (empty($template)) $template = NULL;
+if (empty($default)) $default = NULL;
+if (empty($select_name)) $select_name = 'template';
 
 $hidden = empty($template) ? 'hidden' : '';
 ?>
 
-<?php if(!empty($header)): ?>
+<?php if ( ! empty($header)): ?>
 <div class="widget-header">
 	<h4><?php echo $header; ?></h4>
 </div>

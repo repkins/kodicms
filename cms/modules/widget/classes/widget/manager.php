@@ -250,7 +250,7 @@ class Widget_Manager {
 			->execute()
 			->current();
 
-		if( ! $result OR ! self::exists_by_type($result['type']))
+		if ( ! $result OR ! self::exists_by_type($result['type']))
 		{
 			return NULL;
 		}

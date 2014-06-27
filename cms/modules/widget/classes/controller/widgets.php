@@ -195,7 +195,7 @@ class Controller_Widgets extends Controller_System_Backend {
 			->add($widget->name);
 
 		// check if trying to save
-		if ( Request::current()->method() == Request::POST )
+		if (Request::current()->method() == Request::POST)
 		{
 			return $this->_edit( $widget );
 		}
