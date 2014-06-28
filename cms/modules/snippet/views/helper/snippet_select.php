@@ -60,12 +60,12 @@ $hidden = empty($template) ? 'hidden' : '';
 		<label class="control-label"><?php echo __('Snippet'); ?></label>
 		<div class="controls">
 
-			<?php echo Form::select( 'template', $templates, $template, array(
+			<?php echo Form::select('template', $templates, $template, array(
 				'class' => 'input-medium', 'id' => 'snippet-select'
 			) ); ?>
 
 			<div class="btn-group">
-				<?php if( ACL::check('snippet.edit')): ?>
+				<?php if(ACL::check('snippet.edit')): ?>
 				<?php  echo UI::button(__('Edit snippet'), array(
 					'href' => Route::get('backend')->uri(array(
 						'controller' => 'snippet', 
@@ -77,7 +77,7 @@ $hidden = empty($template) ? 'hidden' : '';
 				)); ?>
 				<?php endif; ?>
 
-				<?php if( ACL::check('snippet.add')): ?>
+				<?php if(ACL::check('snippet.add')): ?>
 				<?php echo UI::button(__('Add snippet'), array(
 					'href' => Route::get('backend')->uri(array(
 						'controller' => 'snippet', 

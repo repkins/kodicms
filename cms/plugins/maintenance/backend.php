@@ -7,12 +7,16 @@ Observer::observe('view_setting_plugins', function($plugin) {
 }, $plugin);
 
 Observer::observe('save_settings', function($post, $plugin) {
+	$post = Request::current()->post();
 
-	if ( ! empty($post['plugin']['maintenance_mode']) 
-		AND isset($post['plugin']['maintenance_mode']))
+	if ( ! isset($post['plugin']['maintenance_mode']))
+	{
+		$plugin->set('maintenance_mode', Config::NO);
+	}
+	else
 	{
 		$plugin->set('maintenance_mode', $post['plugin']['maintenance_mode']);
 	}
-
+	
 	$plugin->save_settings();
 }, $plugin);

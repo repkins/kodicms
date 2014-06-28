@@ -2,8 +2,9 @@ cms.plugins.redactor = {
 	switchOn_handler: function( textarea_id, params ){
 		var local_params = {
 			focus: true,
-			imageGetJson: '/api-media.images',
-			imageUpload: '/api-media.images',
+			imageGetJson: Api.build_url('media.images'),
+			imageUpload: Api.build_url('media.images'),
+			uploadFields: {'module': 'redactorJS'},
 			autoresize: false,
 			lang: LOCALE,
 			minHeight: 200

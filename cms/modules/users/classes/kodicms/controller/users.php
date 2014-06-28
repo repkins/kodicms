@@ -20,7 +20,7 @@ class KodiCMS_Controller_Users extends Controller_System_Backend {
 
 		parent::before();
 		$this->breadcrumbs
-			->add(__('Users'), Route::get('backend')->uri(array('controller' => 'users')));
+			->add(__('Users'), Route::url( 'backend', array('controller' => 'users')));
 	}
 	
 	public function action_index()
@@ -80,7 +80,7 @@ class KodiCMS_Controller_Users extends Controller_System_Backend {
 				'password', 'username', 'email', 
 			));
 			
-			if ( ! empty($user_roles))
+			if( ! empty($user_roles))
 			{
 				$user->update_related_ids('roles', explode(',', $user_roles));
 			}
@@ -194,27 +194,29 @@ class KodiCMS_Controller_Users extends Controller_System_Backend {
 		}
 		
 
-		if( empty($profile['notice'] ))
+		if( empty($profile['notice']))
 		{
 			$profile['notice'] = 0;
 		}
 
 		try
 		{
-			if ( $user->update_user($data, array(
-				'email', 'username', 'password'
-			)) )
+			if ($user->update_user($data, array('email', 'username', 'password')))
 			{
 				$data['user_id'] = $user->id;
 				$user->profile
 					->values($profile)
 					->save();
 
-				if ( Acl::check('users.change_roles') AND $user->id > 1 )
+				if (Acl::check('users.change_roles') AND $user->id > 1)
 				{
 					// now we need to add permissions
-					$permissions = $this->request->post('user_permission');
-					$user->update_related_ids('roles', explode(',', $permissions));
+					$user_roles = $this->request->post('user_roles');
+
+					if ( ! empty($user_roles))
+					{
+						$user->update_related_ids('roles', explode(',', $user_roles));
+					}
 				}
 
 				Messages::success( __( 'User has been saved!' ) );

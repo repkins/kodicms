@@ -51,7 +51,7 @@ $(function() {
 	});
 	
 	cms.collections.parts = Backbone.Collection.extend({
-		url:  Api.build_url('page-parts'),
+		url: Api.build_url('page-parts'),
 
 		model: cms.models.part,
 

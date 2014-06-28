@@ -278,7 +278,7 @@ class Widget_Manager {
 			->where('widget_id', '=', (int) $widget_id)
 			->execute();
 		
-		if( ! empty($data) )
+		if( ! empty($data))
 		{
 			$insert = DB::insert('page_widgets')
 				->columns(array('page_id', 'widget_id', 'block', 'position'));
@@ -492,7 +492,7 @@ class Widget_Manager {
 		$widgets = array();
 		foreach ($db_widgets as $id => $widget)
 		{
-			if ($ds_id !== NULL AND $ds_id != $widget->ds_id)
+			if($ds_id !== NULL AND $ds_id != $widget->ds_id)
 			{
 				continue;
 			}

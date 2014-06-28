@@ -11,7 +11,7 @@
 			formatSelection: format,
 			escapeMarkup: function(m) { return m; },
 			ajax: {
-				url:  Api.build_url('datasource/hybrid-document.find'),
+				url: Api.build_url('datasource/hybrid-document.find'),
 				data: function(query, pageNumber, context) {
 					return {
 						key: query,
@@ -31,7 +31,7 @@
 				ids = _.map(ids, function(num){ return parseInt(num); });
 
 				if (id !== "") {
-					$.ajax( ADMIN_DIR_NAME + '/' + SITE_URL + 'api/datasource/hybrid-document.find', {
+					$.ajax(Api.build_url('datasource/hybrid-document.find'), {
 						data: {
 							ids: ids,
 							<?php if(!empty($doc->id)): ?>id: <?php echo $doc->id; ?>,<?php endif; ?>
