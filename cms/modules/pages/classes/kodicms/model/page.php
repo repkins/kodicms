@@ -281,7 +281,7 @@ class KodiCMS_Model_Page extends ORM
 
 	public function before_create()
 	{
-		$this->created_by_id = AuthUser::getId();
+		$this->created_by_id = Auth_User::getId();
 		$this->updated_by_id = $this->created_by_id;
 		
 		if( empty($this->status_id) )
@@ -348,7 +348,7 @@ class KodiCMS_Model_Page extends ORM
 			$this->title = strip_tags( trim( $this->title ) );
 		}
 
-		$this->updated_by_id = AuthUser::getId();
+		$this->updated_by_id = Auth_User::getId();
 		
 		Observer::notify( 'page_edit_before_save', $this );
 

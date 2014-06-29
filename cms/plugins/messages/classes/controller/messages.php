@@ -18,7 +18,7 @@ class Controller_Messages extends Controller_System_Backend {
 		$this->template->title = __('Messages');
 
 		$this->template->content = View::factory('messages/index', array(
-			'messages' => Api::get('user-messages.get', array('uid' => AuthUser::getId(), 'fields' => 'author,title,is_read,created_on'))
+			'messages' => Api::get('user-messages.get', array('uid' => Auth_User::getId(), 'fields' => 'author,title,is_read,created_on'))
 				->as_object()->get('response')
 		));
 	}
@@ -36,7 +36,7 @@ class Controller_Messages extends Controller_System_Backend {
 			}
 
 			$post = $this->request->post();
-			$post['from_user_id'] = AuthUser::getId();
+			$post['from_user_id'] = Auth_User::getId();
 			$post['to_user_id'] = $user->id;
 			return $this->_send(Api::put('user-messages', $post));
 		}
@@ -45,7 +45,7 @@ class Controller_Messages extends Controller_System_Backend {
 		$to = ORM::factory('user', $to)->id;
 
 		$this->template->content = View::factory('messages/add', array(
-			'user_id' => AuthUser::getId(),
+			'user_id' => Auth_User::getId(),
 			'to' => $to
 		));
 		
@@ -58,7 +58,7 @@ class Controller_Messages extends Controller_System_Backend {
 	public function action_view()
 	{
 		$id = (int) $this->request->param('id');
-		$user_id = AuthUser::getId();
+		$user_id = Auth_User::getId();
 
 		$message = Api::get('user-messages.get_by_id', array(
 			'id' => $id, 

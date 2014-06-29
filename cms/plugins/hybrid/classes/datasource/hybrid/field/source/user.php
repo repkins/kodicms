@@ -17,14 +17,14 @@ class DataSource_Hybrid_Field_Source_User extends DataSource_Hybrid_Field_Source
 	
 	public function onCreateDocument(DataSource_Hybrid_Document $doc) 
 	{
-		$doc->set($this->name, AuthUser::getId());
+		$doc->set($this->name, Auth_User::getId());
 	}
 	
 	public function onUpdateDocument(DataSource_Hybrid_Document $old = NULL, DataSource_Hybrid_Document $new)
 	{
 		if($this->only_current === TRUE)
 		{
-			$new->set($this->name, AuthUser::getId());
+			$new->set($this->name, Auth_User::getId());
 		}
 		
 		if( ! $this->is_exists( $new->get($this->name) ))

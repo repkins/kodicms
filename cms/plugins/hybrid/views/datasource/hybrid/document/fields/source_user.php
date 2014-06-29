@@ -1,5 +1,5 @@
 <?php 
-	if(empty($doc->id)) $value = AuthUser::getId();
+	if(empty($doc->id)) $value = Auth_User::getId();
 ?>
 
 <div class="control-group">

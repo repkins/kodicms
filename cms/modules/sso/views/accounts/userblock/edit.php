@@ -1,4 +1,4 @@
-<?php if(count($socials) > 0 OR $user->id == AuthUser::getId()): ?>
+<?php if(count($socials) > 0 OR $user->id == Auth_User::getId()): ?>
 <div class="widget-header widget-section">
 	<h2><?php echo __('Social accounts'); ?></h2>
 </div>
@@ -29,7 +29,7 @@
 </div>
 <?php endif; ?>
 
-<?php if($user->id == AuthUser::getId()): ?>
+<?php if($user->id == Auth_User::getId()): ?>
 <div class="widget-header spoiler-toggle" data-spoiler=".social-accouns-binder">
 	<h3><?php echo __('List of supported OAuth providers'); ?></h3>
 </div>

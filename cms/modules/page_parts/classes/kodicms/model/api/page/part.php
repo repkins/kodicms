@@ -28,7 +28,7 @@ class KodiCMS_Model_API_Page_Part extends Model_API {
 			->execute()
 			->as_array();
 		
-		$is_developer = (int) AuthUser::hasPermission( 'administrator, developer' );
+		$is_developer = (int) Auth_User::hasPermission( 'administrator, developer' );
 		
 		foreach ($parts as & $part)
 		{

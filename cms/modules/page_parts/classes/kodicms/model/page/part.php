@@ -176,7 +176,7 @@ class KodiCMS_Model_Page_Part extends Record
 		if(
 			$this->is_protected == Model_Page_Part::PART_PROTECTED
 		AND
-			!AuthUser::hasPermission( $roles )
+			!Auth_User::hasPermission( $roles )
 		)
 		{
 			return TRUE;

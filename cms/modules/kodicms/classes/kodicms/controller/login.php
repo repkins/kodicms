@@ -15,7 +15,7 @@ class KodiCMS_Controller_Login extends Controller_System_Frontend {
 		if (
 			$this->request->action() != 'logout'
 			AND
-			AuthUser::isLoggedIn()
+			Auth_User::isLoggedIn()
 		)
 		{
 			$this->go_home();
@@ -45,7 +45,7 @@ class KodiCMS_Controller_Login extends Controller_System_Frontend {
 		$array = $this->request->post('login');
 
 		$fieldname = Valid::email( Arr::get($array, 'username') ) 
-			? AuthUser::EMAIL : AuthUser::USERNAME;
+			? Auth_User::EMAIL : Auth_User::USERNAME;
 
 		$array = Validation::factory( $array )
 			->label( 'username', 'Username' )
@@ -65,7 +65,7 @@ class KodiCMS_Controller_Login extends Controller_System_Frontend {
 		{
 			Observer::notify( 'admin_login_before', $array );
 
-			if ( AuthUser::login( $fieldname, $array['username'], $array['password'], $remember ) )
+			if ( Auth_User::login( $fieldname, $array['username'], $array['password'], $remember ) )
 			{
 				Observer::notify( 'admin_login_success', $array['username'] );
 
@@ -105,8 +105,8 @@ class KodiCMS_Controller_Login extends Controller_System_Frontend {
 	public function action_logout()
 	{
 		$this->auto_render = FALSE;
-		AuthUser::logout();
-		Observer::notify('admin_after_logout', AuthUser::getUserName());
+		Auth_User::logout();
+		Observer::notify('admin_after_logout', Auth_User::getUserName());
 		
 		if( $next_url = Flash::get( 'redirect') )
 		{
