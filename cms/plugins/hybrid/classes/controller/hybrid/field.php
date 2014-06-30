@@ -186,7 +186,7 @@ class Controller_Hybrid_Field extends Controller_System_Datasource
 		
 		foreach ( Datasource_Data_Manager::types() as $key => $value )
 		{
-			if($key != 'hybrid' AND !empty($map[$key]))
+			if($key != 'hybrid' AND ! empty($map[$key]))
 			{
 				foreach ( $map[$key] as $id => $name )
 				{

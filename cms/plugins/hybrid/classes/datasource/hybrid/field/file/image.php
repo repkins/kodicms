@@ -91,13 +91,13 @@ class DataSource_Hybrid_Field_File_Image extends DataSource_Hybrid_Field_File_Fi
 	{
 		$url = $new->get($this->name . '_url');
 		$status = FALSE;
-		if( Valid::url($url) )
+		if (Valid::url($url))
 		{
 			$url = $new->get($this->name . '_url');
 			
 			$filename = Upload::from_url( $url, $this->types, $this->folder());
 			
-			if(!empty($filename))
+			if ( ! empty($filename))
 			{
 				if(rename(TMPPATH . $filename, $this->folder() . $filename))
 				{

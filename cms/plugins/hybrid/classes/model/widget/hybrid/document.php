@@ -162,7 +162,7 @@ class Model_Widget_Hybrid_Document extends Model_Widget_Decorator {
 			return $result;
 		}
 		
-		if(isset(Model_Widget_Hybrid_Document::$_cached_documents[$id]))
+		if (isset(Model_Widget_Hybrid_Document::$_cached_documents[$id]))
 		{
 			return Model_Widget_Hybrid_Document::$_cached_documents[$id];
 		}

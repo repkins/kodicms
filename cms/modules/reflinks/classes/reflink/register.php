@@ -24,7 +24,7 @@ class Reflink_Register extends Reflink {
 
 			return TRUE;
 		}
-		catch ( Kohana_Exception $e )
+		catch (Kohana_Exception $e)
 		{
 			throw new Reflink_Exception('Something went wrong');
 		}

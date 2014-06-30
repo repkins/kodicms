@@ -103,16 +103,16 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 		
 		$next_url = $this->next_url;
 		
-		if(Request::current()->is_ajax())
+		if (Request::current()->is_ajax())
 		{
 			$json = array('status' => FALSE);
 			
-			if( !empty($this->_errors))
+			if ( ! empty($this->_errors))
 			{
 				$json['errors'] = $this->_errors;
 				$json['values'] = $this->_values;
 			} 
-			else if( $this->handle_email_type($this->_values) )
+			elseif ($this->handle_email_type($this->_values))
 			{
 				$json = array('status' => TRUE);
 			}
@@ -124,7 +124,7 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 		{
 			$referrer = Request::current()->referrer();
 	
-			if( !empty($this->_errors))
+			if ( ! empty($this->_errors))
 			{
 				Flash::set('form_errors', $this->_errors);
 				Flash::set('form_values', $this->_values);
@@ -132,11 +132,11 @@ class Model_Widget_SendMail extends Model_Widget_Decorator {
 				$query = URL::query(array('status' => 'error'), FALSE);
 				$next_url = $referrer;
 			} 
-			else if( $this->handle_email_type($this->_values) )
+			elseif ($this->handle_email_type($this->_values))
 			{
 				$query = URL::query(array('status' => 'ok'), FALSE);
 				
-				if(empty($next_url))
+				if (empty($next_url))
 				{
 					$next_url = $referrer;
 				}

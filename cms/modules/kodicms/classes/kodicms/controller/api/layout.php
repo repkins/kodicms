@@ -108,7 +108,7 @@ class KodiCMS_Controller_API_Layout extends Controller_System_Api {
 		$layouts = Model_File_Layout::find_all();
 		
 		$blocks = array();
-		foreach($layouts as $layout)
+		foreach ($layouts as $layout)
 		{
 			$blocks[$layout->name] = $layout->rebuild_blocks();
 		}

@@ -137,7 +137,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Decorator {
 		
 		$create = TRUE;
 		
-		if(empty($data['id']) OR $this->disable_update === TRUE)
+		if (empty($data['id']) OR $this->disable_update === TRUE)
 		{
 			if($this->auto_publish === TRUE)
 			{
@@ -152,7 +152,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Decorator {
 			$document = $ds->get_document($id);
 			$create = FALSE;
 
-			if( ! $document)
+			if ( ! $document)
 			{
 				$this->_values = $data;
 				$this->_errors = __('Document ID :id not found', array(':id' => $id));
@@ -168,7 +168,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Decorator {
 				->read_values($data)
 				->validate();
 	
-			if($create === TRUE)
+			if ($create === TRUE)
 			{
 				$ds->create_document($document);
 			}
@@ -211,11 +211,11 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Decorator {
 	
 	protected function _show_success()
 	{
-		if(Request::current()->is_ajax())
+		if (Request::current()->is_ajax())
 		{
 			$json = array('status' => TRUE);
 	
-			if( ! empty($this->redirect_url)) 
+			if ( ! empty($this->redirect_url)) 
 			{
 				$json['redirect'] = URL::site($this->redirect_url);
 			}
@@ -226,7 +226,7 @@ class Model_Widget_Hybrid_Creator extends Model_Widget_Decorator {
 			return;
 		}
 		
-		if( ! empty($this->redirect_url)) 
+		if ( ! empty($this->redirect_url)) 
 		{
 			$url = URL::site($this->redirect_url);
 		}
