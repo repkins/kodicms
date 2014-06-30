@@ -70,7 +70,7 @@ class Datasource_Section_Hybrid extends Datasource_Section {
 	 * 
 	 * @return DataSource_Hybrid_Record
 	 */
-	public function Record() 
+	public function record() 
 	{
 		if($this->_record === NULL)
 		{

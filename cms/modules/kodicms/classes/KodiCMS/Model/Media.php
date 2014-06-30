@@ -62,7 +62,7 @@ class KodiCMS_Model_Media extends ORM
 		);
 	}
 
-	public function Upload(array $file, array $types = array(), $max_size = NULL)
+	public function upload(array $file, array $types = array(), $max_size = NULL)
 	{
 		$filename = Upload::file($file, $types, $max_size);		
 		$tmp_file = TMPPATH . trim( $filename );

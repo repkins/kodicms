@@ -34,7 +34,7 @@ class KodiCMS_WYSIWYG {
 	 * 
 	 * @param string $name
 	 */
-	public static function Plugin( $name )
+	public static function plugin( $name )
 	{
 		self::$plugins[] = (string) $name;
 	}

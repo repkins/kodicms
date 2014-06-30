@@ -103,7 +103,7 @@ class KodiCMS_Model_User extends Model_Auth_User {
 	 * @param array $attributes
 	 * @return string HTML::image
 	 */
-	public function Gravatar($size = 40, $default = NULL, $attributes = array())
+	public function gravatar($size = 40, $default = NULL, $attributes = array())
 	{
 		return Gravatar::load($this->email, $size, $default, $attributes );
 	}

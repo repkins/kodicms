@@ -170,7 +170,7 @@ abstract class Kohana_SSO {
 	/**
 	 * @return SSO_ORM
 	 */
-	public function ORM()
+	public function orm()
 	{
 		if ( ! $this->_orm)
 		{

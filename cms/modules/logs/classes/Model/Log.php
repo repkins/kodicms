@@ -36,7 +36,7 @@ class Model_Log extends ORM {
 		)
 	);
 	
-	public function Filter()
+	public function filter()
 	{
 		$request = Request::initial();
 		
@@ -98,7 +98,7 @@ class Model_Log extends ORM {
 	 * 
 	 * @return string
 	 */
-	public function URL()
+	public function url()
 	{
 		return Arr::get($this->additional, ':url');
 	}

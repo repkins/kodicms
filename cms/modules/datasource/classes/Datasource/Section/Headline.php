@@ -144,7 +144,7 @@ abstract class Datasource_Section_Headline {
 	 * @param string $search_word
 	 * @return Pagination
 	 */
-	public function Pagination( array $ids = NULL )
+	public function pagination( array $ids = NULL )
 	{
 		$this->_pagination->setup(array(
 			'items_per_page' => $this->limit(),

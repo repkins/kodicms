@@ -87,7 +87,7 @@ class API {
 	 * @param string $uri
 	 * @return Request
 	 */
-	public static function Request($uri)
+	public static function request($uri)
 	{
 		if(strpos( $uri, '-' ) === FALSE)
 		{

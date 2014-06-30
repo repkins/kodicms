@@ -182,7 +182,7 @@ class Kohana_Pagination {
 	 * @param   integer  page number
 	 * @return  string   page URL
 	 */
-	public function URL($page = 1)
+	public function url($page = 1)
 	{
 		// Clean the page number
 		$page = max(1, (int) $page);

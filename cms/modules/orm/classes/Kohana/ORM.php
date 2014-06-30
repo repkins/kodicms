@@ -1817,7 +1817,7 @@ class Kohana_ORM extends Model implements serializable {
 		return $this->_updated_column;
 	}
 
-	public function Validation()
+	public function validation()
 	{
 		if ( ! isset($this->_validation))
 		{

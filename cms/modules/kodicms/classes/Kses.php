@@ -7,7 +7,7 @@
  */
 class Kses {
 
-	public static function Filter($string, $allowed_html = array(), $allowed_protocols = array('http', 'https', 'ftp', 'mailto'))
+	public static function filter($string, $allowed_html = array(), $allowed_protocols = array('http', 'https', 'ftp', 'mailto'))
 	{
 		if( !is_array( $allowed_html ))
 		{

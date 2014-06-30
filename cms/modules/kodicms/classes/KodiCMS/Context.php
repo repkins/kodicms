@@ -110,7 +110,7 @@ class KodiCMS_Context {
 	 * @param Meta $meta
 	 * @return Meta
 	 */
-	public function Meta(Meta $meta = NULL)
+	public function meta(Meta $meta = NULL)
 	{
 		if($meta !== NULL)
 		{
@@ -248,7 +248,7 @@ class KodiCMS_Context {
 	 * @param Request $request
 	 * @return \Context|Request
 	 */
-	public function Request( Request $request = NULL )
+	public function request( Request $request = NULL )
 	{
 		if( $request === NULL )
 		{

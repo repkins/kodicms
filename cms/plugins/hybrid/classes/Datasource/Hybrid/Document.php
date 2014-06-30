@@ -74,7 +74,7 @@ class Datasource_Hybrid_Document extends Datasource_Document {
 	 * 
 	 * @return DataSource_Hybrid_Record
 	 */
-	public function Record()
+	public function record()
 	{
 		return $this->_record;
 	}

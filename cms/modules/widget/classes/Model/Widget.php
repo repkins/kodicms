@@ -62,7 +62,7 @@ class Model_Widget extends ORM {
 		return $this->_code;
 	}
 	
-	public function Filter()
+	public function filter()
 	{
 		$request = Request::initial();
 		

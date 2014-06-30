@@ -20,7 +20,7 @@ abstract class Kohana_Oauth2 extends Oauth {
 	 * @param   array    Request params
 	 * @return  OAuth2_Request
 	 */
-	public function Request($type, $method, $url, array $options = NULL)
+	public function request($type, $method, $url, array $options = NULL)
 	{
 		return Oauth2_Request::factory($type, $method, $url, $options);
 	}

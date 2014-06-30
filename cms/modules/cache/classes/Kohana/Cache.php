@@ -176,7 +176,7 @@ abstract class Kohana_Cache {
 	 * @param   mixed    value to associate with key
 	 * @return  mixed
 	 */
-	public function Config($key = NULL, $value = NULL)
+	public function config($key = NULL, $value = NULL)
 	{
 		if ($key === NULL)
 			return $this->_config;

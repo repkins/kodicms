@@ -98,7 +98,7 @@ class Model_Navigation_Abstract {
 	 * 
 	 * @return string
 	 */
-	public function URL()
+	public function url()
 	{
 		return Arr::get($this->_params, 'url');
 	}

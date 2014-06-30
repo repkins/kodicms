@@ -278,7 +278,7 @@ class Kohana_Oauth_Request {
 	 * @return  $this    when setting
 	 * @uses    Oauth_Request::param
 	 */
-	public function Upload($name, $value = NULL)
+	public function upload($name, $value = NULL)
 	{
 		if ($value !== NULL)
 		{

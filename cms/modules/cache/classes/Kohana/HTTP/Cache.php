@@ -209,7 +209,7 @@ class Kohana_HTTP_Cache {
 	 * @return  Kohana_Cache
 	 * @return  Kohana_Request_Client
 	 */
-	public function Cache(Cache $cache = NULL)
+	public function cache(Cache $cache = NULL)
 	{
 		if ($cache === NULL)
 			return $this->_cache;

@@ -58,7 +58,7 @@ class KodiCMS_Sitemap implements RecursiveIterator
 	 * @param mixed $value
 	 * @return \KodiCMS_Sitemap
 	 */
-	public function Filter($key, $value)
+	public function filter($key, $value)
 	{
 		$this->_filter($this->_array, $key, $value);
 
@@ -135,7 +135,7 @@ class KodiCMS_Sitemap implements RecursiveIterator
 	 * 
 	 * @return array
 	 */
-	public function Breadcrumbs()
+	public function breadcrumbs()
 	{
 		if( isset($this->_array[0]) )
 		{

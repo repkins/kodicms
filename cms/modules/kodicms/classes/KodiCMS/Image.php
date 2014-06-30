@@ -13,7 +13,7 @@ abstract class KodiCMS_Image extends Kohana_Image {
 	 * 
 	 * return NULL | string Путь до кеша изображения
 	 */
-	public static function Cache($filepath, $width, $height, $master = Image::INVERSE)
+	public static function cache($filepath, $width, $height, $master = Image::INVERSE)
 	{
 		$original_image = PUBLICPATH . $filepath;
 		

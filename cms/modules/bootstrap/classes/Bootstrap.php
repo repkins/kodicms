@@ -6,7 +6,7 @@
  */
 class Bootstrap {
 	
-	public static function HTML( $string )
+	public static function html( $string )
 	{
 		return Bootstrap_Helper_HTML::factory(array(
 			'string' => (string) $string

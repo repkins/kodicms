@@ -275,7 +275,7 @@ class KodiCMS_Model_Page_Front {
 	 * 
 	 * @return string
 	 */
-	public function URL()
+	public function url()
 	{
 		$uri = $this->url;
 		if(!URL::check_suffix( $uri, '.' ) AND $uri != '')
@@ -355,7 +355,7 @@ class KodiCMS_Model_Page_Front {
 	 * @param string $which_one
 	 * @return string
 	 */
-	public function Date($format = NULL, $which_one = 'publish')
+	public function date($format = NULL, $which_one = 'publish')
 	{
 		if ($which_one == 'update' || $which_one == 'updated')
 		{
@@ -375,7 +375,7 @@ class KodiCMS_Model_Page_Front {
 	 * 
 	 * @return Behavior_Abstract
 	 */
-	public function Behavior()
+	public function behavior()
 	{
 		return $this->_behavior;
 	}
@@ -385,7 +385,7 @@ class KodiCMS_Model_Page_Front {
 	 * @param integer $level
 	 * @return array
 	 */
-	public function Breadcrumbs($level = 0)
+	public function breadcrumbs($level = 0)
 	{
 		$crumbs = Breadcrumbs::factory();
 
