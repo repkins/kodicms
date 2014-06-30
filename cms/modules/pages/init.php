@@ -25,14 +25,10 @@ Observer::observe('scheduler_callbacks', function() {
 			$data[] = array(
 				'title' => $page->title,
 				'start' => strtotime($page->published_on),
-<<<<<<< HEAD
-				'url' => Route::get('backend')->uri(array('controller' => 'page', 'action' => 'edit', 'id' => $page->id)),
-=======
 				'url' => Route::get('backend')->uri(array(
 						'controller' => 'page', 
 						'action' => 'edit', 
 						'id' => $page->id)),
->>>>>>> mercury64/AuthUser_enhancement
 				'allDay' => FALSE
 			);
 		}

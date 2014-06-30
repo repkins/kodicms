@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
 return array(
@@ -16,22 +15,3 @@ return array(
 		)
 	)
 );
-=======
-<?php defined('SYSPATH') or die('No direct access allowed.');
-
-return array(
-	array(
-		'name' => 'Design',
-		'children' => array(
-			array(
-				'divider' => TRUE,
-				'name' => 'Widgets', 
-				'url' => Route::get('backend')->uri(array('controller' => 'widgets')),
-				'permissions' => 'widgets.index',
-				'priority' => 300,
-				'icon' => 'th-large'
-			),
-		)
-	)
-);
->>>>>>> mercury64/AuthUser_enhancement
