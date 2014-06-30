@@ -44,7 +44,7 @@ class Model_Widget_Pagination extends Model_Widget_Decorator {
 		$select = array();
 		foreach($widgets as $id => $widget)
 		{
-			$class = 'Model_Widget_' . $widget['type'];
+			$class = 'Model_Widget_' . ucfirst($widget['type']);
 			
 			if(!class_exists($class)) continue;
 			

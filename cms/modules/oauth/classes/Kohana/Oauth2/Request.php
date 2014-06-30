@@ -21,7 +21,7 @@ abstract class Kohana_Oauth2_Request extends Oauth_Request {
 	 */
 	public static function factory($type, $method, $url = NULL, array $params = NULL)
 	{
-		$class = 'OAuth2_Request_'.$type;
+		$class = 'OAuth2_Request_'.ucfirst($type);
 
 		return new $class($method, $url, $params);
 	}

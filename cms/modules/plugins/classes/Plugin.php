@@ -15,7 +15,7 @@ class Plugin {
 	 */
 	public static function factory( $id, array $info )
 	{
-		$class = 'Plugin_' . $id;
+		$class = 'Plugin_' . ucfirst($id);
 		
 		if( class_exists( $class ))
 		{

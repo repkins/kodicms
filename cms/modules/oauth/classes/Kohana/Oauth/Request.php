@@ -24,7 +24,7 @@ class Kohana_Oauth_Request {
 	 */
 	public static function factory($type, $method, $url = NULL, array $params = NULL)
 	{
-		$class = 'OAuth_Request_'.$type;
+		$class = 'OAuth_Request_'.ucfirst($type);
 
 		return new $class($method, $url, $params);
 	}

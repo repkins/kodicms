@@ -158,7 +158,7 @@ abstract class Kohana_SSO {
 		$name = str_replace('.', '_', $name);
 		if ( ! isset($this->_drivers[$name]))
 		{
-			$class = 'SSO_Driver_'.$name;
+			$class = 'SSO_Driver_'.ucfirst($name);
 			$driver = new $class($this);
 			$driver->init();
 			$this->_drivers[$name] = $driver;

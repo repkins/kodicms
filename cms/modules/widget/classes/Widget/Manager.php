@@ -23,7 +23,7 @@ class Widget_Manager {
 	 */
 	public static function factory( $type )
 	{
-		$class = 'Model_Widget_' . $type;
+		$class = 'Model_Widget_' . ucfirst($type);
 
 		if( ! class_exists($class) )
 		{
