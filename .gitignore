@@ -16,3 +16,4 @@ cms/media/js/i18n
 /patches/*
 !/layouts/index.html
 !/snippets/index.html
+/backups/*
