@@ -23,7 +23,7 @@
 			
 			<div class="span5">
 				<div class="list-group">
-					<?php if ( Acl::check( 'users.edit') OR $user->id == AuthUser::getId() ): ?>
+					<?php if ( Acl::check( 'users.edit') OR $user->id == Auth_User::getId() ): ?>
 					
 					<?php echo HTML::anchor(Route::get('backend')->uri(array(
 						'controller' => 'users',

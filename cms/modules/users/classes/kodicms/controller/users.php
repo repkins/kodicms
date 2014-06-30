@@ -13,7 +13,7 @@ class KodiCMS_Controller_Users extends Controller_System_Backend {
 
 	public function before()
 	{
-		if(in_array($this->request->action(), array('edit')) AND AuthUser::getId() == $this->request->param('id'))
+		if(in_array($this->request->action(), array('edit')) AND Auth_User::getId() == $this->request->param('id'))
 		{
 			$this->allowed_actions[] = $this->request->action();
 		}
