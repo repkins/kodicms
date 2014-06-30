@@ -7,7 +7,7 @@
 			fieldset
 				.attr('disabled', 'disabled')
 				.hide()
-				.filter('fieldset#f-' + id)
+				.Filter('fieldset#f-' + id)
 				.show()
 				.removeAttr('disabled')
 				.end();
@@ -44,7 +44,7 @@
 			<label class="control-label" for="name"><?php echo __('Field key'); ?></label>
 			<div class="controls">
 				<div class="input-prepend">
-					<span class="add-on"><?php echo DataSource_Hybrid_Field::PREFFIX; ?></span>
+					<span class="add-on"><?php echo Datasource_Hybrid_Field::PREFFIX; ?></span>
 						<?php echo Form::input( 'name', Arr::get($post_data, 'name'), array(
 						'class' => 'input-xlarge slug', 'id' => 'name'
 					) ); ?>
@@ -55,7 +55,7 @@
 		<div class="control-group">
 			<label class="control-label" for="select-field-type"><?php echo __('Field type'); ?></label>
 			<div class="controls">
-				<?php echo Form::select( 'type', DataSource_Hybrid_Field::types(), Arr::get($post_data, 'type'), array(
+				<?php echo Form::select( 'type', Datasource_Hybrid_Field::types(), Arr::get($post_data, 'type'), array(
 					'id' => 'select-field-type'
 				)); ?>
 			</div>
@@ -67,7 +67,7 @@
 	</div>
 	<div class="widget-content">
 		<div id="field-options">
-		<?php foreach (DataSource_Hybrid_Field::get_empty_fields() as $type => $field): ?>
+		<?php foreach (Datasource_Hybrid_Field::get_empty_fields() as $type => $field): ?>
 		<fieldset id="f-<?php echo $type; ?>" disabled="disabled">
 		
 		<?php

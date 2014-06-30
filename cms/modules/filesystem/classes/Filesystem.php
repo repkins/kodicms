@@ -4,7 +4,7 @@
  * @package		KodiCMS/FileSystem
  * @author		ButscHSter
  */
-class FileSystem {
+class Filesystem {
 	
 	/**
 	 * 
@@ -51,17 +51,17 @@ class FileSystem {
 	{
 		if( ! ($path instanceof SplFileInfo) )
 		{
-			$path = FileSystem::normalize_path($path);
+			$path = Filesystem::normalize_path($path);
 			
 			if ( file_exists( $path ) ) 
 			{
 				if ( ! is_dir( $path ) )
 				{
-					$path = new FileSystem_File( $path );
+					$path = new Filesystem_File( $path );
 				}
 				else 
 				{
-					$path = new FileSystem_Directory( $path );
+					$path = new Filesystem_Directory( $path );
 				}
 			}
 			else
@@ -72,7 +72,7 @@ class FileSystem {
 			}
 		}
 
-		return new FileSystem( $path );
+		return new Filesystem( $path );
 	}
 
 	/**
@@ -243,7 +243,7 @@ class FileSystem {
 	{
 		if (rename($this->_real_path, $this->_path . DIRECTORY_SEPARATOR . $name))
 		{
-			return FileSystem::factory($this->_path . DIRECTORY_SEPARATOR . $name);
+			return Filesystem::factory($this->_path . DIRECTORY_SEPARATOR . $name);
 		}
 		
 		return FALSE;
@@ -277,7 +277,7 @@ class FileSystem {
 				continue;
 			}
 
-			$array[] = new FileSystem(clone($this->_file));
+			$array[] = new Filesystem(clone($this->_file));
 			$this->_file->next();
 		}
 		

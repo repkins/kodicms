@@ -1,6 +1,6 @@
 <div class="widget widget-nopad">
 	<div class="widget-header">
-		<?php if ( Acl::check( 'users.add')): ?>
+		<?php if ( ACL::check( 'users.add')): ?>
 		<?php echo UI::button(__('Add user'), array(
 			'href' => Route::get('backend')->uri(array('controller' => 'users', 'action' => 'add')), 
 			'icon' => UI::icon('plus'),

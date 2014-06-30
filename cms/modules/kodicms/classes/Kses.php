@@ -7,14 +7,14 @@
  */
 class Kses {
 
-	public static function filter($string, $allowed_html = array(), $allowed_protocols = array('http', 'https', 'ftp', 'mailto'))
+	public static function Filter($string, $allowed_html = array(), $allowed_protocols = array('http', 'https', 'ftp', 'mailto'))
 	{
 		if( !is_array( $allowed_html ))
 		{
 			$allowed_html = self::parse_tags($allowed_html);
 		}
 
-		return kses($string, $allowed_html, $allowed_protocols);
+		return Kses($string, $allowed_html, $allowed_protocols);
 	}
 	
 	public static function parse_tags($tags)
@@ -75,7 +75,7 @@ class Kses {
 /**
  *
  */
-function kses($string, $allowed_html, $allowed_protocols =
+function Kses($string, $allowed_html, $allowed_protocols =
                array('http', 'https', 'ftp', 'mailto'))
 ###############################################################################
 # This function makes sure that only the allowed HTML element names, attribute

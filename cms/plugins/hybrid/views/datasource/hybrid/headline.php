@@ -1,6 +1,6 @@
 	<table class="table table-striped">
 		<colgroup>
-			<?php if(Acl::check('hybrid'.$ds_id.'.document.edit')): ?>
+			<?php if(ACL::check('hybrid'.$ds_id.'.document.edit')): ?>
 			<col width="30px" />
 			<?php endif; ?>
 
@@ -10,7 +10,7 @@
 		</colgroup>
 		<thead>
 			<tr>
-				<?php if(Acl::check('hybrid'.$ds_id.'.document.edit')): ?>
+				<?php if(ACL::check('hybrid'.$ds_id.'.document.edit')): ?>
 				<th class="row-checkbox"><?php echo Form::checkbox('check_all', NULL, NULL, array(
 					'data-target' => '.doc-checkbox',
 					'hotkeys' => 'ctrl+shift+a'
@@ -25,14 +25,14 @@
 		<tbody>
 			<?php foreach ($data['documents'] as $id => $row): ?>
 			<tr data-id="<?php echo $id; ?>" class="<?php echo !$row['published'] ? 'unpublished' : ''; ?>">
-				<?php if(Acl::check('hybrid'.$ds_id.'.document.edit')): ?>
+				<?php if(ACL::check('hybrid'.$ds_id.'.document.edit')): ?>
 				<td class="row-checkbox"><?php echo Form::checkbox('doc[]', $id, NULL, array('class' => 'doc-checkbox')); ?></td>
 				<?php endif; ?>
 
 				<?php foreach ($fields as $key => $field): ?>
 				<?php if(isset($row[$key])): ?>
 					<?php if(Arr::get($field, 'type') == 'link'): ?>
-						<?php if(Acl::check('hybrid'.$ds_id.'.document.view') OR Acl::check('hybrid'.$ds_id.'.document.edit')): ?>
+						<?php if(ACL::check('hybrid'.$ds_id.'.document.view') OR ACL::check('hybrid'.$ds_id.'.document.edit')): ?>
 						<td class="row-<?php echo $key; ?>">
 							<strong>
 							<?php echo HTML::anchor(Route::get('datasources')->uri(array(

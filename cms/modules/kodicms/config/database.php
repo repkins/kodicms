@@ -2,7 +2,7 @@
 
 switch(DB_TYPE)
 {
-	case 'mysql':
+	case 'MySQL':
 		$server = DB_SERVER;
 		if(defined('DB_PORT')) $server .= ':' . DB_PORT;
 		$config = array(

@@ -32,13 +32,13 @@
 			if(!activeInput) return false;
 
 			if(curInput.hasClass('redactor_editor') && message_type == '<?php echo Model_Email_Template::TYPE_HTML; ?>') {
-				cms.filters.exec('message', 'insert', $(this).text());
+				cms.filters.exec('message', 'insert', $(this).Text());
 			} else {
 				var cursorPos = curInput.prop('selectionStart');
 				var v = curInput.val();
 				var textBefore = v.substring(0,  cursorPos );
 				var textAfter  = v.substring( cursorPos, v.length );
-				curInput.val( textBefore+ $(this).text() +textAfter );
+				curInput.val( textBefore+ $(this).Text() +textAfter );
 			}
 			
 			return false;
@@ -101,7 +101,7 @@
 				) );
 				?>
 				
-				<?php if ( Acl::check( 'email_type.add')): ?>
+				<?php if ( ACL::check( 'email_type.add')): ?>
 				<?php echo UI::button(__('Add email type'), array(
 					'href' => Route::get( 'email_controllers')->uri(array('controller' => 'types', 'action' => 'add')), 'icon' => UI::icon('plus'),
 					'class' => 'btn btn-primary'

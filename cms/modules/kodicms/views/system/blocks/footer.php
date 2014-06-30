@@ -6,7 +6,7 @@
 			</div>
 			<div class="span6 text-right">
 				<p>
-				&copy; 2012<?php echo (date('Y') > 2012) ? ' - ' . date('Y') : ''; ?> <?php echo HTML::anchor( CMS_SITE, CMS_NAME ) ?> v<?php echo CMS_VERSION; ?> | 
+				&copy; 2012<?php echo (Date('Y') > 2012) ? ' - ' . Date('Y') : ''; ?> <?php echo HTML::anchor( CMS_SITE, CMS_NAME ) ?> v<?php echo CMS_VERSION; ?> | 
 				<?php echo __('Powered by :framework v:version :codename', array(
 					':framework' => HTML::anchor( 'http://kohanaframework.org/', 'Kohana' ), 
 					':version' => Kohana::VERSION, 

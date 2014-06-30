@@ -48,7 +48,7 @@
 		</table>
 	</div>
 	
-	<?php if(Acl::check('system.phpinfo')): ?>
+	<?php if(ACL::check('system.phpinfo')): ?>
 	<div class="widget-header"><h3><?php echo __( 'PHP info' ); ?></h3></div>
 	<div class="widget-content">
 	<iframe <?php echo HTML::attributes(array(

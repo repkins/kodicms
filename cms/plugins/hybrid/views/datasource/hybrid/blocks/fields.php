@@ -1,16 +1,16 @@
 <script type="text/javascript">
 $(function() {
 	var $fields = $('#section-fields input'),
-		$checked_fields = $fields.filter(':checked');
+		$checked_fields = $fields.Filter(':checked');
 	
 	$fields.change(function(){
-		if($fields.filter(':checked').size() == 0) {
+		if($fields.Filter(':checked').size() == 0) {
 			$('#remove-fields').attr('disabled', 'disabled');
 		} else {
 			$('#remove-fields').removeAttr('disabled');
 		}
 		
-		$checked_fields = $fields.filter(':checked');
+		$checked_fields = $fields.Filter(':checked');
 	}).change();
 	
 	$('#remove-fields').on('click', function() {
@@ -36,7 +36,7 @@ $(function() {
 <div class="widget-content widget-nopad">
 	<table id="section-fields" class="table table-striped table-hover">
 		<colgroup>
-			<?php if(Acl::check($ds->type().$ds->id().'.field.remove')): ?>
+			<?php if(ACL::check($ds->type().$ds->id().'.field.remove')): ?>
 			<col width="30px" />
 			<?php endif; ?>
 			<col width="50px" />
@@ -47,7 +47,7 @@ $(function() {
 		</colgroup>
 		<thead>
 			<tr>
-				<?php if(Acl::check($ds->type().$ds->id().'.field.remove')): ?>
+				<?php if(ACL::check($ds->type().$ds->id().'.field.remove')): ?>
 				<th></th>
 				<?php endif; ?>
 				<th><?php echo __('Field position'); ?></th>
@@ -59,7 +59,7 @@ $(function() {
 		</thead>
 		<tbody>
 			<tr>
-				<?php if(Acl::check($ds->type().$ds->id().'.field.remove')): ?>
+				<?php if(ACL::check($ds->type().$ds->id().'.field.remove')): ?>
 				<td class="f">
 					<?php echo Form::checkbox('field[]', 'id', FALSE, array(
 						'disabled' => 'disabled'
@@ -73,7 +73,7 @@ $(function() {
 				<td><?php echo Form::checkbox('', 1, TRUE, array('disabled' => 'disabled')); ?></td>
 			</tr>
 			<tr>
-				<?php if(Acl::check($ds->type().$ds->id().'.field.remove')): ?>
+				<?php if(ACL::check($ds->type().$ds->id().'.field.remove')): ?>
 				<td class="f">
 					<?php echo Form::checkbox('field[]', 'header', FALSE, array(
 						'disabled' => 'disabled'
@@ -89,7 +89,7 @@ $(function() {
 
 			<?php foreach($record->fields() as $f): ?>
 			<tr id="field-<?php echo $f->id; ?>">
-				<?php if(Acl::check($ds->type().$ds->id().'.field.remove')): ?>
+				<?php if(ACL::check($ds->type().$ds->id().'.field.remove')): ?>
 				<td class="f">
 					<?php 
 					$attrs = array('id' => $f->name);
@@ -104,7 +104,7 @@ $(function() {
 					</label>
 				</td>
 				<td>
-					<?php if(Acl::check($ds->type().$ds->id().'.field.edit')): ?>
+					<?php if(ACL::check($ds->type().$ds->id().'.field.edit')): ?>
 					<?php echo HTML::anchor(Route::get('datasources')->uri(array(
 						'controller' => 'field',
 						'directory' => 'hybrid',
@@ -121,7 +121,7 @@ $(function() {
 				<td>
 					<?php 
 					$attrs = array();
-					if(!Acl::check($ds->type().$ds->id().'.field.edit')) $attrs['disabled'] = 'disabled';
+					if(!ACL::check($ds->type().$ds->id().'.field.edit')) $attrs['disabled'] = 'disabled';
 					
 					echo Form::checkbox('in_headline['.$f->id.']', 1, (bool) $f->in_headline, $attrs); ?>
 				</td>
@@ -132,7 +132,7 @@ $(function() {
 </div>
 <div class="widget-header">
 	<div class="btn-group">
-		<?php if(Acl::check($ds->type().$ds->id().'.field.edit')): ?>
+		<?php if(ACL::check($ds->type().$ds->id().'.field.edit')): ?>
 		<?php echo UI::button(__('Add field'), array(
 			'href' => Route::get('datasources')->uri(array(
 				'controller' => 'field',
@@ -145,7 +145,7 @@ $(function() {
 		)); ?>
 		<?php endif; ?>
 		
-		<?php if(Acl::check($ds->type().$ds->id().'.field.remove')): ?>
+		<?php if(ACL::check($ds->type().$ds->id().'.field.remove')): ?>
 		<?php echo UI::button(__('Remove fields'), array(
 			'icon' => UI::icon('minus icon-white'), 'id' => 'remove-fields',
 			'class' => 'btn btn-danger'

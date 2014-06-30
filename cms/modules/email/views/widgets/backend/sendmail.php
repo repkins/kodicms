@@ -41,12 +41,12 @@
 			$('select[name="field[' + key +'][]"]', field_container).val(data[key]).trigger("change");
 			
 			if(key == 'id') {
-				$(field_container).find('.field-title').text(data[key]);
+				$(field_container).find('.field-title').Text(data[key]);
 			}
 		}
 		
 		$('input[name="field[id][]"]', field_container).on('keyup', function() {
-			field_container.find('.field-title').text($(this).val());
+			field_container.find('.field-title').Text($(this).val());
 		});
 	}
 	$(function() {
@@ -58,7 +58,7 @@
 			$("select", field).select2();
 			
 			$('input[name="field[id][]"]', field).on('keyup', function() {
-				field.find('.field-title').text($(this).val());
+				field.find('.field-title').Text($(this).val());
 			});
 
 			return false;

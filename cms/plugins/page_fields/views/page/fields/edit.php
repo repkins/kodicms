@@ -21,7 +21,7 @@
 		</div>
 		
 		<?php echo View::factory('page/fields/field', array(
-			'field' => ORM::factory( 'page_field')
+			'field' => ORM::factory( 'Page_Field')
 		)); ?>
 		<hr />
 		<button id="select-page-field" class="btn"><?php echo __('Show field select'); ?></button>

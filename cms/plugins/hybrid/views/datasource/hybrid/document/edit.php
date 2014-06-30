@@ -1,5 +1,5 @@
 <script>
-<?php if(!Acl::check('hybrid'.$ds->id().'.document.edit')): ?>
+<?php if(!ACL::check('hybrid'.$ds->id().'.document.edit')): ?>
 $(function() {
 	$('input,textarea,select').attr('disabled', 'disabled');
 })
@@ -63,7 +63,7 @@ function update_documents(e, response) {
 
 <div class="outline">
 	<div class="widget outline_inner">
-	<?php if(Acl::check('hybrid'.$ds->id().'.document.edit')): ?>
+	<?php if(ACL::check('hybrid'.$ds->id().'.document.edit')): ?>
 	<?php echo Form::open(Request::current()->uri() . URL::query(array('id' => $doc->id)), array(
 		'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'
 	)); ?>
@@ -136,7 +136,7 @@ function update_documents(e, response) {
 	<?php endif; ?>
 
 		
-	<?php if(Acl::check('hybrid'.$ds->id().'.document.edit')): ?>
+	<?php if(ACL::check('hybrid'.$ds->id().'.document.edit')): ?>
 	<div class="form-actions widget-footer">
 		<?php echo UI::actions(TRUE, Route::get('datasources')->uri(array(
 			'controller' => 'data',

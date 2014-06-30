@@ -49,7 +49,7 @@
 				$('.rows').each(function(i, el) {
 					var row = {};
 					
-					console.log($('.row-container', el))
+					console.Log($('.row-container', el))
 					
 					if($('.row-container', el).length > 0) {
 						$('.row-container', el).each(function(i, rc) {
@@ -76,7 +76,7 @@
 					data.push(row);
 				})
 				
-				console.log(data)
+				console.Log(data)
 			}
 		});
 

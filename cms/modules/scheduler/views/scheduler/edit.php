@@ -12,7 +12,7 @@
 	<div class="widget-header">
 		<h4><?php echo __('General information'); ?></h4>
 		
-		<?php if($job->loaded() AND  Acl::check( 'scheduler.run')): ?>
+		<?php if($job->loaded() AND  ACL::check( 'scheduler.run')): ?>
 		<?php echo UI::button(__('Run job'), array(
 			'href' => Route::get('backend')->uri(array('controller' => 'scheduler', 'action' => 'run', 'id' => $job->id)), 'icon' => UI::icon('play')
 		)); ?>

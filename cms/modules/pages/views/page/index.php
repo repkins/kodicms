@@ -2,7 +2,7 @@
 	<div class="widget-header">
 		<?php echo View::factory('page/blocks/search'); ?>
 
-		<?php if ( Acl::check( 'page.add')): ?>
+		<?php if ( ACL::check( 'page.add')): ?>
 		<?php echo UI::button(__('Add page'), array(
 			'class' => 'btn',
 			'href' => Route::get('backend')->uri(array('controller' => 'page', 'action' => 'add')),
@@ -11,7 +11,7 @@
 		)); ?>
 		<?php endif; ?>
 
-		<?php if ( Acl::check( 'page.sort')): ?>
+		<?php if ( ACL::check( 'page.sort')): ?>
 		<?php echo UI::button(__('Reorder'), array(
 			'id' => 'pageMapReorderButton', 
 			'class' => 'btn btn-primary',
@@ -58,7 +58,7 @@
 							<?php echo $page->get_public_anchor(); ?>
 						</div>
 						<div class="actions offset4 span1">
-							<?php if ( Acl::check( 'page.add')): ?>
+							<?php if ( ACL::check( 'page.add')): ?>
 							<?php echo UI::button(NULL, array(
 								'icon' => UI::icon('plus'), 
 								'href' => Route::get('backend')->uri(array('controller' => 'page', 'action' => 'add')),

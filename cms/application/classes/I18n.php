@@ -28,7 +28,7 @@ class I18n extends Kohana_I18n {
 	{
 		$table = parent::load($lang);
 		
-		$filename = CMSPATH . FileSystem::normalize_path('media/js/i18n/'.$lang.'.js');
+		$filename = CMSPATH . Filesystem::normalize_path('media/js/i18n/'.$lang.'.js');
 		
 		if( ! file_exists($filename) 
 				OR ( file_exists($filename) AND (time() - filemtime($filename)) > Date::DAY))

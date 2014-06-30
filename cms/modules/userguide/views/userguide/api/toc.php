@@ -24,7 +24,7 @@
 					// Keep track of the li
 					var $parent = $(anchor).closest('li');
 					
-					if ($(anchor).text().match(search_regex)) {
+					if ($(anchor).Text().match(search_regex)) {
 						// Show the li and .class parent if its a match
 						$parent.show();
 						$(container).show();

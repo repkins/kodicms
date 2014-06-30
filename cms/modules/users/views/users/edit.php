@@ -128,7 +128,7 @@
 		</div>
 		<?php endif; ?>
 
-		<?php if (Acl::check( 'users.change_roles') AND ($user->id === NULL OR $user->id > 1)): ?>
+		<?php if (ACL::check( 'users.change_roles') AND ($user->id === NULL OR $user->id > 1)): ?>
 		<div class="widget-header">
 			<h3><?php echo __('Roles'); ?></h3>
 		</div>

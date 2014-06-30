@@ -12,7 +12,7 @@ class Scheduler {
 	{
 		if ( ! is_callable($callback))
 		{
-			throw new scheduler_Exception('Invalid scheduler::callback specified');
+			throw new Scheduler_Exception('Invalid Scheduler::callback specified');
 		}
 		
 		self::$_callbacks[] = $callback;

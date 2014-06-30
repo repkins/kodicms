@@ -155,7 +155,7 @@ class Plugins {
 	/**
 	 * Получение списка плагинов из БД
 	 * 
-	 * @cache_key plugins::list
+	 * @cache_key Plugins::list
 	 * $cache Date::DAY
 	 * @return array
 	 */

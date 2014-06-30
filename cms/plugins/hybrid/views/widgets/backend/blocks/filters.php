@@ -28,7 +28,7 @@
 			$('select[name="doc_filter[' + key +'][]"]', filters_container).val(data[key]).trigger("change");
 			
 			if(key == 'field') {
-				$(filters_container).find('.field-title').text(data[key]).show();
+				$(filters_container).find('.field-title').Text(data[key]).show();
 			}
 		}
 		
@@ -42,10 +42,10 @@
 			$('input[name="doc_filter[field][]"]', filter).on('keyup', function() {
 				var field_title = filter.find('.field-title');
 				
-				if(!field_title.text()) field_title.hide();
+				if(!field_title.Text()) field_title.hide();
 				else field_title.show();
 
-				field_title.text($(this).val());
+				field_title.Text($(this).val());
 			});
 
 			return false;
@@ -86,14 +86,14 @@
 						<td><?php echo __('Condition')?></td>
 						<td>
 							<?php echo Form::select('doc_filter[condition][]', array(
-								DataSource_Hybrid_Agent::COND_EQ => __('Equal'),
-								DataSource_Hybrid_Agent::COND_BTW => __('Between'),
-								DataSource_Hybrid_Agent::COND_GT => __('Greater than'),
-								DataSource_Hybrid_Agent::COND_LT => __('Less than'),
-								DataSource_Hybrid_Agent::COND_GTEQ => __('Greater than or equal'),
-								DataSource_Hybrid_Agent::COND_LTEQ => __('Less than or equal'),
-								DataSource_Hybrid_Agent::COND_CONTAINS => __('Contains'),
-								DataSource_Hybrid_Agent::COND_LIKE => __('Like')
+								Datasource_Hybrid_Agent::COND_EQ => __('Equal'),
+								Datasource_Hybrid_Agent::COND_BTW => __('Between'),
+								Datasource_Hybrid_Agent::COND_GT => __('Greater than'),
+								Datasource_Hybrid_Agent::COND_LT => __('Less than'),
+								Datasource_Hybrid_Agent::COND_GTEQ => __('Greater than or equal'),
+								Datasource_Hybrid_Agent::COND_LTEQ => __('Less than or equal'),
+								Datasource_Hybrid_Agent::COND_CONTAINS => __('Contains'),
+								Datasource_Hybrid_Agent::COND_LIKE => __('Like')
 							)); ?>
 							<label class="inline checkbox">
 								<?php echo Form::checkbox('doc_filter[invert][]', 1, FALSE); ?>
@@ -109,8 +109,8 @@
 						<td><?php echo __('Conition value')?></td>
 						<td>
 							<?php echo Form::select('doc_filter[type][]', array(
-								DataSource_Hybrid_Agent::VALUE_CTX => __('Context'),
-								DataSource_Hybrid_Agent::VALUE_PLAIN => __('Plain')
+								Datasource_Hybrid_Agent::VALUE_CTX => __('Context'),
+								Datasource_Hybrid_Agent::VALUE_PLAIN => __('Plain')
 							)); ?>
 							<?php echo Form::input('doc_filter[value][]', NULL, array(
 								'class' => Bootstrap_Form_Element_Input::MEDIUM

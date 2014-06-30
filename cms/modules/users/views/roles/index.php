@@ -1,6 +1,6 @@
 <div class="widget widget-nopad">
 	<div class="widget-header">
-		<?php if ( Acl::check('roles.add')): ?>
+		<?php if ( ACL::check('roles.add')): ?>
 		<?php echo UI::button(__('Add role'), array(
 			'href' => Route::get('backend')->uri(array('controller' => 'roles', 'action' => 'add')), 
 			'icon' => UI::icon('plus'),
@@ -28,7 +28,7 @@
 				<tr class="item">
 					<td class="name">
 						<?php echo UI::icon('unlock-alt'); ?>
-						<?php if ( Acl::check( 'roles.edit')): ?>
+						<?php if ( ACL::check( 'roles.edit')): ?>
 						<?php echo HTML::anchor(Route::get('backend')->uri(array(
 							'controller' => 'roles',
 							'action' => 'edit',

@@ -64,11 +64,11 @@ class Crontab {
 		for ($i = 0; $i <= 60 * 60 * 24 * 366; $i += 60)
 		{
 			if (
-					in_array(intval(date('j', $start + $i)), $date['dom']) 
-				AND in_array(intval(date('n', $start + $i)), $date['month']) 
-				AND in_array(intval(date('w', $start + $i)), $date['dow']) 
-				AND in_array(intval(date('G', $start + $i)), $date['hours'])
-				AND in_array(intval(date('i', $start + $i)), $date['minutes'])
+					in_array(intval(Date('j', $start + $i)), $date['dom']) 
+				AND in_array(intval(Date('n', $start + $i)), $date['month']) 
+				AND in_array(intval(Date('w', $start + $i)), $date['dow']) 
+				AND in_array(intval(Date('G', $start + $i)), $date['hours'])
+				AND in_array(intval(Date('i', $start + $i)), $date['minutes'])
 			)
 			{
 				return $start + $i;

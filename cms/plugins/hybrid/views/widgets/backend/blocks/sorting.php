@@ -1,5 +1,5 @@
 <?php
-$fields = DataSource_Hybrid_Field_Factory::get_section_fields($ds_id);
+$fields = Datasource_Hybrid_Field_Factory::get_section_fields($ds_id);
 
 $order_fields = array();
 foreach ($doc_order as $data)
@@ -10,22 +10,22 @@ foreach ($doc_order as $data)
 $selected_fields = array();
 $available_fields = array();
 
-$fields[] = DataSource_Hybrid_Field::factory('primitive_string', array(
-	'family' => DataSource_Hybrid_Field::FAMILY_PRIMITIVE,
+$fields[] = Datasource_Hybrid_Field::factory('primitive_string', array(
+	'family' => Datasource_Hybrid_Field::FAMILY_PRIMITIVE,
 	'name' => 'header',
 	'id' => 'header',
 	'header' => __('Header')
 ));
 
-$fields[] = DataSource_Hybrid_Field::factory('primitive_integer', array(
-	'family' => DataSource_Hybrid_Field::FAMILY_PRIMITIVE,
+$fields[] = Datasource_Hybrid_Field::factory('primitive_integer', array(
+	'family' => Datasource_Hybrid_Field::FAMILY_PRIMITIVE,
 	'name' => 'id',
 	'id' => 'id',
 	'header' => __('ID')
 ));
 
-$fields[] = DataSource_Hybrid_Field::factory('primitive_datetime', array(
-	'family' => DataSource_Hybrid_Field::FAMILY_PRIMITIVE,
+$fields[] = Datasource_Hybrid_Field::factory('primitive_datetime', array(
+	'family' => Datasource_Hybrid_Field::FAMILY_PRIMITIVE,
 	'name' => 'created_on',
 	'id' => 'created_on',
 	'header' => __('Created on')
@@ -67,7 +67,7 @@ $(function() {
 			.remove();
 
 		$(sf)
-			.append(selected.text('+ ' + selected.text()))
+			.append(selected.Text('+ ' + selected.Text()))
 	
 		input.clone().attr({
 			name: 'doc_order[]['+ selected.val() +']',
@@ -83,7 +83,7 @@ $(function() {
 	
 		$(af)
 			.append(selected
-				.text(selected.text().substr(2)))
+				.Text(selected.Text().substr(2)))
 		
 		$('#sf_' + selected.val()).remove();
 	});
@@ -91,11 +91,11 @@ $(function() {
 	$('.btn-order').click(function() {
 		var selected = $('option:selected', sf);
 		
-		if(selected.text().indexOf('+') > -1 ) {
-			selected.text(selected.text().replace('+', '-'));
+		if(selected.Text().indexOf('+') > -1 ) {
+			selected.Text(selected.Text().replace('+', '-'));
 			$('#sf_' + selected.val()).val('DESC');
 		} else {
-			selected.text(selected.text().replace('-', '+'));
+			selected.Text(selected.Text().replace('-', '+'));
 			$('#sf_' + selected.val()).val('ASC');
 		}		
 	});
@@ -112,7 +112,7 @@ $(function() {
 		$('option:selected', sf).swapWith($('option:eq('+to+')', sf));
 		$('option:eq('+to+')', sf).attr('selected', 'selected');
 		
-		console.log($('input[name^="doc_order"]', sf_cont));
+		console.Log($('input[name^="doc_order"]', sf_cont));
 		$('input[name^="doc_order"]', sf_cont).eq(index).swapWith($('input[name^="doc_order"]', sf_cont).eq(to));
 	});
 });
