@@ -202,7 +202,10 @@ class DataSource_Hybrid_Field_Factory {
 		foreach ($query as $id => $row)
 		{
 			$field = self::get_field_from_array($row);
-			if($field === NULL) continue;
+			if ($field === NULL)
+			{
+				continue;
+			}
 
 			$fields[$id] = $field;
 		}
@@ -223,14 +226,14 @@ class DataSource_Hybrid_Field_Factory {
 	 */
 	public static function get_field_from_array( array $array = NULL ) 
 	{
-		if( empty($array) OR !isset($array['type']) )
+		if (empty($array) OR ! isset($array['type']) )
 		{
 			return NULL;
 		}
 			
 		$class_name = 'DataSource_Hybrid_Field_' . $array['type'];
 
-		if( ! class_exists( $class_name ))
+		if ( ! class_exists( $class_name ))
 		{
 			return NULL;
 		}

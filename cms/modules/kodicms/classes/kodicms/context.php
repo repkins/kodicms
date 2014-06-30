@@ -149,14 +149,17 @@ class KodiCMS_Context {
 				$result = $this->get_page()->{$method};
 			}
 		}
-		else if(strpos($param, '$user->') !== FALSE)
+		elseif (strpos($param, '$user->') !== FALSE)
 		{
 			$user = Auth::instance()->get_user();
 			list($class, $method) = explode('->', $param, 2);
 			
-			if(!($user instanceof ORM)) return $result;
+			if ( ! ($user instanceof ORM))
+			{
+				return $result;
+			}
 
-			if(strpos($method, '()') !== FALSE)
+			if (strpos($method, '()') !== FALSE)
 			{
 				$method = substr($method, 0, strpos($method, '()'));
 				$result = $user->{$method}();
@@ -166,7 +169,7 @@ class KodiCMS_Context {
 				$result = $user->{$method};
 			}
 		}
-		else if(isset($this->_params[$param]))
+		elseif (isset($this->_params[$param]))
 		{
 			$result = $this->_params[$param];
 		}
@@ -174,18 +177,18 @@ class KodiCMS_Context {
 		{
 			$result = $this->request()->query($param);
 		}
-		else if($this->request()->post( $param ) !== NULL)
+		elseif ($this->request()->post( $param ) !== NULL)
 		{
 			$result = $this->request()->post( $param );
 		}
-		elseif(
+		elseif (
 			$this->behavior_router() instanceof Behavior_Route 
 		AND 
 			$this->behavior_router()->param($param) !== NULL)
 		{
 			$result = $this->behavior_router()->param($param);
 		}
-		else if($this->request()->param( $param ) !== NULL)
+		elseif ($this->request()->param( $param ) !== NULL)
 		{
 			$result = $this->request()->param( $param );
 		}

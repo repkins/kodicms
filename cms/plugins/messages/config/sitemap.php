@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-if(AuthUser::isLoggedIn())
+if(Auth_User::isLoggedIn())
 {
 	$new = Api::get('user-messages.count_new', array(
-		'uid' => AuthUser::getId()
+		'uid' => Auth_User::getId()
 	))->as_object();
 
 	return array(

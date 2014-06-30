@@ -30,7 +30,7 @@ else
  * @see  http://kohanaframework.org/guide/using.configuration
  * @see  http://php.net/setlocale
  */
-setlocale( LC_ALL, 'ru_RU.utf-8' );
+setlocale( LC_ALL, 'en_US.utf-8' );
 
 /**
  * Enable the Kohana auto-loader.
@@ -89,7 +89,7 @@ else if(IS_INSTALLED)
 /**
  * Set the default language
  */
-I18n::lang('en_US');
+I18n::lang('en-us');
 
 if (isset($_SERVER['SERVER_PROTOCOL']))
 {

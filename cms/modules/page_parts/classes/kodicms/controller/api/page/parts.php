@@ -32,7 +32,7 @@ class KodiCMS_Controller_API_Page_Parts extends Controller_System_Api {
 			->save();
 		
 		$part = $part->prepare_data();
-		$part['is_developer'] = (int) AuthUser::hasPermission( 'administrator, developer' );
+		$part['is_developer'] = (int) Auth_User::hasPermission( 'administrator, developer' );
 		
 		if(Kohana::$caching === TRUE)
 		{
@@ -54,7 +54,7 @@ class KodiCMS_Controller_API_Page_Parts extends Controller_System_Api {
 			->save();
 
 		$part = $part->prepare_data();
-		$part['is_developer'] = (int) AuthUser::hasPermission( 'administrator, developer' );
+		$part['is_developer'] = (int) Auth_User::hasPermission( 'administrator, developer' );
 		
 		if(Kohana::$caching === TRUE)
 		{

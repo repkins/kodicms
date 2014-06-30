@@ -53,4 +53,3 @@ if(ACL::check('page.index'))
 Observer::observe(array('page_delete', 'page_edit_after_save'), function() {
 	Cache::instance()->delete('Database::cache(archive_section)');
 });
-

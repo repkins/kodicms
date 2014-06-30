@@ -45,7 +45,7 @@
 				<div class="item">
 					<div class="row-fluid">
 						<div class="title span7">
-							<?php if( ! ACL::check('page.edit') OR ! AuthUser::hasPermission( $page->get_permissions() ) ): ?>
+							<?php if( ! ACL::check('page.edit') OR ! Auth_User::hasPermission( $page->get_permissions() ) ): ?>
 							<?php echo UI::icon('lock'); ?>
 							<em title="/"><?php echo $page->title; ?></em>
 							<?php else: ?>

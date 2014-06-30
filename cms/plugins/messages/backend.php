@@ -1,10 +1,10 @@
 <?php defined( 'SYSPATH' ) or die( 'No direct script access.' );
 
 Observer::observe('view_user_profile_sidebar_list', function($user_id) {
-	if($user_id == AuthUser::getId())
+	if($user_id == Auth_User::getId())
 	{
 		$new = Api::get('user-messages.count_new', array(
-			'uid' => AuthUser::getId()
+			'uid' => Auth_User::getId()
 		))->as_object();
 
 		echo View::factory('messages/profile/sidebar', array(

@@ -1,5 +1,5 @@
 cms.init.add('page_index', function () {
-	// Read coockie of expanded pages
+	// Read cookie of expanded pages
 	var matches = document.cookie.match(/expanded_rows=(.+?);/);
 	var expanded_pages = matches ? decodeURIComponent(matches[1]).split(',') : [];
 	var arr = [];
@@ -92,7 +92,6 @@ cms.init.add('page_index', function () {
 			}
 		}
 	});
-
 
 	// Reordering
 	$('#pageMapReorderButton').on('click', function () {

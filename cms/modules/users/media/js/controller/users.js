@@ -9,7 +9,7 @@ cms.init.add(['users_edit', 'users_add'], function () {
 				return {
 					key: query,
 					fields: 'id,name'
-				}
+				};
 			},
 			dataType: 'json',
 			results: function (resp, page) {

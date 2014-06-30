@@ -80,4 +80,3 @@ $(function() {
 	$('.select2-container').remove();
 	cms.ui.init('select2');
 })
-

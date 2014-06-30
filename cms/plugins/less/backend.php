@@ -2,7 +2,7 @@
 
 Kohana::load(PLUGPATH.'/less/vendors/lessc.inc.php');
 
-if( AuthUser::isLoggedIn() )
+if( Auth_User::isLoggedIn() )
 {	
 	less_compile($plugin);
 }

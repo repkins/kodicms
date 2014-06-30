@@ -11,6 +11,6 @@ cms.init.add(['snippet_edit', 'snippet_add'], function () {
 	});
 	
 	$(window).resize(function() {
-		$('#textarea_content').trigger('filter:switch:on')
+		$('#textarea_content').trigger('filter:switch:on');
 	});
 });

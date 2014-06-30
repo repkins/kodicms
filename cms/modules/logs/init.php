@@ -19,7 +19,7 @@ Observer::observe('view_setting_plugins', function() {
 //		$to = date('Y-m-d', $to);
 //
 //		$logs = Api::get('log.get', array(
-//			'uids' => AuthUser::getId(), 
+//			'uids' => Auth_User::getId(), 
 //			'level' => Log::INFO, 
 //			'from' => $from, 
 //			'to' => $to,

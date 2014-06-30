@@ -42,7 +42,7 @@ cms.init.add(['datasources_data_index'], function () {
 		Api.post('/datasource/' + section + '-document.' + action, data, function(response) {
 			if(response.code == 200)
 				window.location = '';
-		})
+		});
 	});
 	
 	$('.datasource-menu').on('click', '.list-group-item:not(.active)', function(e) {

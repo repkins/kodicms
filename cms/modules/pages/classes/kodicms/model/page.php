@@ -281,7 +281,7 @@ class KodiCMS_Model_Page extends ORM
 
 	public function before_create()
 	{
-		$this->created_by_id = AuthUser::getId();
+		$this->created_by_id = Auth_User::getId();
 		$this->updated_by_id = $this->created_by_id;
 		
 		if( empty($this->status_id) )
@@ -348,7 +348,7 @@ class KodiCMS_Model_Page extends ORM
 			$this->title = strip_tags( trim( $this->title ) );
 		}
 
-		$this->updated_by_id = AuthUser::getId();
+		$this->updated_by_id = Auth_User::getId();
 		
 		Observer::notify( 'page_edit_before_save', $this );
 
@@ -626,15 +626,15 @@ class KodiCMS_Model_Page extends ORM
 	{
 		$options = array();
 		
-		if( $this->id != 1 )
+		if ($this->id != 1)
 		{
 			$layout = NULL;
-			if($this->parent->loaded() )
+			if ($this->parent->loaded())
 			{
 				$layout = $this->parent->layout();
 			}
 			
-			if(empty($layout))
+			if (empty($layout))
 			{
 				$layout = __('--- Not set ---');
 			}
@@ -656,6 +656,5 @@ class KodiCMS_Model_Page extends ORM
 		
 		return $options;
 	}
-
 
 } // end Model_Page class

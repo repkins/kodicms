@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
 Observer::observe('frontpage_found', function($page) {
-	if($page->is_password_protected() AND ! AuthUser::isLoggedIn())
+	if($page->is_password_protected() AND ! Auth_User::isLoggedIn())
 	{
 		throw new HTTP_Exception_Front_401;
 	}
@@ -25,7 +25,14 @@ Observer::observe('scheduler_callbacks', function() {
 			$data[] = array(
 				'title' => $page->title,
 				'start' => strtotime($page->published_on),
+<<<<<<< HEAD
 				'url' => Route::get('backend')->uri(array('controller' => 'page', 'action' => 'edit', 'id' => $page->id)),
+=======
+				'url' => Route::get('backend')->uri(array(
+						'controller' => 'page', 
+						'action' => 'edit', 
+						'id' => $page->id)),
+>>>>>>> mercury64/AuthUser_enhancement
 				'allDay' => FALSE
 			);
 		}

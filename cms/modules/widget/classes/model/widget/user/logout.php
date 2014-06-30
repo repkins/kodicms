@@ -17,9 +17,9 @@ class Model_Widget_User_Logout extends Model_Widget_Decorator {
 	public function on_page_load()
 	{
 		parent::on_page_load();
-		$username = AuthUser::getUserName();
+		$username = Auth_User::getUserName();
 		
-		AuthUser::logout();
+		Auth_User::logout();
 		Observer::notify('admin_after_logout', $username);
 		
 		HTTP::redirect($this->get('next_url', Request::current()->referrer()));

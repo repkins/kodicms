@@ -1,6 +1,16 @@
+<<<<<<< HEAD
 <?php echo Form::open(Route::get('backend')->uri(array('controller' => 'scheduler', 'action' => $action, 'id' => $job->id)), array(
 	'class' => Bootstrap_Form::HORIZONTAL
 )); ?>
+=======
+<?php echo Form::open(Route::get('backend')->url(
+		array('controller' => 'scheduler', 
+				  'action' => $action, 
+				  'id' => $job->id)), 
+		array(
+				'class' => Bootstrap_Form::HORIZONTAL)
+); ?>
+>>>>>>> mercury64/AuthUser_enhancement
 
 <?php echo Form::hidden('token', Security::token()); ?>
 <div class="widget">
@@ -80,7 +90,6 @@
 	</div>
 </div>
 <?php Form::close(); ?>
-
-<?php if(!empty($history)): ?>
+<?php if ( ! empty($history)): ?>
 <?php echo $history; ?>
 <?php endif; ?>

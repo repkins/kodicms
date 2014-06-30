@@ -15,7 +15,7 @@ class Controller_Api_Datasource_Hybrid_Field extends Controller_System_API
 			$removed_ids[] = $id;
 		}
 
-		$this->message('Fields has been removed!');
+		$this->message('Fields have been removed!');
 		$this->response($removed_ids);
 	}
 }

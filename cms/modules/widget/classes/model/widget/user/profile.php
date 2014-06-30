@@ -28,7 +28,7 @@ class Model_Widget_User_Profile extends Model_Widget_Decorator {
 		parent::on_page_load();
 		
 		$user = $this->get_user();
-		if( ! $user->loaded() AND $this->throw_404 === TRUE )
+		if ( ! $user->loaded() AND $this->throw_404 === TRUE)
 		{
 			$this->_ctx->throw_404('Profile not found');
 		}
@@ -58,7 +58,7 @@ class Model_Widget_User_Profile extends Model_Widget_Decorator {
 	 */
 	public function get_user()
 	{
-		if($this->_user instanceof ORM) 
+		if ($this->_user instanceof ORM) 
 		{
 			return $this->_user;
 		}

@@ -129,7 +129,7 @@ class KodiCMS_Controller_Page extends Controller_System_Backend {
 		}
 
 		// Проверка пользователя на доступ к редактированию текущей страницы
-		if ( ! AuthUser::hasPermission( $page->get_permissions() ) )
+		if ( ! Auth_User::hasPermission( $page->get_permissions() ) )
 		{
 			Messages::errors( __( 'You do not have permission to access the requested page!' ) );
 			$this->go();
@@ -208,7 +208,7 @@ class KodiCMS_Controller_Page extends Controller_System_Backend {
 		}
 
 		// check for permission to delete this page
-		if ( ! AuthUser::hasPermission( $page->get_permissions() ) )
+		if ( ! Auth_User::hasPermission( $page->get_permissions() ) )
 		{
 			Kohana::$log->add(Log::ALERT, 'Trying to delete page :id by :user', array(
 				':id' => $page_id
@@ -282,7 +282,11 @@ class KodiCMS_Controller_Page extends Controller_System_Backend {
 			$link = strtr($behavior['link'], array(':id' => $parent_id));
 			$childrens[] = __(':icon :link', array(
 				':icon' => UI::icon('book'),
-				':link' => HTML::anchor( URL::backend($link), __(ucfirst($page->behavior_id)))
+				':link' => HTML::anchor( 
+						//Route::get('backend')->uri(array('controller'=>$link)),
+						URL::backend($link),
+						__(ucfirst($page->behavior_id))
+					)
 			));
 		}
 

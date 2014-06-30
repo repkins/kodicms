@@ -134,7 +134,7 @@ class Controller_System_API extends Controller_System_Ajax {
 
 		$action = strtolower($action);
 
-		$is_logged_in = AuthUser::isLoggedIn();
+		$is_logged_in = Auth_User::isLoggedIn();
 
 		try 
 		{

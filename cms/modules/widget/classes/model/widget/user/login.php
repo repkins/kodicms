@@ -83,8 +83,8 @@ class Model_Widget_User_Login extends Model_Widget_Decorator {
 		$data = Request::current()->post();
 		
 		$login_fieldname = Valid::email( Arr::get($data, $this->get( 'login_field' )) ) 
-			? AuthUser::EMAIL 
-			: AuthUser::USERNAME;
+			? Auth_User::EMAIL 
+			: Auth_User::USERNAME;
 		
 		$data = Validation::factory( $data )
 			->label( $this->get( 'login_field' ), 'Username' )
@@ -108,7 +108,7 @@ class Model_Widget_User_Login extends Model_Widget_Decorator {
 		
 		if ( $validation->check() )
 		{
-			if ( AuthUser::login( $login_fieldname, $validation[$this->get( 'login_field' )], $validation[$this->get( 'password_field' )], $remember ) )
+			if ( Auth_User::login( $login_fieldname, $validation[$this->get( 'login_field' )], $validation[$this->get( 'password_field' )], $remember ) )
 			{
 				$json['status'] = TRUE;
 				$json['redirect'] = $this->get_next_url();
@@ -131,7 +131,7 @@ class Model_Widget_User_Login extends Model_Widget_Decorator {
 	{
 		if ( $validation->check() )
 		{
-			if ( AuthUser::login( $login_fieldname, $validation[$this->get( 'login_field' )], $validation[$this->get( 'password_field' )], $remember ) )
+			if ( Auth_User::login( $login_fieldname, $validation[$this->get( 'login_field' )], $validation[$this->get( 'password_field' )], $remember ) )
 			{
 				HTTP::redirect($this->get_next_url());
 			}
@@ -157,7 +157,7 @@ class Model_Widget_User_Login extends Model_Widget_Decorator {
 
 		foreach($roles_redirect as $data)
 		{
-			if( AuthUser::hasPermission( $data['roles'] ))
+			if( Auth_User::hasPermission( $data['roles'] ))
 			{
 				return $data['next_url'];
 			}

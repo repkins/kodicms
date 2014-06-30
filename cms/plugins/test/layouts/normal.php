@@ -22,7 +22,6 @@
 					<div class="page-header">
 						<h1><?php echo $page->title(); ?></h1>
 					</div>
-	
 					<?php Block::run('body'); ?>
 					<?php Block::run('pagination'); ?>
 					
@@ -30,7 +29,7 @@
 				</div>
 				<div class="span3">
 					<?php Block::run('sidebar'); ?>
-                    <?php Block::run('recent'); ?>
+          <?php Block::run('recent'); ?>
 				</div>
 			</div>
 			<?php Block::run('footer'); ?>

@@ -4,14 +4,20 @@
 	<?php if($action == 'add'): ?>
 	$(function() {
 		$('.spoiler-toggle').click();
-	})
+	});
 	<?php endif; ?>
 </script>
 
 <div id="pageEdit">
+<<<<<<< HEAD
 	<?php echo Form::open(Route::get('backend')->uri(array('controller' => 'page', 'action' => $action, 'id' => $action == 'add' ? $parent_id : $page->id)), array(
 		'class' => Bootstrap_Form::HORIZONTAL, 'method' => Request::POST
 	)); ?>
+=======
+		<?php echo Form::open(Route::get('backend')->uri(array('controller' => 'page', 'action' => $action, 'id' => $action == 'add' ? $parent_id : $page->id)), array(
+			'id' => 'pageEditForm', 'class' => Bootstrap_Form::HORIZONTAL, 'method' => Request::POST
+		)); ?>
+>>>>>>> mercury64/AuthUser_enhancement
 		<?php echo Form::hidden('token', Security::token()); ?>
 
 		<?php if (!empty($parent_id)): ?>

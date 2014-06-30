@@ -7,5 +7,5 @@ var CURRENT_URL			= '<?php echo Request::current()->url(TRUE) . URL::query() ; ?
 	LOCALE				= '<?php echo I18n::lang(); ?>',
 	CONTROLLER			= '<?php echo strtolower(Request::current()->controller()); ?>',
 	ACTION				= '<?php echo Request::current()->action(); ?>',
-	USER_ID				= <?php echo (int) AuthUser::getId(); ?>,
+	USER_ID				= <?php echo (int) Auth_User::getId(); ?>,
 	FILTERS				= '<?php echo json_encode(WYSIWYG::findAll()); ?>';

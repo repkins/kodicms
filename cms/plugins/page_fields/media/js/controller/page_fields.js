@@ -83,6 +83,5 @@ cms.init.add('page_edit', function() {
 		
 		
 		return false;
-	})
-	
+	});
 });
