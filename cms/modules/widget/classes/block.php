@@ -191,7 +191,7 @@ class Block {
 		
 		if( !empty($blocks[2]))
 		{
-			return $blocks[2];
+			return array_unique($blocks[2]);
 		}
 
 		return NULL;
